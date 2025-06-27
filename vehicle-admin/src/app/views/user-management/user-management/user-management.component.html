@@ -1,0 +1,115 @@
+<c-card class="shadow-md rounded-lg mb-6">
+    <!-- Header -->
+    <c-card-header class="flex items-center justify-between flex-wrap gap-2">
+        <span class="text-gray-400">User</span>
+    </c-card-header>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-6 p-3">
+    <!-- Row 1 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+            <label class="block mb-1 text-sm font-medium">First Name</label>
+            <input type="text" placeholder="Enter first name" formControlName="first_name"
+                class="w-full px-3 py-2 border rounded-md" />
+            <small class="text-red-500" *ngIf="submitted && getError('first_name')">{{ getError('first_name') }}</small>
+        </div>
+        <div>
+            <label class="block mb-1 text-sm font-medium">Last Name</label>
+            <input type="text" placeholder="Enter last name" formControlName="last_name"
+                class="w-full px-3 py-2 border rounded-md" />
+            <small class="text-red-500" *ngIf="submitted && getError('last_name')">{{ getError('last_name') }}</small>
+        </div>
+        <div>
+            <label class="block mb-1 text-sm font-medium">Gender</label>
+            <select formControlName="gender" class="w-full px-3 py-2 border rounded-md">
+                <option value="">Select</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </select>
+            <small class="text-red-500" *ngIf="submitted && getError('gender')">{{ getError('gender') }}</small>
+        </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+            <label class="block mb-1 text-sm font-medium">Email</label>
+            <input type="email" placeholder="Enter valid email" formControlName="email"
+                class="w-full px-3 py-2 border rounded-md" />
+            <small class="text-red-500" *ngIf="submitted && getError('email')">{{ getError('email') }}</small>
+        </div>
+        <div>
+            <label class="block mb-1 text-sm font-medium">Mobile</label>
+            <input type="tel" placeholder="Enter mobile number" formControlName="mobile"
+                class="w-full px-3 py-2 border rounded-md" />
+        </div>
+        <div>
+            <label class="block mb-1 text-sm font-medium">Company</label>
+            <input type="text" placeholder="Enter company name" formControlName="company"
+                class="w-full px-3 py-2 border rounded-md" />
+        </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+            <label class="block mb-1 text-sm font-medium">GST</label>
+            <input type="text" placeholder="Enter GST number" formControlName="gst"
+                class="w-full px-3 py-2 border rounded-md" />
+        </div>
+        <div>
+            <label class="block mb-1 text-sm font-medium">PAN</label>
+            <input type="text" placeholder="Enter PAN number" formControlName="pan"
+                class="w-full px-3 py-2 border rounded-md" />
+        </div>
+        <div>
+            <label class="block mb-1 text-sm font-medium">DOB</label>
+            <input type="date" formControlName="dob" class="w-full px-3 py-2 border rounded-md" />
+        </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+            <label class="block mb-1 text-sm font-medium">Aadhar</label>
+            <input type="text" placeholder="Enter Aadhar number" formControlName="aadhar"
+                class="w-full px-3 py-2 border rounded-md" />
+        </div>
+        <div>
+            <label class="block mb-1 text-sm font-medium">Password</label>
+            <input type="password" placeholder="Enter password" formControlName="password"
+                class="w-full px-3 py-2 border rounded-md" />
+            <small class="text-red-500" *ngIf="submitted && getError('password')">{{ getError('password') }}</small>
+        </div>
+        <div>
+            <label class="block mb-1 text-sm font-medium">City</label>
+            <input type="text" placeholder="Enter city" formControlName="city"
+                class="w-full px-3 py-2 border rounded-md" />
+        </div>
+    </div>
+
+    <!-- Row 5 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-2">
+            <label class="block mb-1 text-sm font-medium">Address</label>
+            <textarea placeholder="Enter address" formControlName="address"
+                class="w-full px-3 py-2 border rounded-md"></textarea>
+        </div>
+        <div>
+            <label class="block mb-1 text-sm font-medium">Status</label>
+            <select formControlName="status" class="w-full px-3 py-2 border rounded-md">
+                <option value="">Select</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-right pt-4">
+        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">
+            Submit
+        </button>
+    </div>
+</form>
+</c-card>

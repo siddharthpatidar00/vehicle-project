@@ -1,0 +1,43 @@
+/* src/styles.css */
+@import "tailwindcss";
+
+
+.p-toast {
+    all: initial; 
+    font-family: inherit;
+}
+
+.p-toast .p-toast-message {
+    border-radius: 0.5rem;   
+    padding: 1rem;
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Success Toast */
+.p-toast-message-success {
+  background-color: #e6fffa !important;
+  border-left: 6px solid #2dd4bf !important;
+  color: #0f766e !important;
+}
+
+/* Info Toast */
+.p-toast-message-info {
+  background-color: #e0f2fe !important;
+  border-left: 6px solid #3b82f6 !important;
+  color: #1e40af !important;
+}
+
+/* Warning Toast */
+.p-toast-message-warn {
+  background-color: #fff7ed !important;
+  border-left: 6px solid #f59e0b !important;
+  color: #78350f !important;
+}
+
+/* Error Toast */
+.p-toast-message-error {
+  background-color: #fee2e2 !important;
+  border-left: 6px solid #ef4444 !important;
+  color: #991b1b !important;
+}

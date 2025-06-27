@@ -1,0 +1,17 @@
+<c-modal [visible]="visible" (visibleChange)="!visible && close()" alignment="center" [keyboard]="false"
+    class="w-full sm:w-[500px] max-w-full p-4 z-[9999]">
+    <div class="bg-white rounded-lg shadow-lg w-full">
+        <c-modal-header class="border-b">
+            <h5 class="modal-title text-base sm:text-lg font-semibold">{{ title }}</h5>
+        </c-modal-header>
+
+        <c-modal-body class="text-sm sm:text-base px-4 py-3">
+            <p>{{ message }}</p>
+        </c-modal-body>
+
+        <c-modal-footer class="flex justify-end gap-2 px-4 py-3 border-t">
+            <button cButton color="secondary" class="text-sm px-3 py-1.5" (click)="close()">{{ cancelText }}</button>
+            <button cButton color="danger" class="text-sm px-3 py-1.5" (click)="confirm()">{{ confirmText }}</button>
+        </c-modal-footer>
+    </div>
+</c-modal>

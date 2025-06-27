@@ -1,0 +1,30 @@
+<div class="flex justify-end m-3">
+    <c-pagination class="flex">
+
+        <!-- Previous -->
+        <c-pagination-item (click)="onPageClick(currentPage - 1)" [ngClass]="{
+        'cursor-not-allowed pointer-events-none': currentPage === 1,
+        'cursor-pointer': currentPage > 1
+      }" class="px-3 py-1 mx-0.5 rounded border">
+            Previous
+        </c-pagination-item>
+
+        <!-- Page Numbers -->
+        <c-pagination-item *ngFor="let page of [].constructor(totalPages); let i = index" (click)="onPageClick(i + 1)"
+            [ngClass]="{
+        'font-bold': currentPage === i + 1,
+        'cursor-pointer': currentPage !== i + 1
+      }" class="px-3 py-1 mx-0.5 rounded border">
+            {{ i + 1 }}
+        </c-pagination-item>
+
+        <!-- Next -->
+        <c-pagination-item (click)="onPageClick(currentPage + 1)" [ngClass]="{
+        'cursor-not-allowed pointer-events-none': currentPage === totalPages,
+        'cursor-pointer': currentPage < totalPages
+      }" class="px-3 py-1 mx-0.5 rounded border">
+            Next
+        </c-pagination-item>
+
+    </c-pagination>
+</div>
