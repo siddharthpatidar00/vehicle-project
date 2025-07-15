@@ -5,7 +5,7 @@ const { protect } = require('../middleware/authMiddleware');
 const { allowRoles } = require('../middleware/authorizeRole');
 
 // ✅ Only USERS can create transport
-router.post('/', protect, allowRoles('user'), transportController.createTransport);
+router.post('/', transportController.createTransport);
 
 // ✅ Only ADMIN can view all transport requests
 router.get('/', protect, allowRoles('admin'), transportController.getAllTransports);

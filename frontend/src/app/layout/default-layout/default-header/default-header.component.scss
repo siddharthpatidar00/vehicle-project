@@ -1,0 +1,15 @@
+.navigation-link {
+    padding: 0.5rem 1rem 0rem 1rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+}
+
+.navigation-link:hover {
+    color: #BB3E00;
+    border-bottom: 2px solid black;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}

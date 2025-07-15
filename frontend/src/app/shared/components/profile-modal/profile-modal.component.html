@@ -1,0 +1,117 @@
+<!-- Modal Overlay -->
+<div class="fixed inset-0 flex items-center justify-center z-[9999] backdrop-blur-sm bg-black/30">>
+    <!-- Modal Content -->
+    <div class="bg-white shadow-lg w-[90%] max-w-3xl relative">
+        <!-- Close Button -->
+        <span (click)="onClose()" class="absolute top-2 right-4 text-red-600 hover:text-red-500 text-2xl font-extrabold cursor-pointer">
+            ✕
+        </span>
+
+        <!-- Navigation Tabs -->
+        <div class="flex bg-[#fcb026] text-center text-sm font-medium">
+            <div class="w-1/4 py-3 cursor-pointer"
+                [ngClass]="{ 'bg-[#888181]': selectedTab === 'dashboard', 'text-white': selectedTab === 'dashboard', 'hover:bg-gray-100': selectedTab !== 'dashboard' }"
+                (click)="setTab('dashboard')">
+                Dashboard
+            </div>
+            <div class="w-1/4 py-3 cursor-pointer"
+                [ngClass]="{ 'bg-[#888181]': selectedTab === 'editProfile', 'text-white': selectedTab === 'editProfile', 'hover:bg-gray-100': selectedTab !== 'editProfile' }"
+                (click)="setTab('editProfile')">
+                Edit Profile
+            </div>
+            <div class="w-1/4 py-3 cursor-pointer"
+                [ngClass]="{ 'bg-[#888181]': selectedTab === 'editPassword','text-white': selectedTab === 'editPassword', 'hover:bg-gray-100': selectedTab !== 'editPassword' }"
+                (click)="setTab('editPassword')">
+                Edit Password
+            </div>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-8">
+            <!-- Dashboard Content -->
+            <div *ngIf="selectedTab === 'dashboard'">
+                <h2 class="text-xl font-semibold mb-4">Welcome to your dashboard!</h2>
+                <p class="text-gray-600">This is where you can manage your profile and settings.</p>
+            </div>
+
+            <!-- Edit Profile Content -->
+            <div *ngIf="selectedTab === 'editProfile'">
+                <div class="flex flex-col items-center mb-6">
+                    <img src="https://randomuser.me/api/portraits/women/79.jpg"
+                        class="w-24 h-24 rounded-full object-cover" />
+                    <h2 class="mt-4 text-xl font-semibold text-gray-900">Jessica Alba</h2>
+                    <p class="text-gray-500">jennywilson
+                        <svg class="inline w-4 h-4 ml-1 text-blue-600 cursor-pointer" fill="none" stroke="currentColor"
+                            stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3z" />
+                        </svg>
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 items-center text-sm text-gray-700">
+                    <div class="font-medium">Username</div>
+                    <div class="col-span-1 text-gray-600">Jenny Wilson</div>
+                    <div><svg class="w-4 h-4 text-blue-600 cursor-pointer" fill="none" stroke="currentColor"
+                            stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3z" />
+                        </svg></div>
+
+                    <div class="font-medium">Email</div>
+                    <div class="col-span-1 text-gray-600">jennygmail.com</div>
+                    <div><svg class="w-4 h-4 text-blue-600 cursor-pointer" fill="none" stroke="currentColor"
+                            stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3z" />
+                        </svg></div>
+
+                    <div class="font-medium">Address</div>
+                    <div class="col-span-1 text-gray-600">New York, USA</div>
+                    <div><svg class="w-4 h-4 text-blue-600 cursor-pointer" fill="none" stroke="currentColor"
+                            stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3z" />
+                        </svg></div>
+
+                    <div class="font-medium">Nickname</div>
+                    <div class="col-span-1 text-gray-600">Sky Angel</div>
+                    <div><svg class="w-4 h-4 text-blue-600 cursor-pointer" fill="none" stroke="currentColor"
+                            stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3z" />
+                        </svg></div>
+
+                    <div class="font-medium">DOB</div>
+                    <div class="col-span-1 text-gray-600">April 28, 1981</div>
+                    <div><svg class="w-4 h-4 text-blue-600 cursor-pointer" fill="none" stroke="currentColor"
+                            stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3z" />
+                        </svg></div>
+                </div>
+            </div>
+
+            <!-- Edit Password Content -->
+            <div *ngIf="selectedTab === 'editPassword'">
+                <h2 class="text-xl font-semibold mb-4">Change Password</h2>
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium">Current Password</label>
+                        <input type="password" class="w-full border border-gray-300 rounded px-3 py-2 mt-1" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium">New Password</label>
+                        <input type="password" class="w-full border border-gray-300 rounded px-3 py-2 mt-1" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium">Confirm New Password</label>
+                        <input type="password" class="w-full border border-gray-300 rounded px-3 py-2 mt-1" />
+                    </div>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update
+                        Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

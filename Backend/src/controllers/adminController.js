@@ -4,7 +4,7 @@ const Admin = require('../models/Admin');
 
 // Generate JWT token
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '10d' });
 };
 
 // Register Admin (internal protected)

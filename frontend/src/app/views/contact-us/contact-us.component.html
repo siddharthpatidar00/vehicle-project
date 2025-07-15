@@ -1,0 +1,52 @@
+<section class="relative w-full bg-gradient-to-r from-[#fcb026] to-[#dd970c] text-white overflow-hidden">
+    <div
+        class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#a3620023] opacity-10 rounded-full animate-fadeInDown">
+    </div>
+    <div
+        class="absolute top-10 right-10 w-24 h-24 bg-[#a36200] opacity-20 rotate-45 rounded-md shadow-2xl blur-sm pulse-scale ">
+    </div>
+
+    <div
+        class="absolute top-1/2 left-0 w-40 h-2 bg-gradient-to-r from-[#a36200] via-[#fcb026] to-transparent opacity-40 rotate-[-10deg] float-fast">
+    </div>
+
+    <div
+        class="absolute top-[30%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 opacity-10 bg-[radial-gradient(circle,#a36200_2px,transparent_2px)] [background-size:10px_10px] rotate-slow">
+    </div>
+    <div
+        class="absolute bottom-0 right-1/4 transform translate-x-1/2 translate-y-1/2 w-[400px] h-[400px] bg-[#a3620023] opacity-10 rounded-full animate-fadeInUp">
+    </div>
+    <div class="relative z-10 max-w-5xl mx-auto py-24 px-6 text-center space-y-6">
+        <h1 class="text-5xl md:text-6xl font-extrabold animate-fadeInDown">Get in Touch</h1>
+        <p class="max-w-2xl mx-auto text-lg md:text-xl opacity-90 animate-fadeInUp">
+            We’d love to hear from you—whether it’s feedback, questions, or just to say hi!
+        </p>
+        <nav
+            class="inline-flex items-center text-lg md:text-xl font-semibold opacity-90 space-x-2 justify-center animate-fadeInUp">
+            <a [routerLink]="['/']" routerLinkActive="font-bold underline" [routerLinkActiveOptions]="{ exact: true }"
+                class="text-white hover:underline transition-all duration-150" style="text-decoration: none;">
+                Home
+            </a>
+            <span class="px-2 text-white text-2xl">&gt;</span>
+            <span class="text-black font-extrabold text-2xl">Contact</span>
+        </nav>
+    </div>
+    <!-- Wave divider -->
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none animate-fadeInUp">
+        <svg class="block w-full h-20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0,0 C50,100 150,0 300,80 L300,00 L0,0 Z" fill="#704F4F" opacity="0.15"></path>
+        </svg>
+    </div>
+</section>
+<!-- Map Section -->
+<section class="relative w-full overflow-hidden">
+    <div class=" mx-auto px-6 py-12">
+        <h2 class="text-6xl text-center mb-6">Contact Information</h2>
+        <!-- Google Map -->
+        <div class="overflow-hidden rounded-xl shadow-lg">
+            <iframe class="w-full h-80 md:h-[500px] border-0"
+                src="https://www.google.com/maps?q=Kukdeshwar%2C%20Barlai%2C%20Madhya%20Pradesh%2C%20India&output=embed"
+                allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</section>

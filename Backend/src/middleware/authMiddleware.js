@@ -41,3 +41,57 @@ exports.protect = async (req, res, next) => {
         return res.status(401).json({ message: 'No token provided' });
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // middleware/authMiddleware.js
+// const jwt = require('jsonwebtoken');
+// const { ADMIN_EMAIL } = require('../config/adminConfig');
+// const User = require('../models/UsersModel');
+
+// exports.protect = async (req, res, next) => {
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+//         return res.status(401).json({ message: 'No token provided' });
+//     }
+
+//     const token = authHeader.split(' ')[1];
+
+//     try {
+//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+//         if (decoded.email === ADMIN_EMAIL) {
+//             req.user = {
+//                 id: decoded.id,
+//                 email: ADMIN_EMAIL,
+//                 role: 'admin'
+//             };
+//         } else {
+//             const user = await User.findById(decoded.id).select('-password -otp');
+//             if (!user) return res.status(401).json({ message: 'Unauthorized: user not found' });
+//             req.user = {
+//                 id: user._id,
+//                 email: user.email,
+//                 role: 'user'
+//             };
+//         }
+
+//         next();
+//     } catch (err) {
+//         console.error('JWT Error:', err.message);
+//         return res.status(401).json({ message: 'Not authorized, token failed' });
+//     }
+// };

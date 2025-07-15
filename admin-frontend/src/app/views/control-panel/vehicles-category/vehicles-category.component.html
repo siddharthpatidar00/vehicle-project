@@ -1,0 +1,166 @@
+<c-card class="shadow-md rounded-lg mb-6">
+    <!-- Header -->
+    <c-card-header class="flex items-center justify-between flex-wrap gap-2">
+        <span class="text-gray-400">Vehicle Category List</span>
+        <div class="gap-3 flex">
+            <button (click)="openModal()" style="border-radius: 3px;"
+                class="px-4 py-2 text-white bg-[#5856d6] hover:bg-[#5856d6e9]">
+                Add Category
+            </button>
+            <input type="text" [(ngModel)]="searchQuery" placeholder="Search categories..."
+                class="w-full sm:w-64 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+        </div>
+    </c-card-header>
+    <c-card-body class="p-0">
+        <!-- Desktop Table -->
+        <div class="overflow-x-auto hidden sm:block p-2">
+            <table class="min-w-full text-sm text-left border shadow-md rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 border">S.No.</th>
+                        <th class="px-4 py-2 border">Category Name</th>
+                        <th class="px-4 py-2 border">Description</th>
+                        <th class="px-4 py-2 border">Image</th>
+                        <th class="px-4 py-2 border">Status</th>
+                        <th class="px-4 py-2 border text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let category of paginatedCategories; let i = index">
+                        <td class="px-4 py-2 border">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                        <td class="px-4 py-2 border">{{ category.category_name }}</td>
+                        <td class="px-4 py-2 border">{{ category.category_description }}</td>
+                        <td class="px-4 py-2 border w-45">
+                            <img [src]="'http://localhost:5000' + category.category_image" alt="Category"
+                                class="object-cover rounded" />
+                        </td>
+                        <td class="px-4 py-2 border text-center">
+                            <button class="px-2 py-1 text-white rounded"
+                                [ngClass]="category.status === 'Active' ? 'bg-green-500' : 'bg-red-500'"
+                                (click)="toggleStatus(category)">
+                                {{ category.status }}
+                            </button>
+                        </td>
+                        <td class="px-4 py-2 border text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <button style="color: blue;" title="Edit" class="p-1" (click)="editCategory(category)">
+                                    <c-icon name="cil-pencil" class="w-5 h-5"></c-icon>
+                                </button>
+                                <button style="color: red;" title="Delete" class="p-1"
+                                    (click)="deleteCategory(category._id!)">
+                                    <c-icon name="cil-trash" class="w-5 h-5"></c-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Mobile Cards -->
+        <div class="sm:hidden flex flex-col space-y-4 p-2">
+            <c-card class="shadow-sm rounded-lg" *ngFor="let category of paginatedCategories; let i = index">
+                <c-card-body class="p-4">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">S.No.</span>
+                        <span>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">Category</span>
+                        <span>{{ category.category_name }}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">Status</span>
+                        <span class="font-semibold"
+                            [ngClass]="category.status === 'Active' ? 'text-green-600' : 'text-red-600'"
+                            (click)="toggleStatus(category)">
+                            {{ category.status }}
+                        </span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">Description</span>
+                        <span>{{ category.category_description }}</span>
+                    </div>
+                    <div class="flex justify-between mb-4">
+                        <span class="font-semibold">Image</span>
+                        <img [src]="'http://localhost:5000' + category.category_image"
+                            class="w-24 h-16 object-cover rounded" />
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <span class="inline-block px-2 py-0.5 text-xs font-semibold">Action</span>
+                        <div class="flex items-center gap-2">
+                            <!-- Edit Button -->
+                            <button (click)="editCategory(category)" title="Edit" class="text-blue-600">
+                                <c-icon name="cil-pencil" class="w-5 h-5"></c-icon>
+                            </button>
+                            <!-- Delete Button -->
+                            <button (click)="deleteCategory(category._id!)" title="Delete" class="text-red-600">
+                                <c-icon name="cil-trash" class="w-5 h-5"></c-icon>
+                            </button>
+                        </div>
+                    </div>
+                </c-card-body>
+            </c-card>
+        </div>
+        <!-- Pagination Controls -->
+        <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
+        </app-pagination>
+        <app-confirm-modal [visible]="confirmVisible" title="Delete Category"
+            message="Are you sure you want to delete this category?" confirmText="Delete" cancelText="Cancel"
+            (onConfirm)="handleConfirmDelete()" (onCancel)="handleCancelDelete()">
+        </app-confirm-modal>
+    </c-card-body>
+</c-card>
+<!-- Add/Edit Category Modal -->
+<div *ngIf="showModal"
+    class="fixed inset-0 bg-opacity-40 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 sm:p-6">
+    <div class="bg-white w-full max-w-md sm:max-w-lg rounded-lg shadow-xl p-3 sm:p-6 space-y-5">
+        <span class="text-gray-400 sm:text-xl font-semibold">
+            {{ editMode ? 'Edit Category' : 'Add Category' }}
+        </span>
+        <form (ngSubmit)="onSubmit()" [formGroup]="vehicleCategoryForm" class="space-y-4" novalidate>
+            <div>
+                <label class="block mb-1 text-black text-sm font-medium">Category Name</label>
+                <input type="text" formControlName="category_name"
+                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <small class="text-red-500" *ngIf="submitted && getError('category_name')">
+                    {{ getError('category_name') }}
+                </small>
+            </div>
+            <div>
+                <label class="block mb-1 text-sm text-black font-medium">Category Description</label>
+                <textarea rows="3" formControlName="category_description" maxlength="250"
+                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                <small class="text-red-500" *ngIf="submitted && getError('category_description')">
+                    {{ getError('category_description') }}
+                </small>
+            </div>
+
+
+            <div class="text-black">
+                <label class="block mb-1 text-sm font-medium">Upload Category Image</label>
+                <input id="categoryImageUpload" type="file" (change)="onImageSelect($event)" accept="image/*"
+                    class="hidden" />
+                <label for="categoryImageUpload"
+                    class="w-full cursor-pointer flex flex-col items-center justify-center border border-gray-300 rounded px-4 py-6 transition hover:bg-gray-50 text-center">
+                    <span class="text-sm font-medium text-gray-700">Upload Image</span>
+                </label>
+                <!-- Image Preview -->
+                <div *ngIf="imagePreview" class="mt-2.5 flex justify-center">
+                    <img [src]="imagePreview" alt="Preview" class="max-h-40 rounded border border-gray-300" />
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button type="button" (click)="closeModal()"
+                    class="px-4 py-2 border border-red-500 rounded text-red-500 text-sm">
+                    Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-[#5856d6] text-white rounded hover:bg-[#5856d6e9] text-sm">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

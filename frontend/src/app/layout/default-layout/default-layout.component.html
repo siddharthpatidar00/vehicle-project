@@ -1,0 +1,21 @@
+<!--main-->
+<div class="wrapper d-flex flex-column min-vh-100">
+  <!--app-header-->
+  <app-default-header
+    [cShadowOnScroll]="'sm'"
+    class="d-print-none header header-sticky p-0"
+    position="sticky"
+    sidebarId="sidebar1"
+  />
+  <!--app-body-->
+  <div class="body flex-grow-1">
+    <div breakpoint="lg" class="h-auto">
+      <router-outlet />
+    </div>
+  </div>
+  <!--app footer-->
+  <app-default-footer  class="p-0 border-0"/>
+
+  <!-- global location modal -->
+  <app-location-modal #locationModal></app-location-modal>
+</div>

@@ -1,0 +1,169 @@
+<c-card *ngIf="showAddForm" class="shadow-md rounded-lg mb-6">
+    <c-card-header class="flex items-center justify-between flex-wrap gap-2">
+        <span class="text-gray-400">Staff</span>
+    </c-card-header>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6 p-3">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- First Name -->
+            <div>
+                <label class="block mb-1 text-sm font-medium">First Name</label>
+                <input type="text" formControlName="first_name" placeholder="Enter first name"
+                    class="w-full px-3 py-2 border rounded-md" />
+                <p *ngIf="form.get('first_name')?.hasError('yup') && form.get('first_name')?.touched"
+                    class="text-red-500 text-sm">
+                    {{ form.get('first_name')?.getError('yup') }}
+                </p>
+            </div>
+
+            <!-- Last Name -->
+            <div>
+                <label class="block mb-1 text-sm font-medium">Last Name</label>
+                <input type="text" formControlName="last_name" placeholder="Enter last name"
+                    class="w-full px-3 py-2 border rounded-md" />
+                <p *ngIf="form.get('last_name')?.hasError('yup') && form.get('last_name')?.touched"
+                    class="text-red-500 text-sm">
+                    {{ form.get('last_name')?.getError('yup') }}
+                </p>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label class="block mb-1 text-sm font-medium">Email</label>
+                <input type="email" formControlName="email" placeholder="Enter email"
+                    class="w-full px-3 py-2 border rounded-md" />
+                <p *ngIf="form.get('email')?.hasError('yup') && form.get('email')?.touched"
+                    class="text-red-500 text-sm">
+                    {{ form.get('email')?.getError('yup') }}
+                </p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Password -->
+            <div>
+                <label class="block mb-1 text-sm font-medium">Password</label>
+                <input type="password" formControlName="password" placeholder="Enter password"
+                    class="w-full px-3 py-2 border rounded-md" />
+                <p *ngIf="form.get('password')?.hasError('yup') && form.get('password')?.touched"
+                    class="text-red-500 text-sm">
+                    {{ form.get('password')?.getError('yup') }}
+                </p>
+            </div>
+
+            <!-- User Type -->
+            <div>
+                <label class="block mb-1 text-sm font-medium">User Type</label>
+                <select formControlName="user_type" class="w-full px-3 py-2 border rounded-md">
+                    <option value="subadmin">SubAdmin</option>
+                    <option value="manager">Manager</option>
+                    <option value="admin">Admin</option>
+                    <option value="ceo">CEO</option>
+                </select>
+            </div>
+
+            <!-- Status -->
+            <div>
+                <label class="block mb-1 text-sm font-medium">Status</label>
+                <select formControlName="status" class="w-full px-3 py-2 border rounded-md">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex justify-end-safe gap-4 pt-4">
+            <button type="button" (click)="onCancel()"
+            class="px-4 py-2 text-sm font-medium bg-red-500 text-white rounded hover:bg-red-600 transition-all">
+            Cancel
+        </button>
+        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">
+            Submit
+        </button>
+        </div>
+    </form>
+</c-card>
+
+
+
+<c-card *ngIf="showStaffList" class="shadow-md rounded-lg mb-6">
+    <c-card-header class="flex items-center justify-between flex-wrap gap-2">
+        <span class="text-gray-400">Staff List</span>
+        <div class="gap-3 flex">
+            <button style="border-radius: 3px;" (click)="openAddListForm()"
+                class="px-4 py-2 text-white bg-[#5856d6] hover:bg-[#5856d6e9]">
+                Add Staff
+            </button>
+
+            <input
+            [(ngModel)]="searchQuery"
+            (input)="onSearch()"
+                class="w-full sm:w-64 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Search staff..." />
+        </div>
+    </c-card-header>
+    <c-card-body class="p-0">
+        <!-- Desktop Table -->
+        <div class="overflow-x-auto hidden sm:block p-2">
+            <table class="min-w-full text-sm text-left border shadow-md rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 border">S.No.</th>
+                        <th class="px-4 py-2 border">First Name</th>
+                        <th class="px-4 py-2 border">Last Name</th>
+                        <th class="px-4 py-2 border">Email</th>
+                        <th class="px-4 py-2 border">User Type</th>
+                        <th class="px-4 py-2 border">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let staff of paginatedStaff; let i = index">
+                        <td class="px-4 py-2 border">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                        <td class="px-4 py-2 border">{{staff.first_name}}</td>
+                        <td class="px-4 py-2 border">{{staff.last_name}}</td>
+                        <td class="px-4 py-2 border">{{staff.email}}</td>
+                        <td class="px-4 py-2 border">{{staff.user_type}}</td>
+                        <td class="px-4 py-2 border">{{staff.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile Cards -->
+        <div class="sm:hidden flex flex-col space-y-4 p-2">
+            <c-card class="shadow-sm rounded-lg" *ngFor="let staff of paginatedStaff; let i = index">
+                <c-card-body class="p-4">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">S.No.</span>
+                        <span>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">First Name</span>
+                        <span>{{staff.first_name}}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">Last Name</span>
+                        <span>{{staff.last_name}}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">Email</span>
+                        <span>{{staff.email}}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">User Type</span>
+                        <span>{{staff.user_type}}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">Status</span>
+                        <span>{{staff.status}}</span>
+                    </div>
+                </c-card-body>
+            </c-card>
+        </div>
+
+        <!-- Pagination Controls -->
+        <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
+        </app-pagination>
+
+    </c-card-body>
+</c-card>

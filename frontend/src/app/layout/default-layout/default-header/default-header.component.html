@@ -1,0 +1,204 @@
+<!-- <c-header class="mb-4 d-print-none" position="sticky"> -->
+<ng-container class="d-none d-md-flex">
+  <c-container [fluid]="true" class=" px-4 py-1" style="background-color: #fcb026;">
+    <c-header-nav class="d-none d-md-flex w-full items-center justify-between">
+
+      <!-- Left: Company Logo -->
+      <div class="flex items-center w-auto">
+        <img src="./assets/images/company.png" alt="Company Logo" class="h-15 w-auto rounded" />
+      </div>
+
+      <c-header-nav class="d-none d-md-flex w-full flex p-3 justify-between text-center">
+
+
+
+        <!-- Center: Home -->
+        <div style="display: flex; margin-left: auto; margin-right: auto; color: black; font-size: 14px;">
+          <a routerLink="/" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{ exact: true }"
+            class="navigation-link">Home</a>
+
+          <a (click)="openSearchModal()" class="navigation-link">Buy Vehicles</a>
+
+          <a routerLink="/" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{ exact: true }"
+            class="navigation-link">Sell Vehicles</a>
+
+          <a (click)="openSearchModal()" class="navigation-link">Rent Vehicles</a>
+
+          <a (click)="openTransportModal()" class="navigation-link">Transport My Vehicle</a>
+
+          <a (click)="openInquiryModal()" class="navigation-link">Inquiry Now</a>
+
+          <div class="flex font-[600] text-[black] flex-shrink-0">
+            <!-- New dropdown -->
+            <div class="group relative z-10">
+              <button class="px-4 py-2 rounded-md text-sm flex items-center gap-1 cursor-pointer transition-colors">
+                List
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-black group-hover:rotate-180 transition-transform duration-200" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div
+                class="absolute left-0 top-full hidden group-hover:block bg-white border border-gray-200 rounded-md shadow-lg min-w-max whitespace-nowrap text-[16px]">
+                <a routerLink="/explore-new" class="block px-4 py-2 text-sm hover:bg-[lavender] border border-gray-200"
+                  style="color: black; text-decoration: none;">FAQ's</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- Right side: Location -->
+        <div
+          class="flex items-center gap-1 text-sm font-medium text-black cursor-pointer hover:text-[#BB3E00] transition-colors flex-shrink-0"
+          (click)="openLocationModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M12 2.25c-4.556 0-8.25 3.694-8.25 8.25 0 5.25 8.25 11.25 8.25 11.25s8.25-6 8.25-11.25c0-4.556-3.694-8.25-8.25-8.25zm0 11.25a3 3 0 100-6 3 3 0 000 6z"
+              clip-rule="evenodd" />
+          </svg>
+          <span>Location</span>
+
+        </div>
+
+      </c-header-nav>
+
+
+
+      <!-- Search input -->
+      <div class="relative flex items-center w-fit max-w-xl mx-4 h-12 overflow-visible" (click)="openSearchModal()">
+        <img src="./assets/images/searching-bar.png" alt="search img" class="w-20 h-auto cursor-pointer">
+      </div>
+
+      <!-- Move modal OUTSIDE the div -->
+      <app-search-modal *ngIf="showSearchModal" (close)="closeSearchModal()"></app-search-modal>
+      <app-inquiry-modal *ngIf="showInquiryModal" (close)="closeInquiryModal()"></app-inquiry-modal>
+      <app-transport-vehicle *ngIf="showTransportModal" (close)="closeTransportModal()"></app-transport-vehicle>
+      <!-- 
+        <c-header-nav class="ms-auto ms-md-0">
+      <div class="nav-item py-1">
+        <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+      </div>
+      <ng-container *ngTemplateOutlet="themeDropdown" />
+      <div class="nav-item py-1">
+        <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+      </div>
+    </c-header-nav> -->
+
+      <!-- Right: User Dropdown -->
+      <ng-container *ngTemplateOutlet="userDropdown" />
+
+    </c-header-nav>
+
+
+  </c-container>
+</ng-container>
+<!--</c-header>-->
+
+<!-- User dropdown template -->
+<ng-template #userDropdown class="d-none d-md-flex">
+  <c-dropdown [popperOptions]="{ placement: 'bottom-start' }" variant="nav-item">
+    <button [caret]="false" cDropdownToggle class="py-0 pe-0" aria-label="Open user menu">
+      <c-avatar shape="rounded-1" [size]="'md'" src="./assets/images/avatars/8.jpg" status="success" textColor="primary"
+        alt="User avatar" />
+    </button>
+    <ul cDropdownMenu class="pt-0 w-auto">
+      <li>
+        <h6 cDropdownHeader class="bg-body-secondary text-body-secondary fw-semibold py-2 rounded-top">
+          Account
+        </h6>
+      </li>
+      <li>
+        <a cDropdownItem href="#" (click)="openProfileModal(); $event.preventDefault()">
+          <svg cIcon class="me-2" name="cilUser"></svg>
+          Profile
+        </a>
+      </li>
+      <a cDropdownItem (click)="logout()" class="cursor-pointer">
+        <svg cIcon class="me-2" name="cilAccountLogout"></svg>
+        Logout
+      </a>
+
+    </ul>
+  </c-dropdown>
+
+</ng-template>
+<app-profile-modal *ngIf="showProfileModal" (close)="closeProfileModal()">
+</app-profile-modal>
+
+
+<!-- <ng-template #themeDropdown>
+  <c-dropdown alignment="end" variant="nav-item">
+    <button [caret]="false" cDropdownToggle aria-label="Open theme picker">
+      <svg cIcon [name]="icons()" size="lg"></svg>
+    </button>
+    <div cDropdownMenu>
+      @for (mode of colorModes; track mode.name) {
+        <button
+          (click)="colorMode.set(mode.name)"
+          [active]="colorMode()===mode.name"
+          cDropdownItem
+          class="d-flex align-items-center"
+        >
+          <svg cIcon class="me-2" [name]="mode.icon" size="lg"></svg>
+          {{ mode.text }}
+        </button>
+      }
+    </div>
+  </c-dropdown>
+</ng-template> -->
+
+
+<!-- Mobile Header -->
+<div class="md:hidden flex items-center mt-[-16px] pt-3 p-2 bg-[#fcb026] justify-between w-full shadow-md">
+  <!-- Left: Toggle Button -->
+  <button (click)="mobileMenuOpen = !mobileMenuOpen" aria-label="Toggle menu">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-[black]" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
+
+  <!-- Search input -->
+  <div class="flex items-center w-fit mx-4 h-12" (click)="openSearchModal()">
+    <img src="./assets/images/searching-bar.png" alt="search img" class="w-20 h-auto">
+  </div>
+  <!-- Move modal OUTSIDE the div -->
+  <app-search-modal *ngIf="showSearchModal" (close)="closeSearchModal()"></app-search-modal>
+
+  <!-- right: Location -->
+  <div class="flex items-center gap-1 text-sm font-medium text-[black]">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"
+      (click)="openLocationModal()">
+      <path fill-rule="evenodd"
+        d="M12 2.25c-4.556 0-8.25 3.694-8.25 8.25 0 5.25 8.25 11.25 8.25 11.25s8.25-6 8.25-11.25c0-4.556-3.694-8.25-8.25-8.25zm0 11.25a3 3 0 100-6 3 3 0 000 6z"
+        clip-rule="evenodd" />
+    </svg>
+  </div>
+</div>
+
+<!-- Mobile Sidebar (collapsible) -->
+<div *ngIf="mobileMenuOpen" class="md:hidden absolute top-14 left-4 w-50 bg-[#fcb026] shadow-lg z-50">
+  <div class="p-3 border-b">
+    <a routerLink="/" (click)="mobileMenuOpen = false" class="block py-2 text-black font-semibold"
+      style="text-decoration: none;">Home</a>
+    <a (click)="openSearchModal(); mobileMenuOpen = false" class="block py-2 text-black font-semibold"
+      style="text-decoration: none;">Buy Vehicles</a>
+    <a routerLink="" (click)="mobileMenuOpen = false" class="block py-2 text-black font-semibold"
+      style="text-decoration: none;">Sell Vehicles</a>
+    <a (click)="openSearchModal(); mobileMenuOpen = false" class="block py-2 text-black font-semibold"
+      style="text-decoration: none;">Rent Vehicles</a>
+    <a routerLink="/transport-vehicle" (click)="mobileMenuOpen = false" class="block py-2 text-black font-semibold"
+      style="text-decoration: none;">Transport My Vehicle</a>
+    <a (click)="openInquiryModal() ; mobileMenuOpen = false" class="block py-2 text-black font-semibold"
+      style="text-decoration: none;">Inquiry Now</a>
+    <div class="py-2">
+      <span class="block font-semibold">List</span>
+      <a routerLink="" (click)="mobileMenuOpen = false" class="block text-sm text-black pl-4 py-1"
+        style="text-decoration: none;">FAQ's</a>
+    </div>
+  </div>
+</div>
