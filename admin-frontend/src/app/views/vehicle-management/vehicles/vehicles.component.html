@@ -19,6 +19,8 @@
                 <thead>
                     <tr>
                         <th class="px-4 py-2 border">S.No.</th>
+                        <th class="px-4 py-2 border">Users</th>
+                        <th class="px-4 py-2 border">Phone Number</th>
                         <th class="px-4 py-2 border">Vehicle Name</th>
                         <th class="px-4 py-2 border">Model</th>
                         <th class="px-4 py-2 border">Brand</th>
@@ -31,22 +33,26 @@
                     <tr
                         *ngFor="let category of paginatedVehicles | slice:(currentPage - 1) * itemsPerPage:(currentPage * itemsPerPage); let i = index">
                         <td class="px-4 py-2 border">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                        <td class="px-4 py-2 border">{{category.createdBy}}</td>
+                        <td class="px-4 py-2 border">{{ category.phone || '-' }}</td>
                         <td class="px-4 py-2 border">{{ category.name }}</td>
                         <td class="px-4 py-2 border">{{ category.model }}</td>
                         <td class="px-4 py-2 border">{{ category.brand }}</td>
                         <td class="px-4 py-2 border w-45">
-                            <img *ngIf="category.img" [src]="'http://localhost:5000' + category.img" alt="Vehicle"
+                            <img *ngIf="category.img" [src]="'http://localhost:5000' + category.img[0]" alt="Vehicle"
                                 class="object-cover rounded" />
                         </td>
                         <td class="px-4 py-2 border text-center">
                             <span class="px-2 py-1 text-white rounded" [ngClass]="{
-      'bg-green-500': category.status === 'Available',
-      'bg-red-500': category.status === 'Sold',
-      'bg-blue-500': category.status === 'Rented',
-      'bg-yellow-500': category.status === 'Maintenance'
-    }">
+  'bg-green-500': category.status === 'Available',
+  'bg-red-500': category.status === 'Sold',
+  'bg-blue-500': category.status === 'Rented',
+  'bg-yellow-500': category.status === 'Maintenance',
+  'bg-orange-500': category.status === 'Inactive'
+}">
                                 {{ category.status }}
                             </span>
+
                         </td>
 
                         <td class="px-4 py-2 border text-center">
@@ -162,14 +168,39 @@
                     class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
 
-            <div class="text-black">
-                <label class="block mb-1 text-sm font-medium">Brand</label>
-                <input type="text" formControlName="brand" placeholder="e.g. Toyota"
-                    class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                <small class="text-red-500" *ngIf="submitted && getError('brand')">
-                    {{ getError('brand') }}
-                </small>
+            <!-- Brand & Category Row -->
+            <div class="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="text-black">
+                    <label class="block mb-1 text-sm font-medium">Brand</label>
+                    <select formControlName="brand"
+                        class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- Select Brand --</option>
+                        <option *ngFor="let b of brands" [value]="b.brand_name">
+                            {{ b.brand_name }}
+                        </option>
+                    </select>
+                    <small class="text-red-500" *ngIf="submitted && getError('brand')">
+                        {{ getError('brand') }}
+                    </small>
+                </div>
+
+                <div class="text-black">
+                    <label class="block mb-1 text-sm font-medium">Category</label>
+                    <select formControlName="category"
+                        class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- Select Category --</option>
+                        <option *ngFor="let c of categories" [value]="c.category_name">
+                            {{ c.category_name }}
+                        </option>
+                    </select>
+                    <small class="text-red-500" *ngIf="submitted && getError('category')">
+                        {{ getError('category') }}
+                    </small>
+                </div>
             </div>
+
+
+
 
             <div class="text-black">
                 <label class="block mb-1 text-sm font-medium">KM Driven</label>
@@ -229,6 +260,7 @@
                     <option>Sold</option>
                     <option>Rented</option>
                     <option>Maintenance</option>
+                    <option>Inactive</option>
                 </select>
             </div>
 
@@ -296,6 +328,14 @@
                         <td class="p-3 text-gray-800 border border-gray-300">{{ selectedVehicle.brand }}</td>
                     </tr>
                     <tr>
+                        <td class="p-3 font-medium text-gray-600 border border-gray-300">Category</td>
+                        <td class="p-3 text-gray-800 border border-gray-300">{{ selectedVehicle.category_name }}</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-medium text-gray-600 border border-gray-300">Phone Number</td>
+                        <td class="p-3 text-gray-800 border border-gray-300">{{ selectedVehicle.phone || '-' }}</td>
+                    </tr>
+                    <tr>
                         <td class="p-3 font-medium text-gray-600 border border-gray-300">KM Driven</td>
                         <td class="p-3 text-gray-800 border border-gray-300">{{ selectedVehicle.km_driven }}</td>
                     </tr>
@@ -340,8 +380,10 @@
                     <tr>
                         <td class="p-3 font-medium text-gray-600 border border-gray-300">Image</td>
                         <td class="p-3 border border-gray-300">
-                            <img *ngIf="selectedVehicle.img" [src]="'http://localhost:5000' + selectedVehicle.img"
-                                alt="Vehicle Image" class="w-auto h-auto object-cover border rounded shadow-sm" />
+                            <div class="flex flex-1/2 gap-2 w-[50%] h-auto">
+                                <img *ngFor="let image of selectedVehicle.img" [src]="'http://localhost:5000' + image"
+                                    alt="Vehicle Image" class="w-full h-full object-cover border rounded shadow-sm" />
+                            </div>
                         </td>
                     </tr>
                 </tbody>

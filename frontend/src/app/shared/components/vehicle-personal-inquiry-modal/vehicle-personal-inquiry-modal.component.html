@@ -1,0 +1,119 @@
+<div class="fixed inset-0 z-[50] flex justify-center items-center bg-black bg-opacity-50 p-4">
+    <div class="bg-white w-full max-w-[800px] p-6 rounded-md shadow-lg overflow-y-auto max-h-[90vh]">
+        <div class="flex justify-between items-center">
+            <p class="text-xl font-semibold text-gray-800">Send Inquiry</p>
+            <span (click)="closeModal()" class="text-red-500 text-5xl cursor-pointer leading-none">&times;</span>
+        </div>
+
+        <form class="space-y-2" [formGroup]="vehiclePersonalInquiryForm" (ngSubmit)="submitForm()">
+
+            <!-- Row 1 -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-semibold text-black mb-1">Name</label>
+                    <input formControlName="name" type="text" placeholder="Enter name"
+                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-md" />
+                    <div *ngIf="hasError('name')" class="text-red-500 text-xs mt-1">{{ getError('name') }}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-black mb-1">Company</label>
+                    <input formControlName="company" type="text" placeholder="Enter company name"
+                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-md" />
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-semibold text-black mb-1">City</label>
+                    <input formControlName="city" type="text" placeholder="Enter city"
+                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-md" />
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-black mb-1">Email</label>
+                    <input formControlName="email" type="email" placeholder="Enter email"
+                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-md" />
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-semibold text-black mb-1">Phone Number</label>
+                    <input formControlName="phone_number" type="text" placeholder="Enter phone number"
+                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-md" />
+                    <div *ngIf="hasError('phone_number')" class="text-red-500 text-xs mt-1">{{ getError('phone_number')
+                        }}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-black mb-1">Brand</label>
+                    <select formControlName="brand"
+                        class="brand-dropdown w-full px-4 py-3 text-lg border border-gray-300 rounded-md bg-white">
+                        <option value="" disabled>Select option</option>
+                        <option *ngFor="let brand of brands" [value]="brand.brand_name">
+                            {{ brand.brand_name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-semibold text-black mb-1">Category</label>
+                    <select formControlName="category"
+                        class="category-dropdown w-full px-4 py-3 text-lg border border-gray-300 rounded-md bg-white">
+                        <option value="" disabled>Select option</option>
+                        <option *ngFor="let category of categories" [value]="category.category_name">
+                            {{ category.category_name }}
+                        </option>
+                    </select>
+
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-black mb-1">Vehicle Details</label>
+                    <input formControlName="vehicle_details" type="text" placeholder="Enter vehicle details"
+                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-md" />
+                </div>
+            </div>
+
+            <!-- Row 5 -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-semibold text-black mb-1">Buy / Sell / Rent</label>
+                    <select formControlName="buy_sell_rent"
+                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-md bg-white">
+                        <option value="" disabled>Select option</option>
+                        <option value="Buy">Buy</option>
+                        <option value="Sell">Sell</option>
+                        <option value="Rent">Rent</option>
+                    </select>
+                    <div *ngIf="hasError('buy_sell_rent')" class="text-red-500 text-xs mt-1">{{
+                        getError('buy_sell_rent') }}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-black mb-1">Enquiry Type</label>
+                    <select formControlName="enquiry_type"
+                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-md bg-white">
+                        <option value="" disabled>Select enquiry type</option>
+                        <option value="Individual">Individual</option>
+                        <option value="Company">Company</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Full Width -->
+            <div>
+                <label class="block text-sm font-semibold text-black mb-1">Message</label>
+                <textarea formControlName="message" rows="3" placeholder="Enter message"
+                    class="w-full px-4 py-3 text-lg border border-gray-300 rounded-md resize-none"></textarea>
+            </div>
+
+            <!-- Button -->
+            <button type="submit"
+                class="w-full mt-2.5 bg-[#fcb026] hover:bg-[#fcb126d7] text-black py-3 rounded-md text-lg font-semibold flex items-center justify-center gap-3">
+                Send Inquiry <span class="text-xl">&rarr;</span>
+            </button>
+        </form>
+    </div>
+</div>

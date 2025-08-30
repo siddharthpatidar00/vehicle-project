@@ -16,7 +16,7 @@ import { ToastModule } from 'primeng/toast';
     imports: [RouterOutlet,ToastModule,CommonModule]
 })
 export class AppComponent implements OnInit {
-  title = 'CoreUI Angular Admin Template';
+  title = 'Rockeye Engineerings';
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #activatedRoute: ActivatedRoute = inject(ActivatedRoute);

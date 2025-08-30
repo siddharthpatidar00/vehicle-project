@@ -1,208 +1,126 @@
-<div class="relative w-full h-screen overflow-hidden mb-4">
-    <!-- Slider Images -->
-    <div class="flex transition-transform duration-700 ease-in-out h-full"
-        [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
-        <img *ngFor="let img of images" [src]="img" class="w-full flex-shrink-0 object-cover h-full" alt="Slide" />
-    </div>
-    <!-- Dark Overlay -->
-    <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-0"></div>
-    <!-- Navigation Arrows (Desktop right, Mobile bottom center) -->
-    <div
-        class="absolute z-20 flex md:my-4 md:flex-col gap-3 md:right-4 md:top-1/2 md:-translate-y-1/2 bottom-2 left-1/2 md:left-auto transform md:translate-x-0 -translate-x-1/2">
-        <!-- Prev Button -->
-        <button (click)="prevSlide()" class="bg-white/30 hover:bg-white/50 text-white p-3 rounded-full transition">
-            <!-- Left Arrow SVG -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-white" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-        </button>
-        <!-- Next Button -->
-        <button (click)="nextSlide()" class="bg-white/30 hover:bg-white/50 text-white p-3 rounded-full transition">
-            <!-- Right Arrow SVG -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-white" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </button>
-    </div>
+<!-- Advertisement Section -->
+<div class="w-full h-auto bg-gray-100 p-2 text-center flex shadow-lg">
+    <img src="assets/images/adv.png" alt="img" class="h-full w-full object-cover cursor-pointer">
+</div>
 
-    <!-- Form Overlay -->
-    <div class="absolute top-0 left-0 w-full h-full z-10 flex items-center">
-        <div class="w-full md:w-1/2 px-4 sm:px-8 md:px-16">
-            <form
-                class="bg-white/20 backdrop-blur-md border border-white/30 text-[#472D2D] w-full max-w-md p-6 rounded-xl shadow-lg animate-slide-in">
-                <span class="text-3xl font-medium text-white mb-4 block">Find your right vehicle</span>
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-white">Name</label>
-                    <input type="text" placeholder="Your Name"
-                        class="mt-1 w-full p-2 text-white rounded-md border border-gray-300 bg-transparent focus:outline-none" />
-                </div>
+<!-- Slider Section -->
+<div class="relative w-full h-[500px] overflow-hidden mb-4">
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-white">Email</label>
-                    <input type="email" placeholder="you@example.com"
-                        class="mt-1 w-full p-2 text-white rounded-md border border-gray-300 bg-transparent focus:outline-none" />
-                </div>
+    <!-- Loading Skeleton -->
+    <ng-container *ngIf="!images || images.length === 0">
+        <div class="w-full h-full bg-gray-300 animate-pulse"></div>
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-white">Message</label>
-                    <textarea placeholder="Write your requirement"
-                        class="mt-1 w-full h-32 text-white p-2 rounded-md border border-gray-300 bg-transparent resize-none focus:outline-none"></textarea>
-                </div>
-
-                <button type="submit"
-                    class="w-full bg-[#472D2D] text-white py-2 rounded hover:bg-[#472d2df4] transition">
-                    Send Inquiry
-                </button>
-            </form>
+        <!-- Navigation Arrows (Below, but on image) -->
+        <div class="absolute z-20 flex justify-center gap-4 w-full bottom-4">
+            <!-- Prev Button -->
+            <button (click)="prevSlide()" class="bg-white/30 hover:bg-white/50 text-white p-3 rounded-full transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-white" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <!-- Next Button -->
+            <button (click)="nextSlide()" class="bg-white/30 hover:bg-white/50 text-white p-3 rounded-full transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-white" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
         </div>
-    </div>
+    </ng-container>
+
+    <!-- Actual Slider -->
+    <ng-container *ngIf="images && images.length > 0">
+        <!-- Slider Images -->
+        <div class="flex transition-transform duration-700 ease-in-out h-full"
+            [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
+            <img *ngFor="let img of images" [src]="img" class="w-full flex-shrink-0 object-cover h-full" alt="Slide" />
+        </div>
+
+        <!-- Dark Overlay -->
+        <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-0"></div>
+
+        <!-- Navigation Arrows (Below, but on image) -->
+        <div class="absolute z-20 flex justify-center gap-4 w-full bottom-4">
+            <!-- Prev Button -->
+            <button (click)="prevSlide()" class="bg-white/30 hover:bg-white/50 text-white p-3 rounded-full transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-white" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <!-- Next Button -->
+            <button (click)="nextSlide()" class="bg-white/30 hover:bg-white/50 text-white p-3 rounded-full transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-white" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+    </ng-container>
+
 </div>
 
 
 
-
-
 <p class="text-center font-extrabold text-5xl p-3 text-black">SELECT INDUSTRY</p>
+
 <div class="flex flex-wrap justify-center gap-6 p-2">
-    <!-- Card 1 -->
-    <div class="relative w-[350px] h-[250px] overflow-hidden shadow-lg group cursor-pointer">
-        <!-- Background image -->
-        <img src="assets/images/construction.avif" alt="Construction"
-            class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105" />
-
-        <!-- Overlay -->
-        <div
-            class="absolute inset-0 flex items-center bg-[#00000027] justify-center group-hover:bg-opacity-60 transition duration-300">
-            <p class="text-white text-3xl font-bold transition-transform duration-300 group-hover:scale-110">
-                CONSTRUCTION
-            </p>
+    <!-- Loading Skeletons -->
+    <ng-container *ngIf="!categories || categories.length === 0">
+        <div *ngFor="let i of [1,2,3,4,5,6,7,8]"
+            class="relative w-[350px] h-[250px] overflow-hidden shadow-lg animate-pulse bg-gray-400 rounded-lg">
         </div>
-    </div>
+    </ng-container>
 
+    <!-- Actual Cards -->
+    <ng-container *ngIf="categories && categories.length > 0">
+        <div *ngFor="let category of categories"
+            class="relative w-[350px] h-[250px] overflow-hidden shadow-lg group cursor-pointer"
+            [routerLink]="'/vehicles-listing'" [queryParams]="{ category_name: (category.category_name || '').trim() }">
 
-    <div class="relative w-[350px] h-[250px] overflow-hidden shadow-lg group cursor-pointer">
-        <!-- Background image -->
-        <img src="assets/images/agriculture.avif" alt="Construction"
-            class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105" />
-
-        <!-- Overlay -->
-        <div
-            class="absolute inset-0 flex items-center bg-[#00000027] justify-center group-hover:bg-opacity-60 transition duration-300">
-            <p class="text-white text-3xl font-bold transition-transform duration-300 group-hover:scale-110">
-                AGRICULTURE
-            </p>
-        </div>
-    </div>
-
-    <div class="relative w-[350px] h-[250px] overflow-hidden shadow-lg group cursor-pointer">
-        <!-- Background image -->
-        <img src="assets/images/industrial.avif" alt="Construction"
-            class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105" />
-
-        <!-- Overlay -->
-        <div
-            class="absolute inset-0 flex items-center bg-[#00000027] justify-center group-hover:bg-opacity-60 transition duration-300">
-            <p class="text-white text-3xl font-bold transition-transform duration-300 group-hover:scale-110">
-                INDUSTRIAL
-            </p>
-        </div>
-    </div>
-
-    <!-- Agriculture Card -->
-    <div class="flex flex-wrap justify-center gap-8">
-
-        <div class="relative w-[250px] h-[150px] overflow-hidden shadow-lg group cursor-pointer">
             <!-- Background image -->
-            <img src="assets/images/road.avif" alt="Construction"
+            <img [src]="getCategoryImageUrl(category.category_image)" [alt]="category.category_name"
                 class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105" />
 
             <!-- Overlay -->
             <div
                 class="absolute inset-0 flex items-center bg-[#00000027] justify-center group-hover:bg-opacity-60 transition duration-300">
-                <p class="text-white text-3xl font-bold transition-transform duration-300 group-hover:scale-110">
-                    ROAD
+                <p class="text-yellow-500 text-3xl font-bold transition-transform duration-300 group-hover:scale-110">
+                    {{ category.category_name | uppercase }}
                 </p>
             </div>
         </div>
-
-        <div class="relative w-[250px] h-[150px] overflow-hidden shadow-lg group cursor-pointer">
-            <!-- Background image -->
-            <img src="assets/images/mining.avif" alt="Construction"
-                class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105" />
-
-            <!-- Overlay -->
-            <div
-                class="absolute inset-0 flex items-center bg-[#00000027] justify-center group-hover:bg-opacity-60 transition duration-300">
-                <p class="text-white text-3xl font-bold transition-transform duration-300 group-hover:scale-110">
-                    MINING
-                </p>
-            </div>
-        </div>
+    </ng-container>
+</div>
 
 
-        <div class="relative w-[250px] h-[150px] overflow-hidden shadow-lg group cursor-pointer">
-            <!-- Background image -->
-            <img src="assets/images/waste.avif" alt="Construction"
-                class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105" />
+<!-- Happy Customers Section -->
+<div class="w-full overflow-hidden p-5">
+    <p class="text-3xl md:text-5xl font-bold text-center text-black mb-8">Happy Customers</p>
 
-            <!-- Overlay -->
-            <div
-                class="absolute inset-0 flex items-center bg-[#00000027] justify-center group-hover:bg-opacity-60 transition duration-300">
-                <p class="text-white text-3xl font-bold transition-transform duration-300 group-hover:scale-110">
-                    WASTE
-                </p>
-            </div>
-        </div>
-
-        <div class="relative w-[250px] h-[150px] overflow-hidden shadow-lg group cursor-pointer">
-            <!-- Background image -->
-            <img src="assets/images/rail.avif" alt="Construction"
-                class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105" />
-
-            <!-- Overlay -->
-            <div
-                class="absolute inset-0 flex items-center bg-[#00000027] justify-center group-hover:bg-opacity-60 transition duration-300">
-                <p class="text-white text-3xl font-bold transition-transform duration-300 group-hover:scale-110">
-                    RAILWAY
-                </p>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-    <!-- Happy Customers Section -->
-    <div class="w-full overflow-hidden p-5">
-        <p class="text-3xl md:text-5xl font-bold text-center text-black mb-8">Happy Customers</p>
-
-        <div class="relative w-full max-w-5xl mx-auto">
-            <div class="flex transition-transform duration-700 ease-in-out" [style.transform]="
+    <div class="relative w-full max-w-5xl mx-auto">
+        <div class="flex transition-transform duration-700 ease-in-out" [style.transform]="
         isMobile
           ? 'translateX(-' + currentIndex * 100 + '%)'
           : 'translateX(-' + currentIndex * (100 / 3) + '%)'
       " style="width: calc(64% * 5 / 3);" [ngStyle]="isMobile ? { width: 100  } : null">
-                <div *ngFor="let customer of customers" class="w-full md:w-1/3 flex-shrink-0 px-4 mb-6">
-                    <div
-                        class="bg-white p-4 md:p-3 rounded-lg shadow-lg flex flex-col justify-center items-center aspect-square md:flex-row md:aspect-auto gap-4">
-                        <!-- Image on the left -->
-                        <img [src]="customer.image" alt="{{ customer.name }}"
-                            class="w-20 h-20 rounded-full object-cover" />
+            <div *ngFor="let customer of customers" class="w-full md:w-1/3 flex-shrink-0 px-4 mb-6">
+                <div
+                    class="bg-white p-4 md:p-3 rounded-lg shadow-lg flex flex-col justify-center items-center aspect-square md:flex-row md:aspect-auto gap-4">
+                    <!-- Image on the left -->
+                    <img [src]="customer.image" alt="{{ customer.name }}" class="w-20 h-20 rounded-full object-cover" />
 
-                        <!-- Text on the right -->
-                        <div class="text-center md:text-left">
-                            <p class="text-gray-700 italic">“{{ customer.message }}”</p>
-                            <h4 class="mt-2 font-semibold text-[#472D2D]">
-                                {{ customer.name }}
-                            </h4>
-                        </div>
+                    <!-- Text on the right -->
+                    <div class="text-center md:text-left">
+                        <p class="text-gray-700 italic">“{{ customer.message }}”</p>
+                        <h4 class="mt-2 font-semibold text-[#472D2D]">
+                            {{ customer.name }}
+                        </h4>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>

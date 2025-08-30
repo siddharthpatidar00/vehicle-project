@@ -1,69 +1,72 @@
-<div class="fixed inset-0 z-[50] flex justify-center items-center bg-black bg-opacity-50 p-4">
-    
-    <form [formGroup]="form" class="w-1/4 bg-white shadow-md rounded-md px-4 py-2 flex flex-col max-h-[90vh]">
-        
-        <div class="flex justify-end">
-            <span (click)="closeModal()" class="text-red-500 text-5xl cursor-pointer leading-none">&times;</span>
+<div class="fixed inset-0 z-[50] flex justify-center items-center bg-black bg-opacity-50 p-2">
+    <form [formGroup]="form"
+        class="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 bg-white shadow-md rounded-md px-4 sm:px-6 py-4 flex flex-col max-h-[90vh]">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center">
+            <p class="mt-2 font-semibold text-lg">Transport My Vehicle</p>
+            <span (click)="closeModal()"
+                class="text-red-500 text-4xl sm:text-5xl cursor-pointer leading-none">&times;</span>
         </div>
 
-        <div class="flex-1 overflow-y-auto mt-2 flex flex-col gap-6">
-            <!-- Example for 'name' -->
-            <div class="flex flex-col w-full max-w-xs">
-                <label class="text-sm font-semibold text-black">Name</label>
-                <input formControlName="name" (input)="form.get('name')?.markAsTouched()" type="text"
-                    placeholder="Enter Your Name" class="mt-1 border py-2 px-1 rounded text-sm text-gray-600 focus:outline-none" />
+        <!-- Fields -->
+        <div class="flex-1 overflow-y-auto mt-4 flex flex-wrap gap-4 sm:gap-6">
+
+            <!-- Name -->
+            <div class="flex flex-col w-full sm:w-[48%]">
+                <label class="text-base font-semibold text-black">Name</label>
+                <input formControlName="name" type="text" placeholder="Enter Your Name"
+                    class="mt-1 border py-3 px-3 rounded text-base text-gray-600 focus:outline-none" />
                 <div *ngIf="hasError('name')" class="text-red-500 text-xs mt-1">
                     {{ getError('name') }}
                 </div>
             </div>
 
+            <!-- Phone Number -->
+            <div class="flex flex-col w-full sm:w-[48%]">
+                <label class="text-base font-semibold text-black">Phone Number</label>
+                <input formControlName="phone_number" type="tel" placeholder="Enter Contact Details"
+                    class="mt-1 border py-3 px-3 rounded text-base text-gray-600 focus:outline-none" />
+                <div *ngIf="hasError('phone_number')" class="text-red-500 text-xs mt-1">
+                    {{ getError('phone_number') }}
+                </div>
+            </div>
+
             <!-- Pickup Location -->
-            <div class="flex flex-col w-full max-w-xs">
-                <label class="text-sm font-semibold text-black">Pickup Location</label>
-                <input formControlName="pickup_location" (input)="form.get('pickup_location')?.markAsTouched()"
-                    type="text" placeholder="Set Pickup Location"
-                    class="mt-1 text-sm text-gray-600 focus:outline-none border py-2 px-1 rounded" />
+            <div class="flex flex-col w-full sm:w-[48%]">
+                <label class="text-base font-semibold text-black">Pickup Location</label>
+                <input formControlName="pickup_location" type="text" placeholder="Set Pickup Location"
+                    class="mt-1 border py-3 px-3 rounded text-base text-gray-600 focus:outline-none" />
                 <div *ngIf="hasError('pickup_location')" class="text-red-500 text-xs mt-1">
                     {{ getError('pickup_location') }}
                 </div>
             </div>
 
             <!-- Drop Location -->
-            <div class="flex flex-col w-full max-w-xs">
-                <label class="text-sm font-semibold text-black">Drop Location</label>
-                <input formControlName="drop_location" (input)="form.get('drop_location')?.markAsTouched()" type="text"
-                    placeholder="Set Drop Location" class="mt-1 text-sm text-gray-600 focus:outline-none border py-2 px-1 rounded" />
+            <div class="flex flex-col w-full sm:w-[48%]">
+                <label class="text-base font-semibold text-black">Drop Location</label>
+                <input formControlName="drop_location" type="text" placeholder="Set Drop Location"
+                    class="mt-1 border py-3 px-3 rounded text-base text-gray-600 focus:outline-none" />
                 <div *ngIf="hasError('drop_location')" class="text-red-500 text-xs mt-1">
                     {{ getError('drop_location') }}
                 </div>
             </div>
 
-            <!-- Phone Number -->
-            <div class="flex flex-col w-full max-w-xs">
-                <label class="text-sm font-semibold text-black">Phone Number</label>
-                <input formControlName="phone_number" (input)="form.get('phone_number')?.markAsTouched()" type="tel"
-                    placeholder="Enter Contact Details" class="mt-1 text-sm text-gray-600 focus:outline-none border py-2 px-1 rounded" />
-                <div *ngIf="hasError('phone_number')" class="text-red-500 text-xs mt-1">
-                    {{ getError('phone_number') }}
-                </div>
-            </div>
-
             <!-- Vehicle Detail -->
-            <div class="flex flex-col w-full max-w-xs">
-                <label class="text-sm font-semibold text-black">Vehicle Details</label>
-                <input formControlName="vehicle_detail" (input)="form.get('vehicle_detail')?.markAsTouched()"
-                    type="text" placeholder="Enter Vehicle Details"
-                    class="mt-1 text-sm text-gray-600 focus:outline-none border py-2 px-1 rounded" />
+            <div class="flex flex-col w-full">
+                <label class="text-base font-semibold text-black">Vehicle Details</label>
+                <textarea formControlName="vehicle_detail" type="text" placeholder="Enter Vehicle Details"
+                    class="mt-1 border py-3 px-3 rounded text-base text-gray-600 focus:outline-none"></textarea>
                 <div *ngIf="hasError('vehicle_detail')" class="text-red-500 text-xs mt-1">
                     {{ getError('vehicle_detail') }}
                 </div>
             </div>
 
             <!-- Shifting Date -->
-            <div class="flex flex-col w-full max-w-xs">
-                <label class="text-sm font-semibold text-black">Shifting Date</label>
-                <input formControlName="shifting_date" (input)="form.get('shifting_date')?.markAsTouched()" type="date"
-                    class="mt-1 text-sm text-black focus:outline-none border py-2 px-1 rounded" />
+            <div class="flex flex-col w-full sm:w-[48%]">
+                <label class="text-base font-semibold text-black">Shifting Date</label>
+                <input formControlName="shifting_date" type="date"
+                    class="mt-1 border py-3 px-3 rounded text-base text-black focus:outline-none" />
                 <div *ngIf="hasError('shifting_date')" class="text-red-500 text-xs mt-1">
                     {{ getError('shifting_date') }}
                 </div>
@@ -71,18 +74,16 @@
         </div>
 
         <!-- Button -->
-        <div class="flex justify-end mt-4">
+        <div class="flex justify-end mt-6">
             <button type="button" (click)="submitTransport()"
-                class="bg-[#fcb026] hover:bg-[#fcb126d7] text-black font-semibold px-6 py-3 rounded text-sm flex items-center gap-2">
+                class="bg-[#fcb026] hover:bg-[#fcb126d7] text-black font-semibold px-6 sm:px-8 py-3 rounded text-base flex items-center gap-2">
                 Get Estimate
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
             </button>
         </div>
-
     </form>
-
 </div>

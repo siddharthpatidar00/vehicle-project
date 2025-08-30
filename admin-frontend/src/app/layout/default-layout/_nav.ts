@@ -67,25 +67,22 @@ export const navItems: INavData[] = [
     ]
   },
 
-  // {
-  //   title: true,
-  //   name: 'Extras'
-  // },
-  // {
-  //   name: 'Pages',
-  //   url: '/login',
-  //   iconComponent: { name: 'cil-star' },
-  //   children: [
-  //     {
-  //       name: 'Login',
-  //       url: '/login',
-  //       icon: 'nav-icon-bullet'
-  //     },
-  //     {
-  //       name: 'Register',
-  //       url: '/register',
-  //       icon: 'nav-icon-bullet'
-  //     }
-  //   ]
-  // }
+    {
+    name: 'Loan & Insurance',
+    url: '/bank-management',
+    iconComponent: { name: 'cilBank' },
+    children: [
+      {
+        name: 'Loan',
+        url: '/bank-management/loan',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Insurance',
+        url: '/bank-management/insurance',
+        icon: 'nav-icon-bullet'
+      }
+    ]
+  }
+
 ];

@@ -11,6 +11,9 @@ const vehicleBrandRoutes = require('./src/routes/vehicleBrandRoutes')
 const vehicleTransportRoutes = require('./src/routes/vehicleTransportRoutes')
 const vehicleEnquiryRoutes = require('./src/routes/vehicleEnquiryRoutes')
 const vehiclesRoutes = require('./src/routes/vehiclesRoutes')
+const loanInquiryRoutes = require("./src/routes/loanInquiryRoutes");
+const insuranceRoutes = require("./src/routes/insuranceRoutes")
+const filterRoutes = require("./src/routes/filterRoutes");
 
 const { errorHandler } = require('./src/middleware/errorMiddleware');
 
@@ -45,6 +48,9 @@ app.use('/api/vehicle-category',vehicleCategoryRoutes)
 app.use('/api/vehicle-brand',vehicleBrandRoutes)
 app.use('/api/vehicle-transport',vehicleTransportRoutes)
 app.use('/api/vehicle-enquiries', vehicleEnquiryRoutes);
+app.use("/api/loan-inquiries", loanInquiryRoutes);
+app.use("/api/insurances", insuranceRoutes);
+app.use("/api/filter", filterRoutes);
 
 
 app.use(errorHandler);

@@ -23,6 +23,9 @@ import { ProfileModalComponent } from '../../../shared/components/profile-modal/
 import { AuthService } from '../../../shared/services/auth.service';
 import { InquiryModalComponent } from '../../../shared/components/inquiry-modal/inquiry-modal.component';
 import { TransportVehicleComponent } from '../../../views/transport-vehicle/transport-vehicle.component';
+import { SellVehicleModalComponent } from '../../../shared/components/sell-vehicle-modal/sell-vehicle-modal.component';
+import { ApplyForLoanComponent } from '../../../shared/components/apply-for-loan/apply-for-loan.component';
+import { BuyOrRenewInsuranceComponent } from '../../../shared/components/buy-or-renew-insurance/buy-or-renew-insurance.component';
 
 @Component({
   selector: 'app-default-header',
@@ -45,22 +48,28 @@ import { TransportVehicleComponent } from '../../../views/transport-vehicle/tran
     SearchModalComponent,
     ProfileModalComponent,
     InquiryModalComponent,
-    TransportVehicleComponent
+    TransportVehicleComponent,
+    SellVehicleModalComponent,
+    ApplyForLoanComponent,
+    BuyOrRenewInsuranceComponent
   ]
 })
 export class DefaultHeaderComponent implements OnInit, OnDestroy {
   selectedLocation: string = 'Location';
   private locationSubscription!: Subscription;
+  userNickname: string | null = null;
 
   constructor(
     private locationService: LocationService,
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router
   ) { }
 
   readonly #colorModeService = inject(ColorModeService);
   readonly colorMode = this.#colorModeService.colorMode;
   showProfileModal = false;
+  showSellVehicleModal = false
+
 
   readonly colorModes = [
     { name: 'light', text: 'Light', icon: 'cilSun' },
@@ -77,7 +86,13 @@ export class DefaultHeaderComponent implements OnInit, OnDestroy {
     this.locationSubscription = this.locationService.locationName$.subscribe(name => {
       this.selectedLocation = name;
     });
+
+    this.authService.user$.subscribe(user => {
+      this.userNickname = user?.nickname ?? null;
+    });
   }
+
+
 
   ngOnDestroy(): void {
     this.locationSubscription?.unsubscribe();
@@ -87,13 +102,14 @@ export class DefaultHeaderComponent implements OnInit, OnDestroy {
 
   toggleNew: boolean = false;
   toggleUsed: boolean = false;
-
+  user: any = null;
   mobileMenuOpen: boolean = false;
   userDropdown = null;
   showSearchModal = false;
   showInquiryModal = false;
   showTransportModal = false;
-
+  showApplyForLoanModalOpen = false;
+  showBuyOrRenewInsuranceModalOpen = false
   openLocationModal() {
     this.locationService.triggerModal();
   }
@@ -114,6 +130,22 @@ export class DefaultHeaderComponent implements OnInit, OnDestroy {
     this.showInquiryModal = false;
   }
 
+  openApplyForLoanModal() {
+    this.showApplyForLoanModalOpen = true;
+  }
+
+  closeApplyForLoanModal() {
+    this.showApplyForLoanModalOpen = false;
+  }
+
+  openBuyOrRenewInsuranceModal() {
+    this.showBuyOrRenewInsuranceModalOpen = true;
+  }
+
+  closeBuyOrRenewInsuranceModal() {
+    this.showBuyOrRenewInsuranceModalOpen = false;
+  }
+
   openTransportModal() {
     this.showTransportModal = true;
   }
@@ -129,6 +161,19 @@ export class DefaultHeaderComponent implements OnInit, OnDestroy {
   closeProfileModal() {
     this.showProfileModal = false;
   }
+
+  openSellVehicleModal() {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+    } else {
+      this.showSellVehicleModal = true;
+    }
+  }
+
+  closeSellVehicleModal() {
+    this.showSellVehicleModal = false;
+  }
+
 
   logout(): void {
     this.authService.logout();

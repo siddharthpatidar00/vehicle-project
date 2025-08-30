@@ -6,11 +6,12 @@ import { AuthService, LoginPayload } from '../../../shared/services/auth.service
 import { ToastService } from '../../../shared/services/toast.service';
 import { LoginSchema } from '../../../shared/schema/login.validation';
 import { validateYupSchema } from '../../../shared/schema/yup.validation';
+import { DefaultFooterComponent } from '../../../layout/default-layout/default-footer/default-footer.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule,DefaultFooterComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })

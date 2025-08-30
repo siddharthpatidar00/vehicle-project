@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './layout';
-import {LoginGuard} from '../guards/userAuth/login.guard'
-import {RegisterGuard} from '../guards/userAuth/register.guard'
+import { LoginGuard } from '../guards/userAuth/login.guard'
+import { RegisterGuard } from '../guards/userAuth/register.guard'
 
 export const routes: Routes = [
   {
@@ -27,6 +27,18 @@ export const routes: Routes = [
       {
         path: 'about',
         loadChildren: () => import('./views/about/routes').then((m) => m.routes)
+      },
+      {
+        path: 'faq',
+        loadChildren: () => import('./views/faq/routes').then((m) => m.routes)
+      },
+      {
+        path: 'vehicle-detail',
+        loadChildren: () => import('./views/vehicle-details/routes').then((m) => m.routes)
+      },
+      {
+        path: 'vehicles-listing',
+        loadChildren: () => import('./views/vehicle-listing/routes').then((m) => m.routes)
       },
       {
         path: 'pages',

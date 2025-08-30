@@ -1,17 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const vehicleEnquiryController = require('../controllers/vehicleEnquiryController');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, protectOptional, adminOnly } = require('../middleware/authMiddleware');
 
+// Anyone can submit an enquiry
+router.post('/', protectOptional, vehicleEnquiryController.createEnquiry);
 
-router.post('/', protect, vehicleEnquiryController.createEnquiry);
-
-router.get('/', protect, vehicleEnquiryController.getAllEnquiries);
-
-router.get('/:id', protect, vehicleEnquiryController.getEnquiryById);
-
-router.put('/:id', protect, vehicleEnquiryController.updateEnquiry);
-
-router.delete('/:id', protect, vehicleEnquiryController.deleteEnquiry);
+// Admin-only routes
+router.get('/', protect, adminOnly, vehicleEnquiryController.getAllEnquiries);
+router.get('/:id', protect, adminOnly, vehicleEnquiryController.getEnquiryById);
+router.put('/:id', protect, adminOnly, vehicleEnquiryController.updateEnquiry);
+router.delete('/:id', protect, adminOnly, vehicleEnquiryController.deleteEnquiry);
 
 module.exports = router;

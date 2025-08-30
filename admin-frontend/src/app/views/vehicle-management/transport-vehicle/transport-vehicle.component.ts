@@ -95,7 +95,7 @@ export class TransportVehicleComponent implements OnInit {
         item.shifting_date?.toLowerCase().includes(query) ||
         item.vehicle_detail?.toLowerCase().includes(query) ||
         item.status?.toLowerCase().includes(query) ||
-        item.serial.toString().includes(query) // This makes search by S.No. work
+        item.serial.toString().includes(query) 
       );
   }
 

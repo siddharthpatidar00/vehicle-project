@@ -1,0 +1,73 @@
+<div class="max-w-5xl mx-auto px-4 py-10 relative">
+
+    <!-- BACKGROUND LIGHTNINGS -->
+    <svg class="absolute top-[250px] left-[-200px] w-[350px] h-auto -z-10 rotate-[8deg] opacity-20 hidden md:block"
+        viewBox="0 0 1100 300" fill="none">
+        <polygon points="0,180 380,60 780,220 1100,40 1100,300 0,300" fill="#fcb026" />
+    </svg>
+    <svg class="absolute bottom-[50px] right-[-200px] w-[550px] h-auto -z-10 rotate-[-15deg] opacity-15 hidden md:block"
+        viewBox="0 0 1100 300" fill="none">
+        <polygon points="0,200 420,80 820,240 1100,20 1100,300 0,300" fill="#fcb026" />
+    </svg>
+    <svg class="absolute top-[600px] left-[100px] w-[500px] h-auto -z-10 rotate-[12deg] opacity-18 hidden md:block"
+        viewBox="0 0 1100 300" fill="none">
+        <polygon points="0,210 400,90 780,200 1100,60 1100,300 0,300" fill="#fcb026" />
+    </svg>
+    <svg class="absolute bottom-[-200px] left-[-100px] w-[500px] h-auto -z-10 rotate-[6deg] opacity-12 hidden md:block"
+        viewBox="0 0 1100 300" fill="none">
+        <polygon points="0,190 350,70 750,230 1100,10 1100,300 0,300" fill="#fcb026" />
+    </svg>
+    <svg class="absolute top-[900px] right-[50px] w-[500px] h-auto -z-10 rotate-[-10deg] opacity-16 hidden md:block"
+        viewBox="0 0 1100 300" fill="none">
+        <polygon points="0,170 300,50 700,210 1100,30 1100,300 0,300" fill="#fcb026" />
+    </svg>
+
+    <!-- HEADING -->
+    <div class="relative text-center mb-12">
+        <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-auto -z-10 rotate-[-5deg] hidden md:block"
+            viewBox="0 0 1100 300" fill="none">
+            <polygon points="0,200 400,50 800,250 1100,0 1100,300 0,300" fill="#fcb026" />
+        </svg>
+
+        <div class="flex justify-center items-center py-3">
+            <div class="text-black text-4xl font-bold flex items-center bg-transparent">
+                <span id="text"></span>
+                <span id="console" class="ml-1">&#95;</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ CARD -->
+    <div
+        class="bg-white shadow-sm rounded-lg p-6 mb-4 border border-gray-200 hover:shadow-md transition-shadow duration-300 relative z-10">
+
+        <!-- Example Decorations -->
+        <svg class="absolute top-[20px] left-[20px] w-20 h-20 -z-10 opacity-15 rotate-[-10deg] hidden md:block"
+            viewBox="0 0 64 64" fill="#fcb026" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4h28v8H20v8h20v8H20v24H12V4z" />
+        </svg>
+
+        <svg class="absolute top-[100px] right-[30px] w-20 h-20 -z-10 opacity-18 rotate-[12deg] hidden md:block"
+            viewBox="0 0 64 64" fill="#fcb026" xmlns="http://www.w3.org/2000/svg">
+            <path d="M32 4L12 60h8l4-12h12l4 12h8L32 4zm0 16l6 18H26l6-18z" />
+        </svg>
+
+        <!-- FAQ Content -->
+        <div *ngFor="let faq of faqs; let i = index" class="flex items-start gap-3 mb-4 last:mb-0">
+            <div
+                class="flex-shrink-0 w-7 h-7 rounded-full bg-[#fcb026] text-white font-bold flex items-center justify-center text-sm">
+                {{ i + 1 }}
+            </div>
+
+            <div>
+                <h2 class="!text-xl font-semibold text-black mb-1">
+                    {{ faq.question }}
+                </h2>
+                <p class="text-gray-500 text-sm leading-snug">
+                    {{ faq.answer }}
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>

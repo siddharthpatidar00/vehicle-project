@@ -18,12 +18,8 @@ export interface VehiclesEnquiry {
     buy_sell_rent: string;
     status: 'New' | 'In Progress' | 'Closed';
     enquiry_type: string;
-    created_by: {
-        first_name: string;
-        last_name: string;
-        email: string;
-    };
     created_date: string;
+    created_by: 'Guest' | 'User';
 
     // ⬇️ Admin-only fields
     loan?: 'yes' | 'no';

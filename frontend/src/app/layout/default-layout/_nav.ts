@@ -15,12 +15,6 @@ export const navItems: INavData[] = [
     url:'contact-us',
   },
 
-
-
-
-
-
-
   {
     title: true,
     name: 'Extras'

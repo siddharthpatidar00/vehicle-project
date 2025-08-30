@@ -1,0 +1,68 @@
+<div class="flex-1">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Loading Placeholders -->
+        <ng-container *ngIf="isLoading; else checkData">
+            <ng-container *ngFor="let i of [1,2,3,4,5,6]">
+                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col mx-auto">
+                    <div class="w-[360px] h-60 bg-gray-300 rounded-t-lg animate-pulse"></div>
+                    <div class="p-2.5 flex flex-col gap-2 mt-auto">
+                        <div class="w-full h-10 bg-gray-300 rounded animate-pulse"></div>
+                        <div class="w-full h-10 bg-gray-300 rounded animate-pulse"></div>
+                        <div class="w-full h-10 bg-gray-300 rounded animate-pulse"></div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+
+        <!-- Check data after loading -->
+        <ng-template #checkData>
+            <ng-container *ngIf="vehicles && vehicles.length > 0; else noData">
+                <!-- Vehicle List -->
+                <div *ngFor="let vehicle of vehicles"
+                    class="max-w-[360px] bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col mx-auto">
+
+                    <!-- Vehicle Image -->
+                    <img *ngIf="vehicle.img" [src]="'http://localhost:5000' + vehicle.img[0]"
+                        [alt]="vehicle.name || vehicle.title" class="w-[360px] h-60 object-cover rounded-t-lg">
+
+                    <!-- Card Content / Footer Buttons -->
+                    <div class="p-2.5 flex flex-col gap-2 mt-auto">
+                        <!-- View Details -->
+                        <button (click)="goToVehicleDetail(vehicle._id)"
+                            class="w-full flex items-center justify-center gap-2 bg-black text-[#fcb026] font-semibold py-2 rounded">
+                            <svg cIcon name="cilDescription" class="w-4 h-4"></svg>
+                            <span>View Details</span>
+                        </button>
+
+                        <!-- Call Now -->
+                        <button
+                            class="w-full flex items-center justify-center gap-2 bg-black text-[#fcb026] font-semibold py-2 rounded">
+                            <svg cIcon name="cilPhone" class="w-4 h-4"></svg>
+                            Call Now :-
+                            <a href="tel:+911234567890" class="text-inherit no-underline">+0731-424252</a>
+                        </button>
+
+                        <!-- Inquiry Now -->
+                        <button (click)="openVehiclePersonalInquiryModal(vehicle.name)"
+                            class="w-full flex items-center justify-center gap-2 bg-black text-[#fcb026] font-semibold py-2 rounded">
+                            <svg cIcon name="cilPaperPlane" class="w-4 h-4"></svg>
+                            <span>Inquiry Now</span>
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-template>
+
+        <!-- No Data -->
+        <ng-template #noData>
+            <div class="col-span-full flex justify-center items-center py-10">
+                <p class="text-red-500 text-lg font-semibold">No vehicle available</p>
+            </div>
+        </ng-template>
+    </div>
+
+    <!-- Inquiry Modal -->
+    <app-vehicle-personal-inquiry-modal *ngIf="showInquiryModal" [vehicleName]="selectedVehicleName"
+        (close)="closeVehiclePersonalInquiryModal()" class="z-[9999]">
+    </app-vehicle-personal-inquiry-modal>
+</div>

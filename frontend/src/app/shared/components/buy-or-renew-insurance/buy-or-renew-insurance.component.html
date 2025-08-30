@@ -1,0 +1,64 @@
+<div class="fixed inset-0 z-[50] flex justify-center items-center bg-black bg-opacity-50 p-4">
+    <div
+        class="bg-white w-full sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[50%] p-4 sm:p-6 rounded-md shadow-lg overflow-y-auto max-h-[90vh]">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <p class="text-lg sm:text-xl font-semibold text-gray-800">Buy / Renew Insurance</p>
+            <span (click)="closeModal()"
+                class="text-3xl sm:text-5xl text-red-500 cursor-pointer leading-none">&times;</span>
+        </div>
+
+        <!-- Form -->
+        <form class="space-y-3 sm:space-y-4" [formGroup]="buyRenewInsuranceForm" (ngSubmit)="submitForm()">
+
+            <!-- Row 1 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm sm:text-base font-semibold text-black mb-1">Full Name</label>
+                    <input type="text" formControlName="fullName" placeholder="Enter Full Name"
+                        class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-lg border border-gray-300 rounded-md" />
+                    <div *ngIf="hasError('fullName')" class="text-red-500 text-xs sm:text-sm mt-1">{{
+                        getError('fullName') }}</div>
+                </div>
+                <div>
+                    <label class="block text-sm sm:text-base font-semibold text-black mb-1">Mobile Number</label>
+                    <input type="text" formControlName="mobile" placeholder="Enter Mobile Number"
+                        class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-lg border border-gray-300 rounded-md" />
+                    <div *ngIf="hasError('mobile')" class="text-red-500 text-xs sm:text-sm mt-1">{{ getError('mobile')
+                        }}</div>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm sm:text-base font-semibold text-black mb-1">Policy Number (if
+                        renewing)</label>
+                    <input type="number" formControlName="policyNumber" placeholder="Enter Policy Number"
+                        class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-lg border border-gray-300 rounded-md" />
+                </div>
+                <div>
+                    <label class="block text-sm sm:text-base font-semibold text-black mb-1">Insurance Type</label>
+                    <input type="text" formControlName="insuranceType"
+                        class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-lg border border-gray-300 rounded-md"
+                        placeholder="Enter Insurance Type" />
+                </div>
+            </div>
+
+            <!-- Vehicle Detail -->
+            <div>
+                <label class="block text-sm sm:text-base font-semibold text-black mb-1">Vehicle Detail</label>
+                <textarea type="text" placeholder="Enter Vehicle Detail" formControlName="vehicleDetail"
+                    class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-lg border border-gray-300 rounded-md"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full mt-3 sm:mt-4 bg-[#fcb026] hover:bg-[#fcb126d7] text-black py-3 rounded-md text-base sm:text-lg font-semibold flex items-center justify-center gap-2 sm:gap-3">
+                Request Insurance Quote <span class="text-lg sm:text-xl">&rarr;</span>
+            </button>
+
+        </form>
+    </div>
+</div>

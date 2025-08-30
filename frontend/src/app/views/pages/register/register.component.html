@@ -3,8 +3,11 @@
   <div class="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
 
   <div class="relative z-10">
-    <form [formGroup]="form" class="register-form">
-
+    <form [formGroup]="form" class="register-form mb-8 mt-8">
+      <div class="flex justify-center w-full text-center mt-0 pt-0">
+        <img routerLink="/" src="./assets/images/company.png" alt="company img"
+          class="w-12 h-12 object-cover cursor-pointer">
+      </div>
       <!-- Row 1 -->
       <div class="register-flex-row">
         <!-- First Name -->
@@ -31,9 +34,10 @@
               <path
                 d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zM2.4 19.2c0-3.2 6.4-4.8 9.6-4.8s9.6 1.6 9.6 4.8v2.4H2.4v-2.4z" />
             </svg>
-            <input formControlName="last_name"  placeholder="Enter Last Name" class="register-input" type="text" name="last_name">
+            <input formControlName="last_name" placeholder="Enter Last Name" class="register-input" type="text"
+              name="last_name">
           </div>
-           <div *ngIf="hasError('last_name')" class="text-red-500 text-xs">
+          <div *ngIf="hasError('last_name')" class="text-red-500 text-xs">
             {{ getError('last_name') }}
           </div>
         </div>
@@ -53,7 +57,7 @@
               <option>Other</option>
             </select>
           </div>
-            <div *ngIf="hasError('gender')" class="text-red-500 text-xs">
+          <div *ngIf="hasError('gender')" class="text-red-500 text-xs">
             {{ getError('gender') }}
           </div>
         </div>
@@ -70,7 +74,7 @@
             </svg>
             <input formControlName="email" placeholder="Enter Email" class="register-input" type="email" name="email">
           </div>
-           <div *ngIf="hasError('email')" class="text-red-500 text-xs">
+          <div *ngIf="hasError('email')" class="text-red-500 text-xs">
             {{ getError('email') }}
           </div>
         </div>
@@ -83,9 +87,10 @@
               <path
                 d="M6.6 0C4.6 0 3 1.6 3 3.6V20.4C3 22.4 4.6 24 6.6 24H17.4C19.4 24 21 22.4 21 20.4V3.6C21 1.6 19.4 0 17.4 0H6.6zM12 22.2C11.1 22.2 10.3 21.4 10.3 20.5S11.1 18.8 12 18.8s1.7.8 1.7 1.7S12.9 22.2 12 22.2z" />
             </svg>
-            <input formControlName="mobile" placeholder="Enter Mobile Number" class="register-input" type="tel" name="mobile">
+            <input formControlName="mobile" placeholder="Enter Mobile Number" class="register-input" type="tel"
+              name="mobile">
           </div>
-             <div *ngIf="hasError('mobile')" class="text-red-500 text-xs">
+          <div *ngIf="hasError('mobile')" class="text-red-500 text-xs">
             {{ getError('mobile') }}
           </div>
         </div>
@@ -97,7 +102,8 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
               <path d="M3 13h18V3H3v10zm0 2v6h18v-6H3z" />
             </svg>
-            <input formControlName="company" placeholder="Enter Company Name" class="register-input" type="text" name="company">
+            <input formControlName="company" placeholder="Enter Company Name" class="register-input" type="text"
+              name="company">
           </div>
         </div>
       </div>
@@ -150,7 +156,8 @@
               <path
                 d="M12 12c2.2 0 4-1.8 4-4S14.2 4 12 4 8 5.8 8 8s1.8 4 4 4zm0 2c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z" />
             </svg>
-            <input formControlName="aadhar" placeholder="Enter Aadhar Number" class="register-input" type="text" name="aadhar">
+            <input formControlName="aadhar" placeholder="Enter Aadhar Number" class="register-input" type="text"
+              name="aadhar">
           </div>
         </div>
 
@@ -162,9 +169,10 @@
               <path
                 d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-9V6a6 6 0 1 0-12 0v2H4v14h16V8h-2zm-8-2a4 4 0 0 1 8 0v2H10V6z" />
             </svg>
-            <input formControlName="password" placeholder="Enter Password" class="register-input" type="password" type="password" name="password">
+            <input formControlName="password" placeholder="Enter Password" class="register-input" type="password"
+              type="password" name="password">
           </div>
-              <div *ngIf="hasError('password')" class="text-red-500 text-xs">
+          <div *ngIf="hasError('password')" class="text-red-500 text-xs">
             {{ getError('password') }}
           </div>
         </div>
@@ -190,7 +198,8 @@
             <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 24 24">
               <path d="M4 4h16v2H4zm0 4h10v2H4zm0 4h16v2H4zm0 4h10v2H4z" />
             </svg>
-            <input formControlName="address" placeholder="Enter Address" class="register-input" type="text" name="address">
+            <input formControlName="address" placeholder="Enter Address" class="register-input" type="text"
+              name="address">
           </div>
         </div>
       </div>
@@ -209,9 +218,10 @@
         <div class="register-flex-column" style="flex:1">
           <label>Enter Captcha</label>
           <div class="register-inputForm">
-            <input formControlName="captcha" placeholder="Enter Captcha" class="register-input" type="text" name="captcha" />
+            <input formControlName="captcha" placeholder="Enter Captcha" class="register-input" type="text"
+              name="captcha" />
           </div>
-           <div *ngIf="hasError('captcha')" class="text-red-500 text-xs">
+          <div *ngIf="hasError('captcha')" class="text-red-500 text-xs">
             {{ getError('captcha') }}
           </div>
         </div>
@@ -223,3 +233,5 @@
 
   </div>
 </div>
+
+<app-default-footer class="p-0"></app-default-footer>

@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const UsersSchema = new mongoose.Schema({
-    first_name: { type: String},
-    last_name: { type: String},
+    first_name: { type: String },
+    last_name: { type: String },
     gender: { type: String, enum: ['Male', 'Female', 'Other'] },
-    email: { type: String, unique: true},
+    email: { type: String, unique: true },
     password: { type: String },
 
     mobile: { type: String },
@@ -17,6 +17,7 @@ const UsersSchema = new mongoose.Schema({
     aadhar: { type: String },
     city: { type: String },
     address: { type: String },
+    nickname: { type: String },
     status: {
         type: String,
         enum: ['Active', 'Inactive'],
@@ -24,7 +25,7 @@ const UsersSchema = new mongoose.Schema({
     },
     verified: {
         type: Boolean,
-        default: true 
+        default: true
     }
 
 }, {

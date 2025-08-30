@@ -33,7 +33,7 @@ exports.createCategory = async (req, res) => {
 // Get all categories
 exports.getAllCategories = async (req, res) => {
     try {
-        const categories = await VehicleCategory.find().sort({ category_name: 1 });
+        const categories = await VehicleCategory.find({}).sort({ category_name: 1 });
         res.json(categories);
     } catch (error) {
         console.error(error);
@@ -95,7 +95,6 @@ exports.deleteCategory = async (req, res) => {
 };
 
 
-// Update category status by ID
 exports.updateCategoryStatus = async (req, res) => {
     try {
         const { id } = req.params;
@@ -121,3 +120,5 @@ exports.updateCategoryStatus = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+
