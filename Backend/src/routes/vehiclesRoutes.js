@@ -17,7 +17,8 @@ router.get('/', vehiclesController.getAllVehicles);
 router.get('/:id', vehiclesController.getVehicleById);
 
 // Update vehicle (only logged-in User/Admin)
-router.put('/:id', protect, adminOnly, vehiclesController.updateVehicle);
+router.put('/:id', protect, adminOnly, upload.array('img', 5), vehiclesController.updateVehicle);
+
 
 // Delete vehicle (only logged-in User/Admin)
 router.delete('/:id', protect, adminOnly, vehiclesController.deleteVehicle);

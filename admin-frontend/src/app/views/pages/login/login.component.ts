@@ -35,14 +35,14 @@ onLogin() {
   this.adminService.login(this.email, this.password).subscribe({
     next: (response) => {
       this.authService.setToken(response.token);
-      this.toast.success('Login successful', 'Success');
+      this.toast.success('Login Successful');
       this.router.navigate(['/dashboard']);
     },
     error: (error) => {
       if (error.error?.message === 'Email does not exist') {
-        this.toast.error('Email does not exist', 'Error');
+        this.toast.error('Email does not exist');
       } else {
-        this.toast.error('Invalid credentials', 'Error');
+        this.toast.error('Invalid Credentials');
       }
     }
   });

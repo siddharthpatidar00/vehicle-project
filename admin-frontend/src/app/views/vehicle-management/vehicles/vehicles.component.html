@@ -39,8 +39,10 @@
                         <td class="px-4 py-2 border">{{ category.model }}</td>
                         <td class="px-4 py-2 border">{{ category.brand }}</td>
                         <td class="px-4 py-2 border w-45">
-                            <img *ngIf="category.img" [src]="'http://localhost:5000' + category.img[0]" alt="Vehicle"
-                                class="object-cover rounded" />
+                            <div class="w-full h-24 flex items-center justify-center overflow-hidden border rounded">
+                                <img *ngIf="category.img" [src]="'http://localhost:5000' + category.img[0]"
+                                    alt="Vehicle" class="w-full h-full object-cover" />
+                            </div>
                         </td>
                         <td class="px-4 py-2 border text-center">
                             <span class="px-2 py-1 text-white rounded" [ngClass]="{
@@ -155,7 +157,7 @@
         <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div class="text-black">
                 <label class="block mb-1 text-sm font-medium">Vehicle Name</label>
-                <input type="text" formControlName="name" placeholder="e.g. Toyota Innova"
+                <input type="text" formControlName="name" placeholder="Enter Vehicle Name"
                     class="w-full text-gray-600 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 <small class="text-red-500" *ngIf="submitted && getError('name')">
                     {{ getError('name') }}
@@ -164,7 +166,7 @@
 
             <div class="text-black">
                 <label class="block mb-1 text-sm font-medium">Model</label>
-                <input type="text" formControlName="model" placeholder="e.g. Crysta ZX"
+                <input type="text" formControlName="model" placeholder="Enter Model"
                     class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
 
@@ -198,13 +200,9 @@
                     </small>
                 </div>
             </div>
-
-
-
-
             <div class="text-black">
                 <label class="block mb-1 text-sm font-medium">KM Driven</label>
-                <input type="number" formControlName="km_driven" placeholder="e.g. 45000"
+                <input type="number" formControlName="km_driven" placeholder="Enter K.M. Driven"
                     class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
 
@@ -221,7 +219,7 @@
 
             <div class="text-black">
                 <label class="block mb-1 text-sm font-medium">Manufacture Year</label>
-                <input type="number" formControlName="manufacture_year" placeholder="e.g. 2025" min="1900" max="2099"
+                <input type="number" formControlName="manufacture_year" placeholder="Enter Manufacture Year" min="1900" max="2099"
                     step="1"
                     class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
@@ -247,7 +245,7 @@
 
             <div class="text-black">
                 <label class="block mb-1 text-sm font-medium">Price</label>
-                <input type="number" formControlName="price" placeholder="e.g. 750000"
+                <input type="number" formControlName="price" placeholder="Enter Price"
                     class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
 
@@ -277,15 +275,32 @@
                 </small>
             </div>
 
-            <div class="text-black">
-                <label class="block mb-1 text-sm font-medium">Upload Vehicle Image</label>
-                <input id="vehicleImageUpload" type="file" (change)="onFileSelected($event)" accept="image/*"
+            <div class="sm:col-span-2 text-black">
+                <label class="block mb-1 text-sm font-medium">Upload Vehicle Images (1–5)</label>
+
+                <input id="vehicleImageUpload" type="file" multiple (change)="onFileSelected($event)" accept="image/*"
                     class="hidden" />
+
                 <label for="vehicleImageUpload"
-                    class="w-full cursor-pointer flex flex-col items-center justify-center border border-gray-300 rounded px-4 py-6 transition hover:bg-gray-50 text-center">
-                    <span class="text-sm font-medium text-gray-700">Select Image</span>
+                    class="block w-full border rounded px-3 py-2 text-sm text-gray-700 cursor-pointer text-center">
+                    Select Images
                 </label>
+
+                <!-- 👇 Preview Grid -->
+                <div *ngIf="imagePreviews.length > 0" class="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <div *ngFor="let preview of imagePreviews; let i = index" class="relative">
+                        <img [src]="preview" alt="Vehicle Preview" class="w-full h-32 object-cover border rounded" />
+                        <button type="button" (click)="removeImage(i)"
+                            class="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded">
+                            ✕
+                        </button>
+                    </div>
+                </div>
             </div>
+
+
+
+
 
             <div class="sm:col-span-2 text-black">
                 <label class="block mb-1 text-sm font-medium">Description</label>
@@ -380,9 +395,9 @@
                     <tr>
                         <td class="p-3 font-medium text-gray-600 border border-gray-300">Image</td>
                         <td class="p-3 border border-gray-300">
-                            <div class="flex flex-1/2 gap-2 w-[50%] h-auto">
+                            <div class="grid grid-cols-1 gap-2 w-full h-auto">
                                 <img *ngFor="let image of selectedVehicle.img" [src]="'http://localhost:5000' + image"
-                                    alt="Vehicle Image" class="w-full h-full object-cover border rounded shadow-sm" />
+                                    alt="Vehicle Image" class="w-full h-40 object-cover border rounded shadow-sm" />
                             </div>
                         </td>
                     </tr>

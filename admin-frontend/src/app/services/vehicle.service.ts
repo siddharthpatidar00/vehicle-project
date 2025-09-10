@@ -49,10 +49,15 @@ export class VehicleService {
         return this.http.post(this.baseUrl, data, { headers });
     }
 
-    update(id: string, data: Partial<Vehicle>): Observable<any> {
-        const headers = { Authorization: `Bearer ${this.authService.getToken()}` };
+    // vehicle.service.ts
+    update(id: string, data: FormData): Observable<any> {
+        const headers = {
+            Authorization: `Bearer ${this.authService.getToken()}`,
+            // Note: Angular will automatically set 'Content-Type' to multipart/form-data for FormData
+        };
         return this.http.put(`${this.baseUrl}/${id}`, data, { headers });
     }
+
 
     delete(id: string): Observable<any> {
         const headers = { Authorization: `Bearer ${this.authService.getToken()}` };

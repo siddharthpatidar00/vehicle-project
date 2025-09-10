@@ -4,10 +4,10 @@ export const vehicleCategorySchema = yup.object({
     category_name: yup
         .string()
         .trim()
-        .required('category name is required'),
+        .required('Category name is required.'),
 
     category_description: yup
         .string()
         .trim()
-        .required('category description is required'),
+        .required('Category description is required.'),
 });

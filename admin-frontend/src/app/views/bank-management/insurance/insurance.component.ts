@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { CardBodyComponent, CardHeaderComponent, CardModule, FormModule } from '@coreui/angular';
+import { CardHeaderComponent, CardModule, FormModule } from '@coreui/angular';
 import { AppPaginationComponent } from '../../shared/pagination/pagination.component';
 import { FormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -14,7 +14,6 @@ import { InsuranceService, Insurance } from '../../../services/insurance.service
     FormModule,
     CardModule,
     CardHeaderComponent,
-    CardBodyComponent,
     AppPaginationComponent,
     FormsModule,
     MatTooltipModule

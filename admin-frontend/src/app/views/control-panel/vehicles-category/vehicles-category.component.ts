@@ -137,9 +137,9 @@ export class VehiclesCategoryComponent implements OnInit {
     this.loadCategories();
     this.closeModal();
     if (this.editMode) {
-      this.toast.success('Success', 'Category updated successfully');
+      this.toast.success('Category updated successfully');
     } else {
-      this.toast.success('Success', 'Category added successfully');
+      this.toast.success('Category added successfully');
     }
   }
 
@@ -152,7 +152,7 @@ export class VehiclesCategoryComponent implements OnInit {
     if (this.categoryServiceId) {
       this.categoryService.delete(this.categoryServiceId).subscribe(() => {
         this.loadCategories();
-        this.toast.success('Success', 'Category deleted successfully');
+        this.toast.success('Category deleted successfully');
         this.confirmVisible = false;
         this.categoryServiceId = null;
       });

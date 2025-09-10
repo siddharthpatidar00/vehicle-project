@@ -14,6 +14,9 @@ const vehiclesRoutes = require('./src/routes/vehiclesRoutes')
 const loanInquiryRoutes = require("./src/routes/loanInquiryRoutes");
 const insuranceRoutes = require("./src/routes/insuranceRoutes")
 const filterRoutes = require("./src/routes/filterRoutes");
+const customer = require("./src/routes/customerRoutes")
+const adRoutes = require('./src/routes/adRoutes');
+const contactRoutes = require('./src/routes/contactRoutes');
 
 const { errorHandler } = require('./src/middleware/errorMiddleware');
 
@@ -51,6 +54,9 @@ app.use('/api/vehicle-enquiries', vehicleEnquiryRoutes);
 app.use("/api/loan-inquiries", loanInquiryRoutes);
 app.use("/api/insurances", insuranceRoutes);
 app.use("/api/filter", filterRoutes);
+app.use("/api/customer",customer)
+app.use('/api/advertisements', adRoutes); 
+app.use('/api/contact', contactRoutes);
 
 
 app.use(errorHandler);

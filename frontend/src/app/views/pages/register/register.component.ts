@@ -12,7 +12,7 @@ import { DefaultFooterComponent } from '../../../layout/default-layout/default-f
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule,DefaultFooterComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, DefaultFooterComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
@@ -25,6 +25,7 @@ export class RegisterComponent implements OnInit {
     gender: new FormControl(''),
     email: new FormControl(''),
     password: new FormControl(''),
+    confirmPassword: new FormControl(''),
     mobile: new FormControl(''),
     company: new FormControl(''),
     gst: new FormControl(''),

@@ -6,68 +6,68 @@ export const navItems: INavData[] = [
     url: '/dashboard',
     iconComponent: { name: 'cil-speedometer' },
   },
+  // {
+  //   name: 'Components',
+  //   title: true
+  // },
   {
-    name: 'Components',
-    title: true
-  },
-    {
     name: 'Control Panel',
     url: '/control-panel',
     iconComponent: { name: 'cilSettings' },
     children: [
       {
-        name: 'Category',
+        name: 'Categories',
         url: '/control-panel/vehicle-category',
         icon: 'nav-icon-bullet'
       },
       {
-        name: 'Brand',
+        name: 'Brands',
         url: '/control-panel/brand',
         icon: 'nav-icon-bullet'
       }
     ]
   },
-    {
+  {
     name: 'User Management',
     url: '/user-management',
     iconComponent: { name: 'cilUserFollow' },
     children: [
       {
-        name: 'User',
+        name: 'Users',
         url: '/user-management/user-management',
         icon: 'nav-icon-bullet'
       },
       {
-        name: 'Staff',
+        name: 'Staffs',
         url: '/user-management/staff-management',
         icon: 'nav-icon-bullet'
       }
     ]
   },
-    {
+  {
     name: 'Vehicles Management',
     url: '/vehicles-management',
     iconComponent: { name: 'cilTruck' },
     children: [
       {
-        name: 'Vehicles',
+        name: 'Vehicles List',
         url: '/vehicles-management/vehicles',
         icon: 'nav-icon-bullet'
       },
       {
-        name: 'Vehicles Enquiry',
+        name: 'Vehicle Inquiries',
         url: '/vehicles-management/vehicles-enquiry',
         icon: 'nav-icon-bullet'
       },
       {
-        name: 'Transport Vehicle',
+        name: 'Transport Inquiries',
         url: '/vehicles-management/transport-vehicle',
         icon: 'nav-icon-bullet'
       }
     ]
   },
 
-    {
+  {
     name: 'Loan & Insurance',
     url: '/bank-management',
     iconComponent: { name: 'cilBank' },
@@ -84,5 +84,27 @@ export const navItems: INavData[] = [
       }
     ]
   }
-
+  ,
+  {
+    name: 'Others',
+    url: '/others',
+    iconComponent: { name: 'cilSpreadsheet' },
+    children: [
+      {
+        name: 'Happy Customer',
+        url: '/others/happy-customer',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Contact Us',
+        url: '/others/contact-us',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Advertisement',
+        url : '/others/advertisement',
+        icon : 'nav-icon-bullet'
+      }
+    ]
+  }
 ];

@@ -8,11 +8,12 @@ import { ToastService } from '../../../services/toast.service';
 import { userSchema } from '../../../schema/user.schema';
 import { IconModule } from '@coreui/icons-angular';
 import { AppPaginationComponent } from '../../shared/pagination/pagination.component';
+import { ConfirmModalComponent } from "../../shared/confirm-modal/confirm-modal.component";
 
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, CardModule, IconModule, AppPaginationComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, CardModule, IconModule, AppPaginationComponent, ConfirmModalComponent],
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss'],
 })
@@ -31,8 +32,8 @@ export class UserManagementComponent implements OnInit {
   searchTerm: string = '';
   showViewModal = false;
   selectedUser: User | null = null;
-
-
+  confirmVisible = false;
+  confirmUserId: string | null = null;
 
 
   constructor(
@@ -90,22 +91,22 @@ export class UserManagementComponent implements OnInit {
     if (this.editMode && this.editUserId) {
       this.usersService.update(this.editUserId, payload).subscribe({
         next: () => {
-          this.toast.success('Success', 'User updated successfully');
+          this.toast.success('User updated successfully');
           this.resetForm();
           this.loadUsers();
         },
         error: (err) =>
-          this.toast.error('Error updating user', err.error?.message || err.message || 'Unknown error'),
+          this.toast.error('Error updating user'),
       });
     } else {
       this.usersService.register(payload).subscribe({
         next: () => {
-          this.toast.success('Success', 'User created successfully');
+          this.toast.success('User created successfully');
           this.resetForm();
           this.loadUsers();
         },
         error: (err) =>
-          this.toast.error('Error creating user', err.error?.message || err.message || 'Unknown error'),
+          this.toast.error('Error creating user'),
       });
     }
   }
@@ -125,14 +126,14 @@ export class UserManagementComponent implements OnInit {
   }
 
   openViewModal(user: User) {
-  this.selectedUser = user;
-  this.showViewModal = true;
-}
+    this.selectedUser = user;
+    this.showViewModal = true;
+  }
 
   closeViewModal() {
-  this.showViewModal = false;
-  this.selectedUser = null;
-}
+    this.showViewModal = false;
+    this.selectedUser = null;
+  }
 
 
   onEdit(user: User) {
@@ -154,14 +155,39 @@ export class UserManagementComponent implements OnInit {
       address: user.address || '',
       status: user.status || '',
     });
+
+    this.showUserList = false;
+    this.showForm = true;
   }
 
-  onDelete(id: string) {
-    if (!confirm('Are you sure you want to delete this user?')) return;
-    this.usersService.delete(id).subscribe({
-      next: () => this.loadUsers(),
-      error: (err) => console.error('Delete failed', err),
-    });
+
+onDelete(id: string) {
+  this.confirmUserId = id;
+  this.confirmVisible = true;
+}
+
+
+
+ handleConfirmDelete() {
+    if (this.confirmUserId) {
+      this.usersService.delete(this.confirmUserId).subscribe({
+        next: () => {
+          this.toast.success('User deleted successfully');
+          this.loadUsers();
+          this.confirmVisible = false;
+          this.confirmUserId = null;
+        },
+        error: (err) => {
+          this.toast.error('Error deleting user');
+          this.confirmVisible = false;
+        }
+      });
+    }
+  }
+
+  handleCancelDelete() {
+    this.confirmVisible = false;
+    this.confirmUserId = null;
   }
 
   resetForm() {

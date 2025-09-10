@@ -13,5 +13,8 @@ export const API_ENDPOINTS = {
     VehiclesEnquiry:`${API_BASE_URL}/vehicle-enquiries`,
     TransportVehicle:`${API_BASE_URL}/vehicle-transport`,
     Loan:`${API_BASE_URL}/loan-inquiries`,
-    Insurance:`${API_BASE_URL}/insurances`
+    Insurance:`${API_BASE_URL}/insurances`,
+    HappyCustomer:`${API_BASE_URL}/customer`,
+    Contact:`${API_BASE_URL}/contact`,
+    Advertisement:`${API_BASE_URL}/advertisements`,
 };

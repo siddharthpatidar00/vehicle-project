@@ -45,10 +45,10 @@ export class TransportVehicleComponent implements OnInit {
     const updateData: Partial<TransportVehicle> = { status: newStatus };
     this.transportService.updateTransport(id, updateData).subscribe({
       next: () => {
-        this.toast.success('success', "Status updated successfully");
+        this.toast.success( "Status updated successfully");
         this.loadTransports();
       },
-      error: (err) => this.toast.error('error', 'Update failed'),
+      error: (err) => this.toast.error('Update failed'),
     });
   }
 

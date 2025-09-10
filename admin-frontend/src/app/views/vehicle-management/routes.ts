@@ -4,7 +4,7 @@ export const routes: Routes = [
     {
         path: '',
         data: {
-            title: 'Vehicles'
+            title: 'Vehicle Management'
         },
         children: [
             {

@@ -146,9 +146,9 @@ export class BrandComponent implements OnInit {
     this.loadBrands();
     this.closeModal();
       if (this.editMode) {
-    this.toast.success('Success','Brand updated successfully');
+    this.toast.success('Brand updated successfully');
   } else {
-    this.toast.success('Success','Brand added successfully');
+    this.toast.success('Brand added successfully');
   }
   }
 
@@ -161,7 +161,7 @@ export class BrandComponent implements OnInit {
     if (this.confirmBrandId) {
       this.brandService.delete(this.confirmBrandId).subscribe(() => {
         this.loadBrands();
-        this.toast.success('Success','Brand deleted successfully');
+        this.toast.success('Brand deleted successfully');
         this.confirmVisible = false;
         this.confirmBrandId = null;
       });
@@ -178,7 +178,7 @@ export class BrandComponent implements OnInit {
     const newStatus = brand.status === 'Active' ? 'Inactive' : 'Active';
     this.brandService.toggleStatus(brand._id, newStatus).subscribe({
       next: () => this.loadBrands(),
-      error: (err) => this.toast.error('Failed to toggle status', err),
+      error: (err) => this.toast.error('Failed to toggle status'),
     });
   }
 

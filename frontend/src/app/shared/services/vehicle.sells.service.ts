@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../../config/api.config';
 
 export interface SellVehicle {
+    _id?: string;
     name?: string | null;
     model?: string | null;
     brand?: string | null;
@@ -17,7 +18,8 @@ export interface SellVehicle {
     insuranceValidTill?: string;
     sell_or_rent?: 'Sell' | 'Rent';
     phone?: string | null;
-    img?: File | null;
+    // img?: File | null;
+    img?: string[] | null;
     status?: 'Inactive' | 'Available' | 'Sold' | 'Rented' | 'Maintenance';
     description?: string | null;
 }
@@ -35,4 +37,7 @@ export class SellVehicleService {
         });
     }
 
+    getVehicle(): Observable<SellVehicle[]> {
+        return this.http.get<SellVehicle[]>(this.baseUrl);
+    }
 }

@@ -1,18 +1,55 @@
 /* src/styles.css */
 @import "tailwindcss";
 
-
 .p-toast {
-    all: initial; 
-    font-family: inherit;
+  all: initial;
+  font-family: inherit;
+  position: fixed !important;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  /* z-index: 9999; */
+  width: fit-content !important;
 }
 
 .p-toast .p-toast-message {
-    border-radius: 0.5rem;   
-    padding: 1rem;
-    border: 1px solid #ccc; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+/* ✅ Make text + close button align in one row */
+.p-toast .p-toast-message-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Text should take all available space */
+.p-toast .p-toast-message-text {
+  flex: 1;
+  margin-right: 0.75rem;
+  /* space before close button */
+}
+
+/* Align close button correctly */
+.p-toast .p-toast-icon-close {
+  margin-left: auto;
+  margin-right: 0.25rem;
+  align-self: center;
+}
+
+/* Hide default icons */
+.p-toast .p-toast-message-icon {
+  display: none !important;
+}
+
+/* Hide extra detail line (like “Invalid / Success”) */
+/* .p-toast .p-toast-message-text .p-toast-detail {
+  display: none !important;
+} */
 
 /* Success Toast */
 .p-toast-message-success {

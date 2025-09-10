@@ -10,27 +10,20 @@
       linear-gradient(to bottom, #fee1a1 50%, #fff5d6 100%);
   ">
                 <div class="mb-4 w-[400px] h-[350px]">
-                    <img *ngIf="vehicle.img" [src]="getVehicleImageUrl(vehicle.img)" alt="{{ vehicle.name }}"
+                    <img *ngIf="vehicle.img && vehicle.img.length"
+                        [src]="getVehicleImageUrl(vehicle.img[selectedImageIndex])" alt="{{ vehicle.name }}"
                         class="w-full h-full object-cover rounded-lg">
                 </div>
+
                 <!-- Thumbnail Images -->
-                <!-- <div class="flex space-x-2">
-                        <div class="w-16 h-16 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition-colors flex items-center justify-center">
-                            <i class="fas fa-camera text-gray-500"></i>
-                        </div>
-                        <div class="w-16 h-16 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition-colors flex items-center justify-center">
-                            <i class="fas fa-camera text-gray-500"></i>
-                        </div>
-                        <div class="w-16 h-16 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition-colors flex items-center justify-center">
-                            <i class="fas fa-camera text-gray-500"></i>
-                        </div>
-                        <div class="w-16 h-16 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition-colors flex items-center justify-center">
-                            <i class="fas fa-camera text-gray-500"></i>
-                        </div>
-                        <div class="w-16 h-16 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition-colors flex items-center justify-center">
-                            <i class="fas fa-camera text-gray-500"></i>
-                        </div>
-                    </div> -->
+                <div class="flex space-x-2">
+                    <div *ngFor="let img of vehicle.img; let i = index" class="w-16 h-16 rounded cursor-pointer border"
+                        [class.border-yellow-500]="i === selectedImageIndex" (click)="selectImage(i)">
+                        <img [src]="getVehicleImageUrl(img)" alt="thumbnail" class="w-full h-full object-cover rounded">
+                    </div>
+                </div>
+
+
             </div>
 
             <!-- Vehicle Information Section -->
@@ -39,54 +32,47 @@
       linear-gradient(to bottom, #fcb026 0%, #fee1a1 50%),
       linear-gradient(to bottom, #fee1a1 50%, #fff5d6 100%);
   ">
-                <h2 class="text-2xl font-bold text-black mb-6">Vehicle <span
-                        class="font-normal text-black">information</span></h2>
+                <!-- <h2 class="text-2xl font-bold text-black mb-6">Vehicle <span
+                        class="font-normal text-black">information</span></h2> -->
 
                 <!-- Features -->
                 <div class="mb-6">
-                    <h3 class="font-semibold text-black mb-2">Description:</h3>
+                    <h3 class="font-semibold text-black mb-2">Description</h3>
                     <p class="text-gray-700"> {{ vehicle.description }}</p>
                 </div>
 
-                <!-- Other Parameters -->
-                <div class="mb-6">
-                    <h3 class="font-semibold text-black mb-2">Other parameters:</h3>
-                    <p class="text-gray-700">service book</p>
-                </div>
-
-                <!-- Safety -->
-                <div class="mb-6">
-                    <h3 class="font-semibold text-black mb-2">Safety:</h3>
-                    <p class="text-gray-700">ABS, traction control, alarm, airbags, immobilizer, anti-theft, ESP, EDS,
-                        protection framework</p>
-                </div>
-
-                <!-- Comfort -->
-                <div>
-                    <h3 class="font-semibold text-black mb-2">Comfort:</h3>
-                    <p class="text-gray-700">electric windows, electric mirrors, air conditioning, leather upholstery,
-                        navigation system, central locking, radio / CD, power steering, onboard computer, cruise
-                        control, heated seats, rain sensor, steering wheel controls, parking sensors</p>
-                </div>
             </div>
 
             <!-- More Info Section -->
-            <div class="rounded-lg shadow-sm p-6" style="
-    background:
-      linear-gradient(to bottom, #fcb026 0%, #fee1a1 50%),
+            <div class="rounded-lg shadow-sm p-3" style="
+    background: linear-gradient(to bottom, #fcb026 0%, #fee1a1 50%),
       linear-gradient(to bottom, #fee1a1 50%, #fff5d6 100%);
   ">
-                <h2 class="text-2xl font-bold text-black mb-4">More <span class="font-normal text-black">info</span>
+                <h2 class="text-2xl font-bold text-black mb-4">
+                    Suggested <span class="font-normal text-black">Vehicles</span>
                 </h2>
-                <p class="text-gray-700 leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquet fringilla metus, a ultrices
-                    ligula consequat at. Maecenas eget massa at eros ornare rhoncus. In sit amet enim risus, in mattis
-                    felis. Donec lorem arcu, tempor quis fermentum et, viverra in turpis. Nam non nunc vitae justo
-                    tincidunt lobortis eu sit amet dui. Nam ut dui aliquet nisl fermentum mollis sit amet eget lectus.
-                    Vivamus iaculis massa sit amet velit convallis aliquam. Vestibulum dolor erat, congue nec viverra
-                    eget, aliquet sit amet nunc. Donec vitae arcu orci.
-                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div *ngFor="let v of randomVehicles"
+                        class="rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition"
+                         style="
+    background: linear-gradient(to bottom,#fee1a1 50%, #fff5d6 100%),
+      linear-gradient(to bottom,#fcb026 0%, #fee1a1 50%  );
+  "
+                        [routerLink]="['/vehicle-detail', v._id]">
+                        <img [src]="getVehicleImageUrl(v.img && v.img[0])" alt="{{ v.name }}"
+                            class="w-full object-cover rounded-lg mb-3" style="height: 250px;" />
+                        <h3 class="text-lg font-semibold text-gray-800">{{ v.name }}</h3>
+                        <p class="text-gray-600">Model: {{ v.model }}</p>
+                        <p class="text-gray-600">Price: ₹{{ v.price }}</p>
+                        <button class="mt-2 bg-[#fcb026] text-black font-semibold px-3 py-1 rounded hover:bg-[#ffa600]">
+                            View Details
+                        </button>
+                    </div>
+                </div>
             </div>
+
+
         </div>
 
         <!-- Right Column - Price and Details -->
@@ -135,18 +121,26 @@
                         <span class="text-black">Sell or Rent</span>
                         <span class="font-medium text-black">{{ vehicle.sell_or_rent }}</span>
                     </div>
+                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                        <span class="text-black">Created</span>
+                        <span class="font-medium text-black">
+                            {{ vehicle.Created_date | date:'mediumDate' }}
+                        </span>
+                    </div>
+
                 </div>
             </div>
-            <button (click)="openVehiclePersonalInquiryModal(vehicle.name)" class="mt-auto bg-black text-[#fcb026] font-[600] py-2 rounded w-full">
+            <button (click)="openVehiclePersonalInquiryModal(vehicle.name)"
+                class="mt-auto bg-black text-[#fcb026] font-[600] py-2 rounded w-full">
                 Inquiry Now
             </button>
 
-            <div class="mt-3">
-                <img src="https://img.freepik.com/premium-vector/poster-heavy-equipment-with-yellow-background-that-says-heavy-equipment_1157851-47.jpg"
-                    alt="img">
+            <div class="mt-3" *ngIf="ad3 && ad3.image">
+                <img [src]="getVehicleImageUrl(ad3.image)" [alt]="ad3.imageTitle" />
             </div>
+
         </div>
-          <app-vehicle-personal-inquiry-modal *ngIf="showInquiryModal"  [vehicleName]="selectedVehicleName"  (close)="closeVehiclePersonalInquiryModal()"
-            class="z-[9999]">
+        <app-vehicle-personal-inquiry-modal *ngIf="showInquiryModal" [vehicleName]="selectedVehicleName"
+            (close)="closeVehiclePersonalInquiryModal()" class="z-[9999]">
         </app-vehicle-personal-inquiry-modal>
     </div>

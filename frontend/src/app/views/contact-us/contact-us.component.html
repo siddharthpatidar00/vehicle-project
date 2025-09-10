@@ -38,9 +38,140 @@
         </svg>
     </div>
 </section>
+
+
+<div class="bg-gray-100 flex justify-center items-center pt-5">
+    <div class="w-11/12 max-w-6xl bg-white shadow-lg rounded-md grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+        <!-- Left Section -->
+        <div class="space-y-6">
+            <h2 class="bg-[#fcb026] text-black text-center text-xl font-bold py-3 rounded-md">
+                Get In Touch With Us Now!
+            </h2>
+            <div class="grid grid-cols-2 gap-6 text-center">
+                <!-- Phone -->
+                <div class="border p-4 rounded-md">
+                    <div class="flex flex-col items-center space-y-2">
+                        <span class="text-3xl">📞</span>
+                        <p class="font-bold">Phone Number</p>
+                        <p class="text-gray-600">+91 80004 36640</p>
+                    </div>
+                </div>
+                <!-- Email -->
+                <div class="border p-4 rounded-md">
+                    <div class="flex flex-col items-center space-y-2">
+                        <span class="text-3xl text-blue-900">✉️</span>
+                        <p class="font-bold">Email</p>
+                        <!-- <p class="text-gray-600">supportrockeyeengineerings.com</p> -->
+                        <a href="mailto:support@rockeyeengineerings.com">Email Us</a>
+                        <p class="text-gray-600">sale</p>
+                    </div>
+                </div>
+                <!-- Location -->
+                <div class="border p-4 rounded-md">
+                    <div class="flex flex-col items-center space-y-2">
+                        <span class="text-3xl text-blue-900">📍</span>
+                        <p class="font-bold">Location</p>
+                        <p class="text-gray-600 text-sm">
+                            518, Rhythm Plaza, Amar Javan Circle, Nikol, Ahmedabad, Gujarat - 382350
+                        </p>
+                    </div>
+                </div>
+                <!-- Working Hours -->
+                <div class="border p-4 rounded-md">
+                    <div class="flex flex-col items-center space-y-2">
+                        <span class="text-3xl text-blue-900">⏰</span>
+                        <p class="font-bold">Working Hours</p>
+                        <p class="text-gray-600 text-sm">
+                            Monday To Saturday<br>09:00 AM To 06:00 PM
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Right Section -->
+        <div class="space-y-6">
+            <h2 class="bg-[#fcb026] text-black text-center text-xl font-bold py-3 rounded-md">
+                Contact Us
+            </h2>
+            <form [formGroup]="contactForm" class="space-y-4 w-full" (ngSubmit)="submitForm()">
+                <!-- First & Last Name -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col">
+                        <div class="flex items-center border rounded-md px-3 py-2">
+                            <span class="mr-2">👤</span>
+                            <input type="text" placeholder="First Name *" class="w-full outline-none"
+                                formControlName="firstName">
+                        </div>
+                        <small class="text-red-500 mt-1" *ngIf="submitted && getError('firstName')">
+                            {{ getError('firstName') }}
+                        </small>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="flex items-center border rounded-md px-3 py-2">
+                            <span class="mr-2">👤</span>
+                            <input type="text" placeholder="Last Name" class="w-full outline-none"
+                                formControlName="lastName">
+                        </div>
+                        <small class="text-red-500 mt-1" *ngIf="submitted && getError('lastName')">
+                            {{ getError('lastName') }}
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Mobile & Email -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col">
+                        <div class="flex items-center border rounded-md px-3 py-2">
+                            <span class="mr-2">📱</span>
+                            <input type="text" placeholder="Mobile No *" class="w-full outline-none"
+                                formControlName="mobile">
+                        </div>
+                        <small class="text-red-500 mt-1" *ngIf="submitted && getError('mobile')">
+                            {{ getError('mobile') }}
+                        </small>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="flex items-center border rounded-md px-3 py-2">
+                            <span class="mr-2">✉️</span>
+                            <input type="email" placeholder="Email ID *" class="w-full outline-none"
+                                formControlName="email">
+                        </div>
+                        <small class="text-red-500 mt-1" *ngIf="submitted && getError('email')">
+                            {{ getError('email') }}
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Message -->
+                <div class="flex flex-col">
+                    <textarea rows="11" placeholder="Message" class="w-full border rounded-md px-3 py-2 outline-none"
+                        formControlName="message"></textarea>
+                    <small class="text-red-500 mt-1" *ngIf="submitted && getError('message')">
+                        {{ getError('message') }}
+                    </small>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    <button type="submit"
+                        class="bg-[#fcb026] hover:bg-[#ffa600] text-black font-semibold px-6 py-2 rounded-md flex items-center gap-2">
+                        Submit
+                        <span>📤</span>
+                    </button>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
 <!-- Map Section -->
 <section class="relative w-full overflow-hidden">
-    <div class=" mx-auto px-6 py-12">
+    <div class=" mx-auto px-6 py-10">
         <h2 class="text-6xl text-center mb-6">Contact Information</h2>
         <!-- Google Map -->
         <div class="overflow-hidden rounded-xl shadow-lg">

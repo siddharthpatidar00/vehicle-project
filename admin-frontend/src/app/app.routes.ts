@@ -17,7 +17,8 @@ export const routes: Routes = [
       { path: 'pages', loadChildren: () => import('./views/pages/routes').then(m => m.routes) },
       { path: 'control-panel', loadChildren: () => import('./views/control-panel/routes').then(m => m.routes) },
       { path: 'vehicles-management', loadChildren: () => import('./views/vehicle-management/routes').then(m => m.routes) },
-      { path: 'bank-management', loadChildren: () => import('./views/bank-management/routes').then(m => m.routes) }
+      { path: 'bank-management', loadChildren: () => import('./views/bank-management/routes').then(m => m.routes) },
+      { path: 'others', loadChildren: () => import('./views/others/routes').then(m => m.routes) }
     ]
   },
 

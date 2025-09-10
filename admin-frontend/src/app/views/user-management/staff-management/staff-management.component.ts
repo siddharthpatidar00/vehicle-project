@@ -88,12 +88,12 @@ export class StaffManagementComponent implements OnInit {
     this.form.markAllAsTouched();
     this.staffService.createStaff(this.form.value!).subscribe({
       next: (res) => {
-        this.toast.success('Success', 'Staff added successfully');
+        this.toast.success('Staff added successfully');
         this.form.reset({ user_type: 'subadmin', status: 'Active' });
       },
       error: (err) => {
         if (err?.error?.message === 'Email already registered') {
-          this.toast.error('error', 'Email is already in use');
+          this.toast.error('Email is already in use');
         }
       }
     });

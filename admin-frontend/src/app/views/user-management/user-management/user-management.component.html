@@ -101,8 +101,8 @@
                 <label class="block mb-1 text-sm font-medium">Status</label>
                 <select formControlName="status" class="w-full px-3 py-2 border rounded-md">
                     <option value="">Select</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
                 </select>
             </div>
         </div>
@@ -169,6 +169,12 @@
                                             d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z" />
                                     </svg>
                                 </button>
+                                <button (click)="onEdit(user)" style="color: blue;" title="Edit" class="p-1">
+                                    <c-icon name="cil-pencil" class="w-5 h-5"></c-icon>
+                                </button>
+                                <button (click)="onDelete(user._id!)" style="color: red;" title="Delete" class="p-1">
+                                    <c-icon name="cil-trash" class="w-5 h-5"></c-icon>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -206,7 +212,7 @@
                             {{ user.status }}
                         </button>
                     </div>
-                    <div class="flex items-center justify-between">
+                    <div class="flex justify-between">
                         <span class="font-semibold">Action</span>
                         <button (click)="openViewModal(user)" title="View" class="text-green-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
@@ -217,6 +223,12 @@
                                     d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z" />
                             </svg>
                         </button>
+                        <button (click)="onEdit(user)" style="color: blue;" title="Edit">
+                            <c-icon name="cil-pencil"></c-icon>
+                        </button>
+                        <button (click)="onDelete(user._id!)" style="color: red;" title="Delete">
+                            <c-icon name="cil-trash"></c-icon>
+                        </button>
                     </div>
                 </c-card-body>
             </c-card>
@@ -225,6 +237,12 @@
         <!-- Pagination Controls -->
         <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
         </app-pagination>
+
+        <app-confirm-modal [visible]="confirmVisible" title="Delete User" (onConfirm)="handleConfirmDelete()"
+            (onCancel)="handleCancelDelete()" message="Are you sure you want to delete this user?" confirmText="Delete"
+            cancelText="Cancel">
+        </app-confirm-modal>
+
 
     </c-card-body>
 </c-card>

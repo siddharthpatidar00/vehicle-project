@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppPaginationComponent } from '../../shared/pagination/pagination.component';
-import { CardBodyComponent, CardHeaderComponent, CardModule, FormModule } from '@coreui/angular';
+import { CardHeaderComponent, CardModule, FormModule } from '@coreui/angular';
 import { CommonModule } from '@angular/common';
 import { Loan, LoanService } from '../../../services/loan.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -14,7 +14,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormModule,
     CardModule,
     CardHeaderComponent,
-    CardBodyComponent,
     AppPaginationComponent,
     FormsModule,
     MatTooltipModule

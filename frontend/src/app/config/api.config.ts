@@ -12,6 +12,9 @@ export const API_ENDPOINTS = {
     sellVehicle:`${API_BASE_URL}/vehicles`,
     LoanInquiry:`${API_BASE_URL}/loan-inquiries`,
     Insurance:`${API_BASE_URL}/insurances`,
-    Filter:`${API_BASE_URL}/filter/filters`
+    Filter:`${API_BASE_URL}/filter/filters`,
+    Customer:`${API_BASE_URL}/customer`,
+    Advertisement:`${API_BASE_URL}/advertisements`,
+    Contact:`${API_BASE_URL}/contact`
 };
     

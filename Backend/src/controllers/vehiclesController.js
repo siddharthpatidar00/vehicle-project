@@ -57,7 +57,7 @@ exports.createVehicle = async (req, res) => {
 exports.getAllVehicles = async (req, res) => {
     try {
         const { category_id, category_name, brand, showAll, minPrice, maxPrice } = req.query;
-        console.log(minPrice,maxPrice)
+        console.log(minPrice, maxPrice)
         let filter = {};
 
         // Only admins can pass ?showAll=true
@@ -89,7 +89,7 @@ exports.getAllVehicles = async (req, res) => {
                 filter.price.$lte = Number(maxPrice);
             }
         }
-console.log(filter)
+        console.log(filter)
         const vehicles = await Vehicles.find(filter)
             .populate('category_id')
             .populate('brand_id')
@@ -141,44 +141,53 @@ exports.getVehicleById = async (req, res) => {
 // Update vehicle by ID
 exports.updateVehicle = async (req, res) => {
     try {
-        const { id } = req.params;
+        const vehicleId = req.params.id;
+        const updateData = { ...req.body };
 
-        // Fetch the existing vehicle first
-        const existingVehicle = await Vehicles.findById(id);
-        if (!existingVehicle) {
-            return res.status(404).json({ message: 'Vehicle not found' });
+        // Parse existing images sent from frontend
+        let existingImages = [];
+        if (updateData.existingImages) {
+            existingImages = JSON.parse(updateData.existingImages);
         }
 
-        // Copy updates but prevent phone number from being updated
-        const updates = { ...req.body };
-
-        //  Remove phone if someone tries to update it
-        if (updates.phone !== undefined) {
-            delete updates.phone;
-        }
-
-        // Keep category_name in sync if category is passed
-        if (req.body.category) {
-            updates.category_name = req.body.category;
-        }
-
-        // Handle new image upload
-        // if (req.file) {
-        //     updates.img = `/uploads/${req.file.filename}`;
-        // }
-
+        // Append new uploaded files
+        let newImages = [];
         if (req.files && req.files.length > 0) {
-            updates.img = req.files.map(file => `/uploads/${file.filename}`);
+            newImages = req.files.map(file => `/uploads/${file.filename}`);
+        }
+
+        if (updateData.category_name && Array.isArray(updateData.category_name)) {
+            updateData.category_name = updateData.category_name[0];
         }
 
 
-        const updated = await Vehicles.findByIdAndUpdate(id, updates, { new: true });
-        res.json({ message: 'Vehicle updated successfully', vehicle: updated });
+        // Merge existing images with new images
+        updateData.img = [...existingImages, ...newImages];
+
+        // Remove field we used for existing images
+        delete updateData.existingImages;
+
+        const updatedVehicle = await Vehicles.findByIdAndUpdate(
+            vehicleId,
+            updateData,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedVehicle) {
+            return res.status(404).json({ message: "Vehicle not found" });
+        }
+
+        res.status(200).json({
+            message: "Vehicle updated successfully",
+            vehicle: updatedVehicle,
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        console.error("Error updating vehicle:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
+
 
 
 

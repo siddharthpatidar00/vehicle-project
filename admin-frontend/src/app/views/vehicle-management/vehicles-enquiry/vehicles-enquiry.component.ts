@@ -64,9 +64,12 @@ export class VehiclesEnquiryComponent implements OnInit {
 
   loadEnquiries() {
     this.enquiryService.getAll().subscribe(data => {
-      this.enquiries = data;
+      this.enquiries = data.sort(
+        (a, b) => new Date(b.created_date).getTime() - new Date(a.created_date).getTime()
+      );
     });
   }
+
 
   get filteredEnquiries() {
     const query = this.searchTerm.toLowerCase().trim();
@@ -103,12 +106,12 @@ export class VehiclesEnquiryComponent implements OnInit {
 
       this.enquiryService.updateEnquiry(id, this.editEnquiry).subscribe({
         next: () => {
-          this.toast.success('success', 'Enquiry updated successfully');
+          this.toast.success('Enquiry updated successfully');
           this.loadEnquiries();
           this.editEnquiry = null;
         },
         error: () => {
-          this.toast.error('error', 'Failed to update enquiry');
+          this.toast.error('Failed to update enquiry');
         }
       });
     }
@@ -138,9 +141,9 @@ export class VehiclesEnquiryComponent implements OnInit {
   }
 
   closeViewModal() {
-  this.showViewModal = false;
-  this.selectedEnquiry = null;
-}
+    this.showViewModal = false;
+    this.selectedEnquiry = null;
+  }
 
 
   onPageChange(page: number) {

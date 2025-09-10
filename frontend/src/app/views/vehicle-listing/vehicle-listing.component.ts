@@ -6,6 +6,7 @@ import { VehicleListingService } from '../../shared/services/vehicle.listing.ser
 import { ActivatedRoute, Router } from '@angular/router';
 import { VehicleFilterComponent } from './vehicle-filter/vehicle-filter.component';
 import { VehicleLoadingComponent } from "./vehicle-loading/vehicle-loading.component";
+import { AdvertisementService, Advertisement } from '../../shared/services/advertisement.service';
 
 @Component({
   selector: 'app-vehicle-listing',
@@ -26,10 +27,12 @@ export class VehicleListingComponent implements OnInit {
   itemsPerPage = 16;
   categoryId: string | null = null;
   isLoading = true;
+  ad2Image: string = '';
 
   constructor(
     private vehicleService: VehicleListingService,
     private route: ActivatedRoute,
+    private advertisementService: AdvertisementService,
     private router: Router
   ) { }
 
@@ -47,6 +50,7 @@ export class VehicleListingComponent implements OnInit {
         maxPrice
       });
     });
+    this.loadAd2();
   }
 
 
@@ -108,6 +112,18 @@ export class VehicleListingComponent implements OnInit {
 
     // ✅ Fetch vehicles with filter
     this.fetchVehicles(filter);
+  }
+
+
+  loadAd2(): void {
+    this.advertisementService.getAdByType('ad2').subscribe({
+      next: (ad) => {
+        if (ad && ad.image) {
+          this.ad2Image = ad.image.startsWith('http') ? ad.image : `http://localhost:5000${ad.image}`;
+        }
+      },
+      error: (err) => console.error('Failed to load ad2', err)
+    });
   }
 
 }
