@@ -1,39 +1,101 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth/auth.guard';
-import { LoginGuard } from './guards/auth/login.guard';
+import { AuthGuard } from '../guards/adminGuards/auth.guard';
+import { LoginGuard } from '../guards/adminGuards/login.guard';
+import { UserLoginGuard } from '../guards/userAuth/login.guard';
+import { RegisterGuard } from '../guards/userAuth/register.guard';
+import { UserAuthGuard } from '../guards/userAuth/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  // Default redirect
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 
+ // ---------- USER SIDE (Website) ----------
   {
     path: '',
-    canActivate: [AuthGuard],  // protect entire layout & child routes
-    loadComponent: () => import('./layout').then(m => m.DefaultLayoutComponent),
-    data: { title: 'Home' },
+    loadComponent: () => import('./Userlayout/default-layout').then(m => m.DefaultLayoutComponent),
     children: [
-      { path: 'dashboard', loadChildren: () => import('./views/dashboard/routes').then(m => m.routes) },
-      { path: 'user-management', loadChildren: () => import('./views/user-management/routes').then(m => m.routes) },
-      { path: 'icons', loadChildren: () => import('./views/icons/routes').then(m => m.routes) },
-      { path: 'pages', loadChildren: () => import('./views/pages/routes').then(m => m.routes) },
-      { path: 'control-panel', loadChildren: () => import('./views/control-panel/routes').then(m => m.routes) },
-      { path: 'vehicles-management', loadChildren: () => import('./views/vehicle-management/routes').then(m => m.routes) },
-      { path: 'bank-management', loadChildren: () => import('./views/bank-management/routes').then(m => m.routes) },
-      { path: 'others', loadChildren: () => import('./views/others/routes').then(m => m.routes) }
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
+      {
+        path: 'home',
+        loadChildren: () => import('../app/views/User/home/routes').then(m => m.routes)
+      },
+      {
+        path: 'about',
+        loadChildren: () => import('../app/views/User/about/routes').then(m => m.routes)
+      },
+      {
+        path: 'contact-us',
+        loadChildren: () => import('../app/views/User/contact-us/routes').then(m => m.routes)
+      },
+      {
+        path: 'dashboard',
+        canActivate: [UserAuthGuard],
+        loadChildren: () => import('../app/views/User/dashboard/routes').then(m => m.routes)
+      },
+      {
+        path: 'faq',
+        loadChildren: () => import('../app/views/User/faq/routes').then(m => m.routes)
+      },
+      {
+        path: 'terms-and-conditions',
+        loadChildren: () => import('../app/views/User/term-and-conditions/routes').then(m => m.routes)
+      },
+      {
+        path: 'vehicle-detail',
+        loadChildren: () => import('../app/views/User/vehicle-details/routes').then(m => m.routes)
+      },
+      {
+        path: 'vehicles-listing',
+        loadChildren: () => import('../app/views/User/vehicle-listing/routes').then(m => m.routes)
+      }
     ]
   },
 
-  // login route is public but blocked by LoginGuard
+  // ---------- ADMIN ROUTES ----------
   {
-    path: 'login',
-    canActivate: [LoginGuard],
-    loadComponent: () => import('./views/pages/login/login.component').then(m => m.LoginComponent),
-    data: { title: 'Login Page' }
+    path: '',
+    canActivate: [AuthGuard],  // Protect admin layout
+    loadComponent: () => import('./layout').then(m => m.DefaultLayoutComponent),
+    data: { title: 'Admin' },
+    children: [
+      { path: 'admin-dashboard', loadChildren: () => import('./views/Admin/dashboard/routes').then(m => m.routes) },
+      { path: 'admin-user-management', loadChildren: () => import('./views/Admin/user-management/routes').then(m => m.routes) },
+      { path: 'admin-control-panel', loadChildren: () => import('./views/Admin/control-panel/routes').then(m => m.routes) },
+      { path: 'admin-vehicles-management', loadChildren: () => import('./views/Admin/vehicle-management/routes').then(m => m.routes) },
+      { path: 'admin-bank-management', loadChildren: () => import('./views/Admin/bank-management/routes').then(m => m.routes) },
+      { path: 'admin-others', loadChildren: () => import('./views/Admin/others/routes').then(m => m.routes) }
+    ]
   },
 
-  { path: '404', loadComponent: () => import('./views/pages/page404/page404.component').then(m => m.Page404Component), data: { title: 'Page 404' } },
-  { path: '500', loadComponent: () => import('./views/pages/page500/page500.component').then(m => m.Page500Component), data: { title: 'Page 500' } },
-  { path: 'profile', loadComponent: () => import('./views/pages/profile/profile.component').then(m => m.ProfileComponent), data: { title: 'Profile Page' } },
+  // ---------- AUTH ROUTES ----------
+  {
+    path: 'admin-login',
+    canActivate: [LoginGuard],
+    loadComponent: () => import('./views/Admin/pages/login/login.component').then(m => m.LoginComponent),
+    data: { title: 'Admin Login' }
+  },
+  {
+    path: 'login',
+    canActivate: [UserLoginGuard],
+    loadComponent: () => import('./views/User/pages/login/login.component').then(m => m.LoginComponent),
+    data: { title: 'User Login' }
+  },
+  {
+    path: 'register',
+    canActivate: [RegisterGuard],
+    loadComponent: () => import('./views/User/pages/register/register.component').then(m => m.RegisterComponent),
+    data: { title: 'User Register' }
+  },
 
-  // wildcard fallback
-  { path: '**', redirectTo: '404' }
+  // ---------- COMMON ROUTES ----------
+  { path: '404', loadComponent: () => import('./views/Admin/pages/page404/page404.component').then(m => m.Page404Component) },
+  { path: '500', loadComponent: () => import('./views/Admin/pages/page500/page500.component').then(m => m.Page500Component) },
+  { path: 'profile', loadComponent: () => import('./views/Admin/pages/profile/profile.component').then(m => m.ProfileComponent) },
+
+  // ---------- WILDCARD ----------
+  { path: '**', redirectTo: '' }
 ];

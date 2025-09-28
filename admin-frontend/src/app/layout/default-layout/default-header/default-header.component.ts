@@ -26,7 +26,7 @@ import { NgIf } from '@angular/common';
 
 import { IconDirective } from '@coreui/icons-angular';
 import { AuthService } from '../../../services/auth.service';
-import { ProfileComponent } from '../../../views/pages/profile/profile.component';
+import { ProfileComponent } from '../../../views/Admin/pages/profile/profile.component';
 
 @Component({
     selector: 'app-default-header',
