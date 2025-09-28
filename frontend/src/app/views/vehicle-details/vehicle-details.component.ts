@@ -14,7 +14,7 @@ import { SellVehicleService, SellVehicle } from '../../shared/services/vehicle.s
   styleUrls: ['./vehicle-details.component.scss']
 })
 export class VehicleDetailsComponent implements OnInit {
-  vehicle: any;
+  vehicle: any = { img: [] };
   showInquiryModal = false;
   selectedVehicleName: string | null = null;
   selectedImageIndex = 0;
@@ -49,10 +49,16 @@ export class VehicleDetailsComponent implements OnInit {
     });
 
     // Load ad3 once
-    this.adService.getAdByType('ad3').subscribe({
-      next: ad => (this.ad3 = ad || null),
-      error: err => console.error('Error fetching ad3:', err)
-    });
+this.adService.getAdByType('ad3').subscribe({
+  next: (res: Advertisement | undefined) => {
+    console.log('Ad3 response:', res);
+    this.ad3 = res || null;
+  },
+  error: (err: any) => {
+    console.error('Error fetching Ad3:', err);
+  }
+});
+
   }
 
   loadVehicleDetails(id: string) {

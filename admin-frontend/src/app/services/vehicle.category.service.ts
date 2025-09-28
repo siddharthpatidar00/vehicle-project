@@ -10,6 +10,7 @@ export interface VehicleCategory {
     category_description: string;
     category_image?: File | string;
     status: 'Active' | 'Inactive';
+    createdAt?: string;
 }
 
 @Injectable({ providedIn: 'root' })

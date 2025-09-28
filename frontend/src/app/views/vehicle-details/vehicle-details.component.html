@@ -10,9 +10,8 @@
       linear-gradient(to bottom, #fee1a1 50%, #fff5d6 100%);
   ">
                 <div class="mb-4 w-[400px] h-[350px]">
-                    <img *ngIf="vehicle.img && vehicle.img.length"
-                        [src]="getVehicleImageUrl(vehicle.img[selectedImageIndex])" alt="{{ vehicle.name }}"
-                        class="w-full h-full object-cover rounded-lg">
+                    <img *ngIf="vehicle?.img?.length" [src]="getVehicleImageUrl(vehicle.img[selectedImageIndex])"
+                        alt="{{ vehicle?.name }}" class="w-full h-full object-cover rounded-lg">
                 </div>
 
                 <!-- Thumbnail Images -->
@@ -54,12 +53,10 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div *ngFor="let v of randomVehicles"
-                        class="rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition"
-                         style="
+                        class="rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition" style="
     background: linear-gradient(to bottom,#fee1a1 50%, #fff5d6 100%),
       linear-gradient(to bottom,#fcb026 0%, #fee1a1 50%  );
-  "
-                        [routerLink]="['/vehicle-detail', v._id]">
+  " [routerLink]="['/vehicle-detail', v._id]">
                         <img [src]="getVehicleImageUrl(v.img && v.img[0])" alt="{{ v.name }}"
                             class="w-full object-cover rounded-lg mb-3" style="height: 250px;" />
                         <h3 class="text-lg font-semibold text-gray-800">{{ v.name }}</h3>

@@ -1,10 +1,10 @@
 import * as yup from 'yup';
 
-export const vehicleSchema = yup.object({
+export const vehicleSchema = (isEditMode:boolean) => yup.object({
     name: yup.string().required('Vehicle name is required.'),
     model: yup.string().nullable(),
     brand: yup.string().required('Brand is required.'),
-    category:yup.string().required('Category is required.'),
+    category: yup.string().required('Category is required.'),
     km_driven: yup.number().nullable(),
     ownership: yup.string().nullable(),
     manufacture_year: yup.number().nullable(),
@@ -16,5 +16,10 @@ export const vehicleSchema = yup.object({
     price: yup.number().nullable(),
     status: yup.string().nullable(),
     sell_or_rent: yup.string().required('Must select sell or rent.'),
-    description: yup.string().nullable()
+    description: yup.string().nullable(),
+    img: yup.mixed().when([], {
+        is: () => !isEditMode,
+        then: (schema) => schema.required('Vehicle image is required.'),
+        otherwise: (schema) => schema.notRequired(),
+    }),
 });

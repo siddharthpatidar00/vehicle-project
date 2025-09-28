@@ -1,6 +1,28 @@
+// import { Injectable } from '@angular/core';
+// import { HttpClient } from '@angular/common/http';
+// import { environment } from '../../environments/environment';
+// import { Observable } from 'rxjs';
+
+// @Injectable({
+//     providedIn: 'root'
+// })
+// export class AdminService {
+
+//     private apiUrl = environment.apiBaseUrl;
+
+//     constructor(private http: HttpClient) { }
+
+//     login(email: string, password: string): Observable<any> {
+//         return this.http.post(`${this.apiUrl}/admin/login`, { email, password });
+//     }
+// }
+
+
+
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { API_ENDPOINTS } from '../config/api.config';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,11 +30,9 @@ import { Observable } from 'rxjs';
 })
 export class AdminService {
 
-    private apiUrl = environment.apiBaseUrl;
-
     constructor(private http: HttpClient) { }
 
     login(email: string, password: string): Observable<any> {
-        return this.http.post(`${this.apiUrl}/admin/login`, { email, password });
+        return this.http.post(API_ENDPOINTS.BothLoginRoutes, { email, password });
     }
 }

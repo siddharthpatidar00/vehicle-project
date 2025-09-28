@@ -43,9 +43,11 @@
                     <tr>
                         <th class="px-4 py-2 border">S.No.</th>
                         <th class="px-4 py-2 border">Name</th>
-                        <th class="px-4 py-2 border">Email</th>
+                        <th class="px-4 py-2 border">Created date</th>
                         <th class="px-4 py-2 border">Phone</th>
                         <th class="px-4 py-2 border">Users</th>
+                        <th class="px-4 py-2 border">Loan Status</th>
+                        <th class="px-4 py-2 border">Delivery Status</th>
                         <th class="px-4 py-2 border">Status</th>
                         <th class="px-4 py-2 border text-center">Actions</th>
                     </tr>
@@ -54,9 +56,15 @@
                     <tr *ngFor="let enquiry of filteredEnquiries; let i = index">
                         <td class="px-4 py-2 border">{{ i + 1 }}</td>
                         <td class="px-4 py-2 border">{{ enquiry.name }}</td>
-                        <td class="px-4 py-2 border">{{ enquiry.email }}</td>
+                        <td class="px-4 py-2 border">{{ enquiry.created_date | date:'dd-MM-YYYY' }}</td>
                         <td class="px-4 py-2 border">{{ enquiry.phone_number }}</td>
                         <td class="px-4 py-2 border">{{enquiry.created_by}}</td>
+                        <td class="px-4 py-2 border text-center">
+                            {{ enquiry.loan_status || '-' }}
+                        </td>
+                        <td class="px-4 py-2 border text-center">
+                            {{ enquiry.delivery_status || '-' }}
+                        </td>
                         <td class="px-4 py-2 border">
                             {{ enquiry.status }}
                         </td>
@@ -84,8 +92,29 @@
         <!-- Mobile View -->
         <div class="sm:hidden flex flex-col gap-4 p-2">
             <div *ngFor="let enquiry of filteredEnquiries; let i = index" class="border p-4 rounded-lg shadow bg-white">
-                <div class="flex justify-between mb-2 font-semibold text-gray-800">
-                    <span>#{{ i + 1 }}. {{ enquiry.name }}</span>
+                <div class="flex justify-between mb-2">
+                    <span>S.No.</span>
+                    <span>{{ i + 1 }}</span>
+                </div>
+                <div class="flex justify-between mb-1 text-sm text-gray-600">
+                    <span>Name</span>
+                    <span>{{ enquiry.name }}</span>
+                </div>
+                <div class="flex justify-between mb-1 text-sm text-gray-600">
+                    <span>Created Date</span>
+                    <span>{{ enquiry.created_date | date:'dd-MM-YYYY' }}</span>
+                </div>
+                <div class="flex justify-between mb-1 text-sm text-gray-600">
+                    <span>User</span>
+                    <span>{{ enquiry.created_by }}</span>
+                </div>
+                <div class="flex justify-between mb-1 text-sm text-gray-600">
+                    <span>Loan Status</span>
+                    <span>{{ enquiry.loan_status || '-' }}</span>
+                </div>
+                <div class="flex justify-between mb-1 text-sm text-gray-600">
+                    <span>Delivery Status</span>
+                    <span>{{ enquiry.delivery_status || '-' }}</span>
                 </div>
                 <div class="flex justify-between mb-1 text-sm text-gray-600">
                     <span>Email</span>
@@ -94,6 +123,10 @@
                 <div class="flex justify-between mb-1 text-sm text-gray-600">
                     <span>Phone</span>
                     <span>{{ enquiry.phone_number }}</span>
+                </div>
+                <div class="flex justify-between mb-1 text-sm text-gray-600">
+                    <span>Status</span>
+                    <span>{{ enquiry.status }}</span>
                 </div>
                 <div class="mt-3 text-center flex justify-between gap-3">
                     <span>Action</span>
@@ -107,7 +140,7 @@
                                     d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z" />
                             </svg>
                         </button>
-                        <button title="Edit" class="text-blue-600 p-1">
+                        <button title="Edit" (click)="editDetails(enquiry)" class="text-blue-600 p-1">
                             <c-icon name="cil-pencil" class="w-5 h-5"></c-icon>
                         </button>
                     </div>

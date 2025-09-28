@@ -21,6 +21,7 @@
                         <th class="px-4 py-2 border">S.No.</th>
                         <th class="px-4 py-2 border">Category Name</th>
                         <th class="px-4 py-2 border">Description</th>
+                        <th class="px-4 py-2 border">Created Date</th>
                         <th class="px-4 py-2 border">Image</th>
                         <th class="px-4 py-2 border">Status</th>
                         <th class="px-4 py-2 border text-center">Actions</th>
@@ -31,6 +32,7 @@
                         <td class="px-4 py-2 border">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                         <td class="px-4 py-2 border">{{ category.category_name }}</td>
                         <td class="px-4 py-2 border">{{ category.category_description }}</td>
+                        <td class="px-4 py-2 border">{{ category.createdAt | date:'shortDate' }}</td>
                         <td class="px-4 py-2 border w-45">
                             <img [src]="'http://localhost:5000' + category.category_image" alt="Category"
                                 class="object-cover rounded" />
@@ -80,6 +82,10 @@
                     <div class="flex justify-between mb-2">
                         <span class="font-semibold">Description</span>
                         <span>{{ category.category_description }}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">Created Date</span>
+                        <span>{{  category.createdAt | date:'shortDate'}}</span>
                     </div>
                     <div class="flex justify-between mb-4">
                         <span class="font-semibold">Image</span>
@@ -150,6 +156,9 @@
                 <div *ngIf="imagePreview" class="mt-2.5 flex justify-center">
                     <img [src]="imagePreview" alt="Preview" class="max-h-40 rounded border border-gray-300" />
                 </div>
+                 <small class="text-red-500" *ngIf="submitted && getError('category_image')">
+                    {{ getError('category_image') }}
+                </small>
             </div>
 
             <div class="flex justify-end gap-2">

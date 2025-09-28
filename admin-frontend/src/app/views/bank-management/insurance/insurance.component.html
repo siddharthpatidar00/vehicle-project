@@ -16,6 +16,7 @@
                     <th class="px-4 py-2 border">Mobile Number</th>
                     <th class="px-4 py-2 border">Policy Number</th>
                     <th class="px-4 py-2 border">Insurance Type</th>
+                    <th class="px-4 py-2 border">Created date</th>
                     <th class="px-4 py-2 border">Vehicle Detail</th>
                 </tr>
             </thead>
@@ -26,6 +27,7 @@
                     <td class="px-4 py-2 border">{{ ins.mobile }}</td>
                     <td class="px-4 py-2 border">{{ ins.policyNumber }}</td>
                     <td class="px-4 py-2 border">{{ ins.insuranceType }}</td>
+                    <td class="px-4 py-2 border">{{ ins.createdAt | date:'dd-MM-YYYY' }}</td>
                     <td class="px-4 py-2 border flex items-center justify-between">
                         <!-- Left side: text -->
                         <span>
@@ -76,6 +78,11 @@
                 <div class="flex justify-between mb-2">
                     <span class="font-semibold">Insurance Type</span>
                     <span>{{ins.insuranceType}}</span>
+                </div>
+
+                <div class="flex justify-between mb-2">
+                    <span class="font-semibold">Created date</span>
+                    <span>{{ins.createdAt | date:'dd-MM-YYYY'}}</span>
                 </div>
 
                 <!-- FIXED Vehicle Details row -->

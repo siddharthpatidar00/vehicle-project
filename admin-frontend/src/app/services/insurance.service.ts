@@ -9,6 +9,7 @@ export interface Insurance {
     policyNumber?: number;
     insuranceType?: string;
     vehicleDetail?: string;
+    createdAt?: string
 }
 
 @Injectable({ providedIn: 'root' })

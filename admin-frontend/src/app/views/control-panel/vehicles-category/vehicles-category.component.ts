@@ -46,34 +46,34 @@ export class VehiclesCategoryComponent implements OnInit {
 
   constructor(private categoryService: VehicleCategoryService, private fb: FormBuilder, private toast: ToastService) { }
 
-
   ngOnInit() {
-    this.loadCategories()
+    this.loadCategories();
     this.vehicleCategoryForm = this.fb.group({
       category_name: [''],
       category_description: [''],
-    })
+      category_image: ['']
+    });
   }
 
-    onPageChange(page: number) {
+  onPageChange(page: number) {
     this.currentPage = page;
   }
 
-  loadCategories(){
-    this.categoryService.getAll().subscribe((data) => (this.vehicleCategories = data))
+  loadCategories() {
+    this.categoryService.getAll().subscribe({
+      next: (data) => (this.vehicleCategories = data),
+      error: (err) => this.toast.error(err.error?.message || 'Failed to load categories')
+    });
   }
 
   get totalPages() {
-  return Math.ceil(this.filteredCategories.length / this.itemsPerPage);
-}
-
+    return Math.ceil(this.filteredCategories.length / this.itemsPerPage);
+  }
 
   get paginatedCategories() {
-  const start = (this.currentPage - 1) * this.itemsPerPage;
-  return this.filteredCategories.slice(start, start + this.itemsPerPage);
-}
-
-
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredCategories.slice(start, start + this.itemsPerPage);
+  }
 
   openModal() {
     this.resetForm();
@@ -84,16 +84,14 @@ export class VehiclesCategoryComponent implements OnInit {
   editCategory(category: VehicleCategory) {
     this.editMode = true;
     this.editId = category._id || null;
-    this.newCategory = {...category};
+    this.newCategory = { ...category };
     this.showModal = true;
 
     this.vehicleCategoryForm.patchValue({
       category_name: category.category_name,
       category_description: category.category_description,
     });
-
   }
-
 
   closeModal() {
     this.showModal = false;
@@ -104,7 +102,13 @@ export class VehiclesCategoryComponent implements OnInit {
     this.submitted = true;
     this.formErrors = {};
 
-    const dataToValidate = this.vehicleCategoryForm.getRawValue();
+    // const dataToValidate = this.vehicleCategoryForm.getRawValue();
+
+    const dataToValidate = {
+      ...this.vehicleCategoryForm.getRawValue(),
+      category_image: this.newCategory.category_image,
+    };
+
 
     this.vehicleCategory
       .validate(dataToValidate, { abortEarly: false })
@@ -113,22 +117,32 @@ export class VehiclesCategoryComponent implements OnInit {
           ...this.newCategory,
           ...dataToValidate,
         };
-        if(this.editMode && this.editId){
-          this.categoryService
-          .update(this.editId,payload as VehicleCategory)
-          .subscribe(()=> this.afterSubmit())
-        }else{
-          this.categoryService
-          .create(payload as VehicleCategory)
-          .subscribe(() => this.afterSubmit())
+
+        if (this.editMode && this.editId) {
+          this.categoryService.update(this.editId, payload as VehicleCategory).subscribe({
+            next: (res: any) => {
+              this.afterSubmit();
+              this.toast.success(res.message || 'Category updated successfully');
+            },
+            error: (err) => this.toast.error(err.error?.message || 'Failed to update category')
+          });
+        } else {
+          this.categoryService.create(payload as VehicleCategory).subscribe({
+            next: (res: any) => {
+              this.afterSubmit();
+              this.toast.success(res.message || 'Category added successfully');
+            },
+            error: (err) => this.toast.error(err.error?.message || 'Failed to add category')
+          });
         }
       })
       .catch((err) => {
         if (err.inner && Array.isArray(err.inner)) {
           for (const error of err.inner) {
             this.formErrors[error.path] = error.message;
-            this.vehicleCategoryForm.get(error.path)?.setErrors({message: error.message})
+            this.vehicleCategoryForm.get(error.path)?.setErrors({ message: error.message });
           }
+          // this.toast.error(err.inner[0].message); 
         }
       });
   }
@@ -136,11 +150,6 @@ export class VehiclesCategoryComponent implements OnInit {
   afterSubmit() {
     this.loadCategories();
     this.closeModal();
-    if (this.editMode) {
-      this.toast.success('Category updated successfully');
-    } else {
-      this.toast.success('Category added successfully');
-    }
   }
 
   deleteCategory(id: string) {
@@ -150,11 +159,14 @@ export class VehiclesCategoryComponent implements OnInit {
 
   handleConfirmDelete() {
     if (this.categoryServiceId) {
-      this.categoryService.delete(this.categoryServiceId).subscribe(() => {
-        this.loadCategories();
-        this.toast.success('Category deleted successfully');
-        this.confirmVisible = false;
-        this.categoryServiceId = null;
+      this.categoryService.delete(this.categoryServiceId).subscribe({
+        next: (res: any) => {
+          this.loadCategories();
+          this.toast.success(res.message || 'Category deleted successfully');
+          this.confirmVisible = false;
+          this.categoryServiceId = null;
+        },
+        error: (err) => this.toast.error(err.error?.message || 'Failed to delete category')
       });
     }
   }
@@ -164,12 +176,14 @@ export class VehiclesCategoryComponent implements OnInit {
     this.categoryServiceId = null;
   }
 
-
   toggleStatus(category: VehicleCategory) {
     const newStatus = category.status === 'Active' ? 'Inactive' : 'Active';
     this.categoryService.updateStatus(category._id!, newStatus).subscribe({
-      next: () => this.loadCategories(),
-      error: (err) => console.error('Error updating status', err),
+      next: (res: any) => {
+        this.loadCategories();
+        this.toast.success(res.message || `Category status changed to ${newStatus}`);
+      },
+      error: (err) => this.toast.error(err.error?.message || 'Failed to update status'),
     });
   }
 
@@ -184,9 +198,9 @@ export class VehiclesCategoryComponent implements OnInit {
     this.vehicleCategoryForm?.reset();
     this.formErrors = {};
     this.submitted = false;
-    this.imagePreview = null
+    this.imagePreview = null;
   }
-  
+
   getError(field: string) {
     const ctl = this.vehicleCategoryForm.get(field);
     return ctl?.errors?.['message'] || null;
@@ -196,7 +210,8 @@ export class VehiclesCategoryComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
       const file = input.files[0];
-      this.newCategory.category_image = file
+      this.newCategory.category_image = file;
+      this.vehicleCategoryForm.patchValue({ category_image: file });
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result as string;
@@ -205,18 +220,14 @@ export class VehiclesCategoryComponent implements OnInit {
     }
   }
 
-get filteredCategories() {
-  const query = this.searchQuery.toLowerCase().trim();
+  get filteredCategories() {
+    const query = this.searchQuery.toLowerCase().trim();
 
-  return this.vehicleCategories.filter((cat, index) =>
-    (cat.category_name || '').toLowerCase().includes(query) ||
-    (cat.category_description || '').toLowerCase().includes(query) ||
-    (cat.status || '').toLowerCase().includes(query) ||
-    (index + 1).toString().includes(query)
-  );
-}
-
-
-
-
+    return this.vehicleCategories.filter((cat, index) =>
+      (cat.category_name || '').toLowerCase().includes(query) ||
+      (cat.category_description || '').toLowerCase().includes(query) ||
+      (cat.status || '').toLowerCase().includes(query) ||
+      (index + 1).toString().includes(query)
+    );
+  }
 }

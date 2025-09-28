@@ -2,7 +2,6 @@
 const express = require('express');
 const { loginAdmin, registerAdmin } = require('../controllers/adminController');
 const router = express.Router();
-
 // Middleware to protect /register route
 const protectRegisterRoute = (req, res, next) => {
     const secretKey = req.headers['x-internal-key'];
@@ -14,11 +13,8 @@ const protectRegisterRoute = (req, res, next) => {
     }
     next();
 };
-
 // Admin Login Route
 router.post('/login', loginAdmin);
-
 // Protected Admin Register Route
 router.post('/register', protectRegisterRoute, registerAdmin);
-
 module.exports = router;

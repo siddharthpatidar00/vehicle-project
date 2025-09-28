@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './layout';
 import { LoginGuard } from '../guards/userAuth/login.guard'
 import { RegisterGuard } from '../guards/userAuth/register.guard'
+import { AuthGuard } from '../guards/userAuth/auth.guard';
 
 export const routes: Routes = [
   {
@@ -28,9 +29,18 @@ export const routes: Routes = [
         path: 'about',
         loadChildren: () => import('./views/about/routes').then((m) => m.routes)
       },
+      { 
+        path: 'dashboard', 
+        canActivate: [AuthGuard],  // ✅ Correct guard
+        loadChildren: () => import('./views/dashboard/routes').then(m => m.routes) 
+      },
       {
         path: 'faq',
         loadChildren: () => import('./views/faq/routes').then((m) => m.routes)
+      },
+      {
+        path: 'terms-and-conditions',
+        loadChildren: () => import('./views/term-and-conditions/routes').then((m) => m.routes)
       },
       {
         path: 'vehicle-detail',

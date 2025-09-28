@@ -11,16 +11,13 @@ exports.createCategory = async (req, res) => {
         if (!category_name) {
             return res.status(400).json({ message: 'Category name is required' });
         }
-
         const category_image = req.file?.filename ? `/uploads/${req.file.filename}` : '';
-
         const category = new VehicleCategory({
             category_name,
             category_description,
             category_image,
             status
         });
-
         await category.save();
         res.status(201).json({ message: 'Category created successfully', category });
     } catch (error) {

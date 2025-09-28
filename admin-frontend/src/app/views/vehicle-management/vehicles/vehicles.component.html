@@ -20,10 +20,10 @@
                     <tr>
                         <th class="px-4 py-2 border">S.No.</th>
                         <th class="px-4 py-2 border">Users</th>
-                        <th class="px-4 py-2 border">Phone Number</th>
                         <th class="px-4 py-2 border">Vehicle Name</th>
                         <th class="px-4 py-2 border">Model</th>
                         <th class="px-4 py-2 border">Brand</th>
+                        <th class="px-4 py-2 border">Created date</th>
                         <th class="px-4 py-2 border">Image</th>
                         <th class="px-4 py-2 border">Status</th>
                         <th class="px-4 py-2 border text-center">Actions</th>
@@ -31,35 +31,35 @@
                 </thead>
                 <tbody>
                     <tr
-                        *ngFor="let category of paginatedVehicles | slice:(currentPage - 1) * itemsPerPage:(currentPage * itemsPerPage); let i = index">
+                        *ngFor="let vehicle of paginatedVehicles | slice:(currentPage - 1) * itemsPerPage:(currentPage * itemsPerPage); let i = index">
                         <td class="px-4 py-2 border">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
-                        <td class="px-4 py-2 border">{{category.createdBy}}</td>
-                        <td class="px-4 py-2 border">{{ category.phone || '-' }}</td>
-                        <td class="px-4 py-2 border">{{ category.name }}</td>
-                        <td class="px-4 py-2 border">{{ category.model }}</td>
-                        <td class="px-4 py-2 border">{{ category.brand }}</td>
+                        <td class="px-4 py-2 border">{{vehicle.createdBy}}</td>
+                        <td class="px-4 py-2 border">{{ vehicle.name }}</td>
+                        <td class="px-4 py-2 border">{{ vehicle.model }}</td>
+                        <td class="px-4 py-2 border">{{ vehicle.brand }}</td>
+                        <td class="px-4 py-2 border">{{ vehicle.Created_date | date: 'dd-MM-YYYY'}}</td>
                         <td class="px-4 py-2 border w-45">
                             <div class="w-full h-24 flex items-center justify-center overflow-hidden border rounded">
-                                <img *ngIf="category.img" [src]="'http://localhost:5000' + category.img[0]"
-                                    alt="Vehicle" class="w-full h-full object-cover" />
+                                <img *ngIf="vehicle.img" [src]="'http://localhost:5000' + vehicle.img[0]" alt="Vehicle"
+                                    class="w-full h-full object-cover" />
                             </div>
                         </td>
                         <td class="px-4 py-2 border text-center">
                             <span class="px-2 py-1 text-white rounded" [ngClass]="{
-  'bg-green-500': category.status === 'Available',
-  'bg-red-500': category.status === 'Sold',
-  'bg-blue-500': category.status === 'Rented',
-  'bg-yellow-500': category.status === 'Maintenance',
-  'bg-orange-500': category.status === 'Inactive'
+  'bg-green-500': vehicle.status === 'Available',
+  'bg-red-500': vehicle.status === 'Sold',
+  'bg-blue-500': vehicle.status === 'Rented',
+  'bg-yellow-500': vehicle.status === 'Maintenance',
+  'bg-orange-500': vehicle.status === 'Inactive'
 }">
-                                {{ category.status }}
+                                {{ vehicle.status }}
                             </span>
 
                         </td>
 
                         <td class="px-4 py-2 border text-center">
                             <div class="flex items-center justify-center gap-2">
-                                <button (click)="openViewModal(category)" title="View" class="text-green-600">
+                                <button (click)="openViewModal(vehicle)" title="View" class="text-green-600">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -69,11 +69,10 @@
                                     </svg>
                                 </button>
 
-                                <button style="color: blue;" title="Edit" class="p-1" (click)="editVehicle(category)">
+                                <button style="color: blue;" title="Edit" class="p-1" (click)="editVehicle(vehicle)">
                                     <c-icon name="cil-pencil" class="w-5 h-5"></c-icon>
                                 </button>
-                                <button style="color: red;" title="Delete" class="p-1"
-                                    (click)="deleteVehicle(category)">
+                                <button style="color: red;" title="Delete" class="p-1" (click)="deleteVehicle(vehicle)">
                                     <c-icon name="cil-trash" class="w-5 h-5"></c-icon>
                                 </button>
                             </div>
@@ -86,7 +85,7 @@
         <!-- Mobile Cards -->
         <div class="sm:hidden flex flex-col space-y-4 p-2">
             <c-card class="shadow-sm rounded-lg"
-                *ngFor="let category of paginatedVehicles | slice:(currentPage - 1) * itemsPerPage:(currentPage * itemsPerPage); let i = index">
+                *ngFor="let vehicle of paginatedVehicles | slice:(currentPage - 1) * itemsPerPage:(currentPage * itemsPerPage); let i = index">
                 <c-card-body class="p-4">
                     <div class="flex justify-between mb-2">
                         <span class="font-semibold">S.No.</span>
@@ -94,29 +93,33 @@
                     </div>
                     <div class="flex justify-between mb-2">
                         <span class="font-semibold">Name</span>
-                        <span>{{ category.name }}</span>
+                        <span>{{ vehicle.name }}</span>
                     </div>
                     <div class="flex justify-between mb-2">
                         <span class="font-semibold">Model</span>
-                        <span>{{ category.model }}</span>
+                        <span>{{ vehicle.model }}</span>
                     </div>
                     <div class="flex justify-between mb-2">
                         <span class="font-semibold">Brand</span>
-                        <span>{{ category.brand }}</span>
+                        <span>{{ vehicle.brand }}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">Created date</span>
+                        <span>{{ vehicle.Created_date | date: 'dd-MM-YYYY' }}</span>
                     </div>
                     <div class="flex justify-between mb-4">
                         <span class="font-semibold">Image</span>
-                        <img *ngIf="category.img" [src]="'http://localhost:5000' + category.img"
+                        <img *ngIf="vehicle.img" [src]="'http://localhost:5000' + vehicle.img[0]"
                             class="w-24 h-16 object-cover rounded" alt="Vehicle" />
                     </div>
                     <div class="flex justify-between mb-2">
                         <span class="font-semibold">Status</span>
                         <button class="font-semibold">
-                            {{ category.status }}
+                            {{ vehicle.status }}
                         </button>
                     </div>
                     <div class="flex items-center justify-end gap-2 mt-4">
-                        <button (click)="openViewModal(category)" title="View" class="text-green-600">
+                        <button (click)="openViewModal(vehicle)" title="View" class="text-green-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -125,10 +128,10 @@
                                     d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z" />
                             </svg>
                         </button>
-                        <button title="Edit" (click)="editVehicle(category)" class="text-blue-600">
+                        <button title="Edit" (click)="editVehicle(vehicle)" class="text-blue-600">
                             <c-icon name="cil-pencil" class="w-5 h-5"></c-icon>
                         </button>
-                        <button title="Delete" (click)="deleteVehicle(category)" class="text-red-600">
+                        <button title="Delete" (click)="deleteVehicle(vehicle)" class="text-red-600">
                             <c-icon name="cil-trash" class="w-5 h-5"></c-icon>
                         </button>
                     </div>
@@ -170,14 +173,14 @@
                     class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
 
-            <!-- Brand & Category Row -->
+            <!-- Brand & vehicle Row -->
             <div class="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div class="text-black">
                     <label class="block mb-1 text-sm font-medium">Brand</label>
                     <select formControlName="brand"
                         class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">-- Select Brand --</option>
-                        <option *ngFor="let b of brands" [value]="b.brand_name">
+                        <option *ngFor="let b of brands" [value]="b.brand_name.trim()">
                             {{ b.brand_name }}
                         </option>
                     </select>
@@ -187,11 +190,11 @@
                 </div>
 
                 <div class="text-black">
-                    <label class="block mb-1 text-sm font-medium">Category</label>
+                    <label class="block mb-1 text-sm font-medium">Vehicle</label>
                     <select formControlName="category"
                         class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">-- Select Category --</option>
-                        <option *ngFor="let c of categories" [value]="c.category_name">
+                        <option value="">-- Select vehicle --</option>
+                        <option *ngFor="let c of categories" [value]="c.category_name.trim()">
                             {{ c.category_name }}
                         </option>
                     </select>
@@ -199,6 +202,7 @@
                         {{ getError('category') }}
                     </small>
                 </div>
+
             </div>
             <div class="text-black">
                 <label class="block mb-1 text-sm font-medium">KM Driven</label>
@@ -219,8 +223,8 @@
 
             <div class="text-black">
                 <label class="block mb-1 text-sm font-medium">Manufacture Year</label>
-                <input type="number" formControlName="manufacture_year" placeholder="Enter Manufacture Year" min="1900" max="2099"
-                    step="1"
+                <input type="number" formControlName="manufacture_year" placeholder="Enter Manufacture Year" min="1900"
+                    max="2099" step="1"
                     class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
 
@@ -296,6 +300,9 @@
                         </button>
                     </div>
                 </div>
+                <small class="text-red-500" *ngIf="submitted && getError('img')">
+                    {{ getError('img') }}
+                </small>
             </div>
 
 
@@ -343,12 +350,17 @@
                         <td class="p-3 text-gray-800 border border-gray-300">{{ selectedVehicle.brand }}</td>
                     </tr>
                     <tr>
-                        <td class="p-3 font-medium text-gray-600 border border-gray-300">Category</td>
+                        <td class="p-3 font-medium text-gray-600 border border-gray-300">vehicle</td>
                         <td class="p-3 text-gray-800 border border-gray-300">{{ selectedVehicle.category_name }}</td>
                     </tr>
                     <tr>
                         <td class="p-3 font-medium text-gray-600 border border-gray-300">Phone Number</td>
                         <td class="p-3 text-gray-800 border border-gray-300">{{ selectedVehicle.phone || '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-medium text-gray-600 border border-gray-300">Created date</td>
+                        <td class="p-3 text-gray-800 border border-gray-300">{{ selectedVehicle.Created_date |
+                            date:'dd-MM-YYYY' }}</td>
                     </tr>
                     <tr>
                         <td class="p-3 font-medium text-gray-600 border border-gray-300">KM Driven</td>

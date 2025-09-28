@@ -8,22 +8,15 @@ const {
     updateCustomer,
     deleteCustomer
 } = require('../controllers/customersController');
-
-const { protect, adminOnly } = require('../middleware/authMiddleware');
-
+const { protect,adminOrStaffOnly } = require('../middleware/authMiddleware');
 // PUBLIC: Get all customers
 router.get('/', getAllCustomers);
-
 // PUBLIC: Get single customer
 router.get('/:id', getCustomerById);
-
 // ADMIN ONLY: Create customer with image
-router.post('/', protect, adminOnly, upload.single('image'), createCustomer);
-
+router.post('/', protect, adminOrStaffOnly, upload.single('image'), createCustomer);
 // ADMIN ONLY: Update customer with optional new image
-router.put('/:id', protect, adminOnly, upload.single('image'), updateCustomer);
-
+router.put('/:id', protect, adminOrStaffOnly, upload.single('image'), updateCustomer);
 // ADMIN ONLY: Delete customer
-router.delete('/:id', protect, adminOnly, deleteCustomer);
-
+router.delete('/:id', protect, adminOrStaffOnly, deleteCustomer);
 module.exports = router;

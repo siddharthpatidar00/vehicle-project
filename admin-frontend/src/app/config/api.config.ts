@@ -17,4 +17,5 @@ export const API_ENDPOINTS = {
     HappyCustomer:`${API_BASE_URL}/customer`,
     Contact:`${API_BASE_URL}/contact`,
     Advertisement:`${API_BASE_URL}/advertisements`,
+    BothLoginRoutes:`${API_BASE_URL}/login`
 };

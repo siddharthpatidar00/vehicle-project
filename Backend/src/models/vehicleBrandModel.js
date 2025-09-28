@@ -17,6 +17,9 @@ const VehicleBrandSchema = new mongoose.Schema({
         enum: ['Active', 'Inactive'],
         default: 'Active'
     }
+},
+{
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } 
 });
 
 module.exports = mongoose.model('Vehicle_brands', VehicleBrandSchema);

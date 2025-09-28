@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const vehiclesController = require('../controllers/vehiclesController');
 const upload = require('../config/multerConfig');
-const { protect, adminOnly } = require('../middleware/authMiddleware');
+const { protect ,adminOrStaffOnly} = require('../middleware/authMiddleware');
 
 router.post('/', protect, upload.array('img', 5), vehiclesController.createVehicle);
 
@@ -17,10 +17,10 @@ router.get('/', vehiclesController.getAllVehicles);
 router.get('/:id', vehiclesController.getVehicleById);
 
 // Update vehicle (only logged-in User/Admin)
-router.put('/:id', protect, adminOnly, upload.array('img', 5), vehiclesController.updateVehicle);
+router.put('/:id', protect, adminOrStaffOnly, upload.array('img', 5), vehiclesController.updateVehicle);
 
 
 // Delete vehicle (only logged-in User/Admin)
-router.delete('/:id', protect, adminOnly, vehiclesController.deleteVehicle);
+router.delete('/:id', protect, adminOrStaffOnly, vehiclesController.deleteVehicle);
 
 module.exports = router;

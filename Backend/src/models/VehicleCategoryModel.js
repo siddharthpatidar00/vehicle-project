@@ -1,10 +1,10 @@
 // models/VehicleCategoryModel.js
 const mongoose = require('mongoose');
 
+// models/VehicleCategoryModel.js
 const VehicleCategorySchema = new mongoose.Schema({
     category_name: {
         type: String,
-        required: true,
     },
     category_description: {
         type: String
@@ -17,6 +17,8 @@ const VehicleCategorySchema = new mongoose.Schema({
         enum: ['Active', 'Inactive'],
         default: 'Active'
     }
+}, {
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } 
 });
 
 module.exports = mongoose.model('Vehicle_categories', VehicleCategorySchema);

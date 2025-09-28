@@ -10,4 +10,9 @@ export const vehicleCategorySchema = yup.object({
         .string()
         .trim()
         .required('Category description is required.'),
+    
+    category_image: yup
+    .string()
+    .required('Category image is required.')
+
 });

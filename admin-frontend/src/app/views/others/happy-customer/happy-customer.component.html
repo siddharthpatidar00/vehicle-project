@@ -12,7 +12,8 @@
         </div>
     </c-card-header>
 
-    <div class="overflow-x-auto p-2">
+    <!-- Desktop Table -->
+    <div class="hidden sm:block overflow-x-auto p-2">
         <table class="min-w-full text-sm text-left border shadow-md rounded-lg">
             <thead>
                 <tr>
@@ -24,15 +25,23 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let happy of paginatedCustomers">
+                <tr *ngFor="let happy of paginatedCustomers; let i = index">
                     <td class="px-4 py-2 border">{{ happy.serial }}</td>
                     <td class="px-4 py-2 border">{{ happy.name }}</td>
                     <td class="px-4 py-2 border text-center justify-center flex">
                         <div class="w-22 h-22 text-center justify-center flex">
-                            <img [src]="happy.image" alt="Customer Image" class="w-full h-full object-cover" />
+                            <img [src]="happy.image" alt="Customer Image" class="w-full h-full object-cover rounded" />
                         </div>
                     </td>
                     <td class="px-4 py-2 border">{{ happy.message }}</td>
+                    <!-- <td class="px-4 py-2 border flex gap-2">
+                        <button style="color: blue;" title="Edit" class="p-1" (click)="openEditModal(happy)">
+                            <c-icon name="cil-pencil" class="w-5 h-5"></c-icon>
+                        </button>
+                        <button style="color: red;" title="Delete" class="p-1" (click)="openDeleteModal(happy)">
+                            <c-icon name="cil-trash" class="w-5 h-5"></c-icon>
+                        </button>
+                    </td> -->
                     <td class="px-4 py-2 border"><button style="color: blue;" title="Edit" class="p-1"
                             (click)="openEditModal(happy)">
                             <c-icon name="cil-pencil" class="w-5 h-5"></c-icon>
@@ -47,22 +56,54 @@
         </table>
     </div>
 
+    <!-- Mobile Cards -->
+    <div class="sm:hidden flex flex-col space-y-4 p-2">
+        <c-card class="shadow-sm rounded-lg" *ngFor="let happy of paginatedCustomers; let i = index">
+            <c-card-body class="p-4 space-y-2">
+                <div class="flex justify-between">
+                    <span class="font-semibold">S.No.</span>
+                    <span>{{ happy.serial }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="font-semibold">Name</span>
+                    <span>{{ happy.name }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="font-semibold">Image</span>
+                    <span><img [src]="happy.image" alt="Customer Image" class="w-24 h-24 object-cover rounded" /></span>
+                </div>
+                <div class="flex justify-between gap-8">
+                    <span class="font-semibold">Message</span>
+                    <span>{{ happy.message }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="font-semibold">Action</span>
+                    <span>
+                    <button style="color: blue; margin-right: 10px;" title="Edit" (click)="openEditModal(happy)">
+                        <c-icon name="cil-pencil" class="w-5 h-5"></c-icon>
+                    </button>
+                    <button style="color: red;" title="Delete" (click)="openDeleteModal(happy)">
+                        <c-icon name="cil-trash" class="w-5 h-5"></c-icon>
+                    </button>
+                    </span>
+                </div>
+            </c-card-body>
+        </c-card>
+    </div>
+
     <!-- Pagination Controls -->
     <app-pagination class="!z-0" [currentPage]="currentPage" [totalPages]="totalPages"
         (pageChange)="onPageChange($event)">
     </app-pagination>
 
-
+    <!-- Delete Confirmation Modal -->
     <app-confirm-modal [visible]="selectedCustomerId !== null" title="Delete Customer"
         message="Are you sure you want to delete this customer?" confirmText="Delete" cancelText="Cancel"
         (onConfirm)="handleConfirmDelete()" (onCancel)="selectedCustomerId = null">
     </app-confirm-modal>
-
 </c-card>
 
-
-
-<!-- Add/Edit Modal -->
+<!-- Add/Edit Modal (Responsive Already) -->
 <div *ngIf="showModal"
     class="fixed inset-0 bg-opacity-40 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 sm:p-6">
     <div class="bg-white w-full max-w-md sm:max-w-lg rounded-lg shadow-xl p-3 sm:p-6 space-y-5">

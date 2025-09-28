@@ -42,6 +42,7 @@ exports.createVehicle = async (req, res) => {
             phone: phone || null,
             status: status || 'Inactive',
             createdBy: req.user.role,
+            createdById: req.user.id,
             img
         });
 
@@ -89,7 +90,7 @@ exports.getAllVehicles = async (req, res) => {
                 filter.price.$lte = Number(maxPrice);
             }
         }
-        console.log(filter)
+        // console.log(filter)
         const vehicles = await Vehicles.find(filter)
             .populate('category_id')
             .populate('brand_id')

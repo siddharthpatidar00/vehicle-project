@@ -15,6 +15,7 @@
                     <th class="px-4 py-2 border">Full Name</th>
                     <th class="px-4 py-2 border">Email</th>
                     <th class="px-4 py-2 border">Mobile Number</th>
+                    <th class="px-4 py-2 border">Created date</th>
                     <th class="px-4 py-2 border">Loan Amount</th>
                     <th class="px-4 py-2 border">Tenure</th>
                     <th class="px-4 py-2 border">Vehicle Detail</th>
@@ -26,6 +27,7 @@
                     <td class="px-4 py-2 border">{{ loan.fullName }}</td>
                     <td class="px-4 py-2 border">{{ loan.email }}</td>
                     <td class="px-4 py-2 border">{{ loan.mobile }}</td>
+                    <td class="px-4 py-2 border">{{ loan.createdAt | date:'dd-MM-YYYY' }}</td>
                     <td class="px-4 py-2 border">{{ loan.loanAmount }}</td>
                     <td class="px-4 py-2 border">{{ loan.tenure }}</td>
                     <td class="px-4 py-2 border flex items-center justify-between">
@@ -84,6 +86,11 @@
                 <div class="flex justify-between mb-2">
                     <span class="font-semibold">Tenure</span>
                     <span>{{loan.tenure}}</span>
+                </div>
+
+                <div class="flex justify-between mb-2">
+                    <span class="font-semibold">Created date</span>
+                    <span>{{loan.createdAt | date:'dd-MM-YYYY'}}</span>
                 </div>
 
                 <!-- FIXED Vehicle Details row -->

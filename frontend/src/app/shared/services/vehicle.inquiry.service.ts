@@ -15,6 +15,10 @@ export interface PartialVehicleInquiry {
     buy_sell_rent: 'Buy' | 'Sell' | 'Rent';
     enquiry_type: 'Individual' | 'Company';
     message?: string | null;
+    status: string;
+    loan_status?: string;
+    delivery_status?: string;
+    created_date: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -32,5 +36,15 @@ export class VehicleInquiryService {
         }
 
         return this.http.post<any>(this.baseUrl, data, { headers });
+    }
+
+    getUserEnquiries(): Observable<PartialVehicleInquiry[]> {
+        const token = localStorage.getItem(this.tokenKey);
+        let headers = new HttpHeaders();
+        if (token) {
+            headers = headers.set('Authorization', `Bearer ${token}`);
+        }
+
+        return this.http.get<PartialVehicleInquiry[]>(`${this.baseUrl}/my-enquiries`, { headers });
     }
 }

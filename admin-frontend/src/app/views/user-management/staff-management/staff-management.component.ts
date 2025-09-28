@@ -84,20 +84,34 @@ export class StaffManagementComponent implements OnInit {
     // this.resetForm();
   }
 
-  onSubmit() {
-    this.form.markAllAsTouched();
-    this.staffService.createStaff(this.form.value!).subscribe({
-      next: (res) => {
-        this.toast.success('Staff added successfully');
-        this.form.reset({ user_type: 'subadmin', status: 'Active' });
-      },
-      error: (err) => {
-        if (err?.error?.message === 'Email already registered') {
-          this.toast.error('Email is already in use');
-        }
+  
+onSubmit() {
+  this.form.markAllAsTouched();
+  this.staffService.createStaff(this.form.value!).subscribe({
+    next: (res) => {
+      this.toast.success('Staff added successfully');
+      this.form.reset({ user_type: 'subadmin', status: 'Active' });
+      this.loadStaffList(); // refresh list after create
+      this.showAddForm = false;  // close the create form
+      this.showStaffList = true;
+    },
+    error: (err) => {
+      const backendMsg = err?.error?.message || err?.error?.detail;
+      if (backendMsg === 'Email already registered') {
+        this.toast.error('Email is already in use');
+      } else if (backendMsg === 'Staff cannot create a new staff') {
+        this.toast.error('Staff users are not allowed to create new staff');
+      } else if (backendMsg) {
+        // show specific backend message for easier debugging
+        this.toast.error(backendMsg);
+      } else {
+        this.toast.error('Something went wrong');
       }
-    });
-  }
+    }
+  });
+}
+
+
 
   private setPaginatedStaff() {
     const query = this.searchQuery.toLowerCase().trim();

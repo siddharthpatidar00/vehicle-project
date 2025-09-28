@@ -17,6 +17,7 @@ const filterRoutes = require("./src/routes/filterRoutes");
 const customer = require("./src/routes/customerRoutes")
 const adRoutes = require('./src/routes/adRoutes');
 const contactRoutes = require('./src/routes/contactRoutes');
+const authRoutes = require('./src/routes/authRoutes')
 
 const { errorHandler } = require('./src/middleware/errorMiddleware');
 
@@ -57,6 +58,7 @@ app.use("/api/filter", filterRoutes);
 app.use("/api/customer",customer)
 app.use('/api/advertisements', adRoutes); 
 app.use('/api/contact', contactRoutes);
+app.use('/api/login',authRoutes)
 
 
 app.use(errorHandler);

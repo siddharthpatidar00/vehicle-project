@@ -24,6 +24,7 @@ export interface Vehicle {
     sell_or_rent: 'Sell' | 'Rent';
     createdBy: string;
     img?: string[];
+    Created_date: string
 }
 
 @Injectable({ providedIn: 'root' })

@@ -11,8 +11,8 @@ import {
 } from '@angular/forms';
 import { BrandService, Brand } from '../../../services/brand.service';
 import { brandSchema } from '../../../schema/brand.schema';
-import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component'
-import {ToastService} from '../../../services/toast.service'
+import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-brand',
@@ -57,7 +57,11 @@ export class BrandComponent implements OnInit {
 
   brand = brandSchema;
 
-  constructor(private brandService: BrandService, private fb: FormBuilder, private toast : ToastService ) { }
+  constructor(
+    private brandService: BrandService,
+    private fb: FormBuilder,
+    private toast: ToastService
+  ) { }
 
   ngOnInit() {
     this.loadBrands();
@@ -65,6 +69,7 @@ export class BrandComponent implements OnInit {
     this.brandForm = this.fb.group({
       brand_name: [''],
       brand_description: [''],
+      brand_image: ['']
     });
   }
 
@@ -82,7 +87,10 @@ export class BrandComponent implements OnInit {
   }
 
   loadBrands() {
-    this.brandService.getAll().subscribe((data) => (this.brands = data));
+    this.brandService.getAll().subscribe({
+      next: (data) => this.brands = data,
+      error: (err) => this.toast.error(err.error?.message || 'Failed to load brands')
+    });
   }
 
   openModal() {
@@ -112,7 +120,11 @@ export class BrandComponent implements OnInit {
     this.submitted = true;
     this.formErrors = {};
 
-    const dataToValidate = this.brandForm.getRawValue();
+    // const dataToValidate = this.brandForm.getRawValue();
+    const dataToValidate = {
+      ...this.brandForm.getRawValue(),
+      category_image: this.newBrand.brand_image,
+    };
 
     this.brand
       .validate(dataToValidate, { abortEarly: false })
@@ -123,13 +135,21 @@ export class BrandComponent implements OnInit {
         };
 
         if (this.editMode && this.selectedId) {
-          this.brandService
-            .update(this.selectedId, payload as Brand)
-            .subscribe(() => this.afterSubmit());
+          this.brandService.update(this.selectedId, payload as Brand).subscribe({
+            next: (res: any) => {
+              this.afterSubmit();
+              this.toast.success(res.message);
+            },
+            error: (err) => this.toast.error(err.error?.message || 'Failed to update brand')
+          });
         } else {
-          this.brandService
-            .create(payload as Brand)
-            .subscribe(() => this.afterSubmit());
+          this.brandService.create(payload as Brand).subscribe({
+            next: (res: any) => {
+              this.afterSubmit();
+              this.toast.success(res.message);
+            },
+            error: (err) => this.toast.error(err.error?.message || 'Failed to add brand')
+          });
         }
       })
       .catch((err) => {
@@ -138,6 +158,7 @@ export class BrandComponent implements OnInit {
             this.formErrors[error.path] = error.message;
             this.brandForm.get(error.path)?.setErrors({ message: error.message });
           }
+          // this.toast.error(err.inner[0].message);
         }
       });
   }
@@ -145,11 +166,6 @@ export class BrandComponent implements OnInit {
   afterSubmit() {
     this.loadBrands();
     this.closeModal();
-      if (this.editMode) {
-    this.toast.success('Brand updated successfully');
-  } else {
-    this.toast.success('Brand added successfully');
-  }
   }
 
   deleteBrand(id: string) {
@@ -159,11 +175,14 @@ export class BrandComponent implements OnInit {
 
   handleConfirmDelete() {
     if (this.confirmBrandId) {
-      this.brandService.delete(this.confirmBrandId).subscribe(() => {
-        this.loadBrands();
-        this.toast.success('Brand deleted successfully');
-        this.confirmVisible = false;
-        this.confirmBrandId = null;
+      this.brandService.delete(this.confirmBrandId).subscribe({
+        next: (res: any) => {
+          this.loadBrands();
+          this.toast.success(res.message);
+          this.confirmVisible = false;
+          this.confirmBrandId = null;
+        },
+        error: (err) => this.toast.error(err.error?.message || 'Failed to delete brand')
       });
     }
   }
@@ -177,8 +196,11 @@ export class BrandComponent implements OnInit {
     if (!brand._id) return;
     const newStatus = brand.status === 'Active' ? 'Inactive' : 'Active';
     this.brandService.toggleStatus(brand._id, newStatus).subscribe({
-      next: () => this.loadBrands(),
-      error: (err) => this.toast.error('Failed to toggle status'),
+      next: (res: any) => {
+        this.loadBrands();
+        this.toast.success(res.message);
+      },
+      error: (err) => this.toast.error(err.error?.message || 'Failed to toggle status'),
     });
   }
 
@@ -195,7 +217,6 @@ export class BrandComponent implements OnInit {
     this.brandForm?.reset();
   }
 
-
   getError(field: string) {
     const ctl = this.brandForm.get(field);
     return ctl?.errors?.['message'] || null;
@@ -206,7 +227,7 @@ export class BrandComponent implements OnInit {
     if (input.files && input.files.length) {
       const file = input.files[0];
       this.newBrand.brand_image = file;
-
+      this.brandForm.patchValue({ brand_image: file });
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result as string;
@@ -215,16 +236,14 @@ export class BrandComponent implements OnInit {
     }
   }
 
-get filteredBrands() {
-  const query = this.searchQuery.toLowerCase().trim();
+  get filteredBrands() {
+    const query = this.searchQuery.toLowerCase().trim();
 
-  return this.brands.filter((cat, index) =>
-    (cat.brand_name || '').toLowerCase().includes(query) ||
-    (cat.brand_description || '').toLowerCase().includes(query) ||
-    (cat.status || '').toLowerCase().includes(query) ||
-    (index + 1).toString().includes(query)
-  );
-}
-
-
+    return this.brands.filter((cat, index) =>
+      (cat.brand_name || '').toLowerCase().includes(query) ||
+      (cat.brand_description || '').toLowerCase().includes(query) ||
+      (cat.status || '').toLowerCase().includes(query) ||
+      (index + 1).toString().includes(query)
+    );
+  }
 }

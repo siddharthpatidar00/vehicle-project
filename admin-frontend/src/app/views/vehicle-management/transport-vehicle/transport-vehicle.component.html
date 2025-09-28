@@ -17,7 +17,8 @@
                         <th class="px-4 py-2 border">Name</th>
                         <th class="px-4 py-2 border">Pickup location</th>
                         <th class="px-4 py-2 border">Drop location</th>
-                        <th class="px-4 py-2 border">Shifting date</th>
+                        <th class="px-4 py-2 border">Created date</th>
+                        <th class="px-4 py-2 border">Shipping date</th>
                         <th class="px-4 py-2 border">Vehicle detail</th>
                         <th class="px-4 py-2 border">Phone No.</th>
                         <th class="px-4 py-2 border">Status</th>
@@ -30,6 +31,7 @@
                         <td class="px-4 py-2 border">{{ category.name }}</td>
                         <td class="px-4 py-2 border">{{ category.pickup_location }}</td>
                         <td class="px-4 py-2 border">{{ category.drop_location }}</td>
+                        <td class="px-4 py-2 border">{{ category.created_date | date: 'dd-MM-YYYY' }}</td>
                         <td class="px-4 py-2 border">{{ category.shifting_date | date: 'dd-MM-yyyy' }}</td>
                         <td class="px-4 py-2 border">{{ category.vehicle_detail}}</td>
                         <td class="px-4 py-2 border">{{ category.phone_number }}</td>

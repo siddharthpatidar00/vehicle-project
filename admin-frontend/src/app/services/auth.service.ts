@@ -1,3 +1,52 @@
+// import { Injectable } from '@angular/core';
+// import { Router } from '@angular/router';
+
+// @Injectable({
+//     providedIn: 'root',
+// })
+// export class AuthService {
+//     constructor(private router: Router) { }
+
+//     setToken(token: string): void {
+//         localStorage.setItem('token', token);
+//     }
+
+//     getToken(): string | null {
+//         return localStorage.getItem('token');
+//     }
+
+//     isLoggedIn(): boolean {
+//         return this.getToken() !== null;
+//     }
+
+//     logout(): void {
+//         localStorage.removeItem('token');
+//         this.router.navigate(['/login']);
+//     }
+
+//      // ✅ Extract user ID from JWT payload
+//     getUserId(): string | null {
+//         const token = this.getToken();
+//         if (!token) return null;
+
+//         try {
+//             const payload = JSON.parse(atob(token.split('.')[1]));
+//             return payload._id || payload.id || null; // adjust key name if backend sends it differently
+//         } catch (error) {
+//             console.error('Failed to decode token', error);
+//             return null;
+//         }
+//     }
+
+// }
+
+
+
+
+
+
+
+// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -7,35 +56,52 @@ import { Router } from '@angular/router';
 export class AuthService {
     constructor(private router: Router) { }
 
+    // Save JWT token to localStorage
     setToken(token: string): void {
         localStorage.setItem('token', token);
     }
 
+    // Retrieve JWT token from localStorage
     getToken(): string | null {
         return localStorage.getItem('token');
     }
 
+    // Check if user is logged in
     isLoggedIn(): boolean {
         return this.getToken() !== null;
     }
 
+    // Logout user
     logout(): void {
         localStorage.removeItem('token');
         this.router.navigate(['/login']);
     }
-    
-     // ✅ Extract user ID from JWT payload
-    getUserId(): string | null {
+
+    // Decode JWT payload safely
+    private decodeToken(): any | null {
         const token = this.getToken();
         if (!token) return null;
 
         try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            return payload._id || payload.id || null; // adjust key name if backend sends it differently
+            return JSON.parse(atob(token.split('.')[1]));
         } catch (error) {
             console.error('Failed to decode token', error);
             return null;
         }
     }
 
+    // Extract user ID from token
+getUserId(): string | null {
+    const payload = this.decodeToken();
+    if (!payload) return null;
+    return payload.id || payload._id || null;
+}
+
+
+    // Extract user role from token
+getUserRole(): string | null {
+    const payload = this.decodeToken();
+    if (!payload) return null;
+    return payload.role || null; // Staff or Admin
+}
 }

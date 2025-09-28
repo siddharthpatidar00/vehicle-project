@@ -27,5 +27,4 @@ export class StaffService {
         return this.http.get<Staff[]>(this.baseUrl);
     }
 
-    // ... you can add updateStaff, deleteStaff here if needed
 }

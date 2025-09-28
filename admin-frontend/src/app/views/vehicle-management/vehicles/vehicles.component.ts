@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +12,7 @@ import { AuthService } from '../../../services/auth.service';
 import { ConfirmModalComponent } from "../../shared/confirm-modal/confirm-modal.component";
 import { ToastService } from '../../../services/toast.service';
 import { vehicleSchema } from '../../../schema/vehicle.schema';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-vehicles',
@@ -53,6 +53,7 @@ export class VehiclesComponent implements OnInit {
   categories: VehicleCategory[] = [];
   selectedImageFiles: File[] = [];
   imagePreviews: string[] = [];
+  loading = false;
 
   constructor(
     private vehicleService: VehicleService,
@@ -64,9 +65,27 @@ export class VehiclesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.initForm();
+
+    // Load brands & categories once in parallel
+    forkJoin({
+      brands: this.brandService.getAll(),
+      categories: this.vehicleCategoryService.getAll()
+    }).subscribe({
+      next: ({ brands, categories }) => {
+        this.brands = brands.filter(b => b.status === 'Active');
+        this.categories = categories.filter(c => c.status === 'Active');
+      },
+      error: () => {
+        this.toast.error("Failed to load brands or categories");
+      }
+    });
+
+    // Load vehicles separately
     this.loadVehicles();
-    this.loadBrands();
-    this.loadCategories();
+  }
+
+  initForm() {
     this.vehicleForm = this.fb.group({
       name: [''],
       model: [''],
@@ -81,34 +100,21 @@ export class VehiclesComponent implements OnInit {
       phone: [''],
       status: [''],
       sell_or_rent: [''],
-      description: ['']
+      description: [''],
+      img: ['']
     });
   }
 
   loadVehicles() {
-    this.vehicleService.getAll(true).subscribe(data => {
-      this.vehicles = data;
-    });
-  }
-
-  loadBrands() {
-    this.brandService.getAll().subscribe({
+    this.loading = true;
+    this.vehicleService.getAll(true).subscribe({
       next: (data) => {
-        this.brands = data.filter(b => b.status === 'Active');
+        this.vehicles = data;
+        this.loading = false;
       },
       error: () => {
-        this.toast.error("Failed to load brands");
-      }
-    });
-  }
-
-  loadCategories() {
-    this.vehicleCategoryService.getAll().subscribe({
-      next: (data) => {
-        this.categories = data.filter(c => c.status === 'Active');
-      },
-      error: () => {
-        this.toast.error("Failed to load categories");
+        this.toast.error("Failed to load vehicles");
+        this.loading = false;
       }
     });
   }
@@ -133,21 +139,14 @@ export class VehiclesComponent implements OnInit {
     this.formErrors = {};
   }
 
-  // onFileSelected(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   this.selectedImageFile = input.files?.[0] || null;
-  // }
-
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files) {
       const files = Array.from(input.files);
-
       if (files.length + this.selectedImageFiles.length > 5) {
         this.toast.error('You can upload a maximum of 5 images.');
         return;
       }
-
       files.forEach(file => {
         this.selectedImageFiles.push(file);
         this.imagePreviews.push(URL.createObjectURL(file));
@@ -178,18 +177,17 @@ export class VehiclesComponent implements OnInit {
     this.submitted = true;
     this.formErrors = {};
     const formRaw = this.vehicleForm.getRawValue();
+    const schema = vehicleSchema(this.editMode);
 
-    this.vehiclesValidation.validate(formRaw, { abortEarly: false })
+    schema.validate(formRaw, { abortEarly: false })
       .then(() => {
         const formData = new FormData();
-
-        // Append form fields
         Object.entries({ ...this.newVehicle, ...formRaw }).forEach(([key, val]) => {
           if (val != null) {
             formData.append(key, val as string | Blob);
           }
         });
-        // Ensure category_name is always a string
+
         const categoryValue = Array.isArray(formRaw.category) ? formRaw.category[0] : formRaw.category;
         formData.append('category_name', categoryValue || '');
 
@@ -201,21 +199,18 @@ export class VehiclesComponent implements OnInit {
           }
           formData.append('created_by', userId);
         }
-        // --- Handle Images ---
+
         if (this.editMode && this.newVehicle._id) {
-          // Convert previews back to original paths for backend
           const existingPaths = (this.imagePreviews || [])
-            .filter(url => !url.startsWith('blob:')) // ignore new blobs
+            .filter(url => !url.startsWith('blob:'))
             .map(url => url.replace('http://localhost:5000', ''));
           formData.append('existingImages', JSON.stringify(existingPaths));
         }
 
-        // Append newly selected files
         if (this.selectedImageFiles.length > 0) {
           this.selectedImageFiles.forEach(file => formData.append('img', file));
         }
 
-        // Call API
         if (this.editMode && this.newVehicle._id) {
           this.vehicleService.update(this.newVehicle._id, formData).subscribe({
             next: () => {
@@ -223,7 +218,7 @@ export class VehiclesComponent implements OnInit {
               this.closeModal();
               this.loadVehicles();
             },
-            error: (err) => {
+            error: (err: any) => {
               console.error("Update error:", err);
               this.toast.error("Failed to update vehicle");
             }
@@ -231,18 +226,18 @@ export class VehiclesComponent implements OnInit {
         } else {
           this.vehicleService.create(formData).subscribe({
             next: () => {
-              this.toast.success( "Vehicle added successfully");
+              this.toast.success("Vehicle added successfully");
               this.closeModal();
               this.loadVehicles();
             },
-            error: (err) => {
+            error: (err: any) => {
               console.error("Create error:", err);
               this.toast.error("Failed to create vehicle");
             }
           });
         }
       })
-      .catch((err) => {
+      .catch((err: any) => {
         if (err.inner && Array.isArray(err.inner)) {
           for (const error of err.inner) {
             this.formErrors[error.path] = error.message;
@@ -252,36 +247,38 @@ export class VehiclesComponent implements OnInit {
       });
   }
 
-
-  editVehicle(v: Vehicle) {
-    this.newVehicle = { ...v };
+  editVehicle(vehicle: Vehicle) {
+    this.resetForm();
+    this.newVehicle = { ...vehicle };
     this.editMode = true;
-    this.showModal = true;
+
+    // Patch basic data first for faster modal open
     this.vehicleForm.patchValue({
-      name: v.name,
-      model: v.model,
-      brand: v.brand,
-      category: v.category_name,
-      km_driven: v.km_driven,
-      ownership: v.ownership,
-      manufacture_year: v.manufacture_year,
-      isInsured: v.isInsured,
-      insuranceValidTill: v.insuranceValidTill,
-      price: v.price,
-      status: v.status,
-      sell_or_rent: v.sell_or_rent,
-      description: v.description,
+      name: vehicle.name,
+      model: vehicle.model,
+      brand: vehicle.brand,
+      category: vehicle.category_name,
+      km_driven: vehicle.km_driven,
+      ownership: vehicle.ownership,
+      manufacture_year: vehicle.manufacture_year,
+      isInsured: vehicle.isInsured,
+      insuranceValidTill: vehicle.insuranceValidTill,
+      price: vehicle.price,
+      status: vehicle.status,
+      sell_or_rent: vehicle.sell_or_rent,
+      description: vehicle.description
     });
 
-    // Show existing images as previews
-    this.imagePreviews = (v.img || []).map(img =>
-      img.startsWith('http') ? img : `http://localhost:5000${img}`
-    );
+    // Load images after modal open
+    setTimeout(() => {
+      this.imagePreviews = (vehicle.img || []).map(img =>
+        img.startsWith('http') ? img : `http://localhost:5000${img}`
+      );
+    }, 100);
 
-    // Keep selectedImageFiles empty initially, will append new files if user selects
     this.selectedImageFiles = [];
+    this.showModal = true;
   }
-
 
   deleteVehicle(vehicle: Vehicle) {
     this.confirmVehicleId = vehicle._id || null;

@@ -10,11 +10,12 @@ export interface Brand {
     brand_description: string;
     status: 'Active' | 'Inactive';
     brand_image?: File | string;
+    createdAt?: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class BrandService {
-    private baseUrl = API_ENDPOINTS.vehicleBrand; 
+    private baseUrl = API_ENDPOINTS.vehicleBrand;
 
     constructor(private http: HttpClient) { }
 

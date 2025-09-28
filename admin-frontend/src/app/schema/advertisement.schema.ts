@@ -19,6 +19,6 @@ export const advertisementSchema = (isEdit: boolean = false) => yup.object({
         .required('End date is required.'),
 
     image: isEdit
-        ? yup.mixed()  
+        ? yup.mixed().nullable() 
         : yup.mixed().required('Image is required.')  
 });

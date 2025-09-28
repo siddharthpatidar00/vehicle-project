@@ -11,6 +11,7 @@ export interface Loan {
     tenure?: number;
     annualIncome?: number;
     vehicleDetail?: string;
+    createdAt?: string
 }
 
 @Injectable({ providedIn: 'root' })

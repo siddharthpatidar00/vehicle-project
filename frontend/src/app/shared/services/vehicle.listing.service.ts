@@ -38,4 +38,9 @@ export class VehicleListingService {
     getVehicleByName(name: string): Observable<SellVehicle> {
         return this.http.get<SellVehicle>(`${this.baseUrl}/by-name/${encodeURIComponent(name)}`);
     }
+
+    getVehiclesByUserId(userId: string): Observable<SellVehicle[]> {
+        return this.http.get<SellVehicle[]>(`${this.baseUrl}/user/${userId}`);
+    }
+
 }

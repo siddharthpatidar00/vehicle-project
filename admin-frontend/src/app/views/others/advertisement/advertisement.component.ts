@@ -5,11 +5,10 @@ import { AppPaginationComponent } from '../../shared/pagination/pagination.compo
 import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { IconModule } from '@coreui/icons-angular';
-import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
+// import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
 import { AdvertisementService, Advertisement } from '../../../services/advertisement.service';
 import { ToastService } from '../../../services/toast.service';
 import { advertisementSchema } from "../../../schema/advertisement.schema";
-import * as yup from 'yup';
 
 @Component({
   selector: 'app-advertisement',
@@ -24,7 +23,7 @@ import * as yup from 'yup';
     ReactiveFormsModule,
     MatTooltipModule,
     IconModule,
-    ConfirmModalComponent
+    // ConfirmModalComponent
   ],
   templateUrl: './advertisement.component.html',
   styleUrls: ['./advertisement.component.scss']
@@ -53,8 +52,8 @@ export class AdvertisementComponent implements OnInit {
   selectedAdIdToDelete: string | null = null;
 
   constructor(private fb: FormBuilder,
-              private adService: AdvertisementService,
-              private toast: ToastService) { }
+    private adService: AdvertisementService,
+    private toast: ToastService) { }
 
   ngOnInit() {
     this.getAllAds();
@@ -63,7 +62,8 @@ export class AdvertisementComponent implements OnInit {
       imageTitle: [''],
       startDate: [''],
       endDate: [''],
-      image: [null]
+      image: [null],
+      isActive: [true]
     });
   }
 
@@ -118,7 +118,8 @@ export class AdvertisementComponent implements OnInit {
       imageTitle: ad.imageTitle,
       startDate: this.formatDateForInput(ad.startDate),
       endDate: this.formatDateForInput(ad.endDate),
-      image: null
+      image: null,
+      isActive: ad.isActive
     });
 
     this.imagePreview = ad.image ? this.getAdImageUrl(ad.image) : null;
@@ -174,7 +175,10 @@ export class AdvertisementComponent implements OnInit {
         formData.append('imageTitle', payload.imageTitle);
         formData.append('startDate', payload.startDate);
         formData.append('endDate', payload.endDate);
-        if (this.imageFile) formData.append('image', this.imageFile);
+        formData.append('isActive', String(payload.isActive));
+        if (this.imageFile) {
+          formData.append('image', this.imageFile);
+        }
 
         if (this.editMode && this.selectedAd) {
           this.adService.updateAd(this.selectedAd._id, formData).subscribe({
@@ -228,4 +232,14 @@ export class AdvertisementComponent implements OnInit {
     const ctl = this.advertisementForm.get(field);
     return ctl?.errors?.['message'] || null;
   }
+
+  toggleStatus(ad: Advertisement) {
+  const formData = new FormData();
+  formData.append('isActive', String(!ad.isActive));
+  this.adService.updateAd(ad._id, formData).subscribe({
+    next: () => this.getAllAds(),
+    error: () => this.toast.error('Failed to update status')
+  });
+}
+
 }
