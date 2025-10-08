@@ -33,52 +33,78 @@ export interface VehiclesEnquiry {
     delivered_date?: string;
     customer_feedback?: string;
     delivery_proof?: string; // Could be a file name or URL
+
 }
 
 
 @Injectable({ providedIn: 'root' })
 export class VehiclesEnquiryService {
     private baseUrl = API_ENDPOINTS.VehiclesEnquiry;
-    private tokenKey = 'auth-token';
 
     constructor(private http: HttpClient) { }
 
+    // ✅ Helper function to get whichever token exists
+    private getAuthToken(apiType: 'user' | 'admin' | 'auto' = 'user'): string | null {
+        const userToken = localStorage.getItem('user-token');
+        const adminToken = localStorage.getItem('admin-token');
+
+        if (apiType === 'user') return userToken || null; // ✅ Only for user actions
+        if (apiType === 'admin') return adminToken || null; // ✅ For admin APIs
+        return userToken || adminToken || null; // auto fallback
+    }
+
+
+    // createInquiry(data: VehiclesEnquiry): Observable<any> {
+    //     const userToken = localStorage.getItem('user-token'); // only user token
+    //     let headers = new HttpHeaders();
+
+    //     if (userToken) {
+    //         headers = headers.set('Authorization', `Bearer ${userToken}`);
+    //     }
+
+    //     return this.http.post<any>(this.baseUrl, data, { headers });
+    // }
+
     createInquiry(data: VehiclesEnquiry): Observable<any> {
-        const token = localStorage.getItem(this.tokenKey);
         let headers = new HttpHeaders();
+
+        // ✅ Use user token only (never admin token)
+        const token = this.getAuthToken('user');
         if (token) {
             headers = headers.set('Authorization', `Bearer ${token}`);
         }
 
+        // 🚫 No admin token ever sent
         return this.http.post<any>(this.baseUrl, data, { headers });
     }
 
-    getUserEnquiries(): Observable<VehiclesEnquiry[]> {
-        const token = localStorage.getItem(this.tokenKey);
-        let headers = new HttpHeaders();
-        if (token) {
-            headers = headers.set('Authorization', `Bearer ${token}`);
-        }
 
+    getUserEnquiries(): Observable<VehiclesEnquiry[]> {
+        const token = this.getAuthToken();
+        let headers = new HttpHeaders();
+        if (token) headers = headers.set('Authorization', `Bearer ${token}`);
         return this.http.get<VehiclesEnquiry[]>(`${this.baseUrl}/my-enquiries`, { headers });
     }
 
     getAll(): Observable<VehiclesEnquiry[]> {
-        return this.http.get<VehiclesEnquiry[]>(this.baseUrl, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
+        const token = this.getAuthToken();
+        let headers = new HttpHeaders();
+        if (token) headers = headers.set('Authorization', `Bearer ${token}`);
+        return this.http.get<VehiclesEnquiry[]>(this.baseUrl, { headers });
     }
 
     updateStatus(id: string, status: string): Observable<any> {
-        return this.http.put(`${this.baseUrl}/${id}`, { status }, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
+        const token = this.getAuthToken();
+        let headers = new HttpHeaders();
+        if (token) headers = headers.set('Authorization', `Bearer ${token}`);
+        return this.http.put(`${this.baseUrl}/${id}`, { status }, { headers });
     }
 
     updateEnquiry(id: string, data: Partial<VehiclesEnquiry>): Observable<any> {
-        return this.http.put(`${this.baseUrl}/${id}`, data, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
+        const token = this.getAuthToken();
+        let headers = new HttpHeaders();
+        if (token) headers = headers.set('Authorization', `Bearer ${token}`);
+        return this.http.put(`${this.baseUrl}/${id}`, data, { headers });
     }
-
 }
+

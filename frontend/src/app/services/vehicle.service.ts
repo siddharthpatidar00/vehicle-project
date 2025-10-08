@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../config/api.config';
-import { AuthService } from './auth.service';
+import { AdminAuthService } from './auth.service';
 
 export interface Vehicle {
     _id?: string;
@@ -34,7 +34,7 @@ export class VehicleService {
 
     constructor(
         private http: HttpClient,
-        private authService: AuthService   // <-- inject here
+        private authService: AdminAuthService   // <-- inject here
     ) { }
 
     getAll(showAll: boolean = false): Observable<Vehicle[]> {

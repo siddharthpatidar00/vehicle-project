@@ -8,7 +8,7 @@ import { VehicleService, Vehicle } from '../../../../services/vehicle.service';
 import { BrandService, Brand } from '../../../../services/brand.service';
 import { VehicleCategoryService, VehicleCategory } from '../../../../services/vehicle.category.service';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from '../../../../services/auth.service';
+import { AdminAuthService } from '../../../../services/auth.service';
 import { ConfirmModalComponent } from "../../shared/confirm-modal/confirm-modal.component";
 import { ToastService } from '../../../../services/toast.service';
 import { vehicleSchema } from '../../../../schema/vehicle.schema';
@@ -57,7 +57,7 @@ export class VehiclesComponent implements OnInit {
 
   constructor(
     private vehicleService: VehicleService,
-    private authService: AuthService,
+    private authService: AdminAuthService,
     private brandService: BrandService,
     private vehicleCategoryService: VehicleCategoryService,
     private toast: ToastService,
@@ -192,7 +192,7 @@ export class VehiclesComponent implements OnInit {
         formData.append('category_name', categoryValue || '');
 
         if (!this.editMode) {
-          const userId = this.authService.getUserId();
+          const userId = this.authService.getAdminId();
           if (!userId) {
             this.toast.error('User ID not found. Please login again.');
             return;

@@ -18,7 +18,7 @@ import {
 } from '@coreui/angular';
 import { Router } from '@angular/router';
 import { AdminService } from '../../../../services/admin.service';
-import { AuthService } from '../../../../services/auth.service';
+import { AdminAuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastService } from '../../../../services/toast.service';
@@ -55,7 +55,7 @@ export class LoginComponent {
 
   constructor(
     private adminService: AdminService,
-    private authService: AuthService,
+    private authService: AdminAuthService,
     private router: Router,
     private toast: ToastService
   ) {}

@@ -1,3 +1,4 @@
+// src/app/services/user.auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap, BehaviorSubject } from 'rxjs';
@@ -40,9 +41,9 @@ export interface RegisterPayload {
 }
 
 @Injectable({ providedIn: 'root' })
-export class AuthService {
+export class UserAuthService {
     private baseUrl = API_ENDPOINTS.LoginRegisterUser;
-    private tokenKey = 'auth-token';
+    private tokenKey = 'user-token';
     private userSubject = new BehaviorSubject<User | null>(this.loadUser());
     user$ = this.userSubject.asObservable();
 
@@ -71,7 +72,7 @@ export class AuthService {
             tap((res: any) => {
                 if (res.token) {
                     localStorage.setItem(this.tokenKey, res.token);
-                    const user = { ...res.user, id: res.user.id || res.user._id || res.user.userId };
+                    const user = { ...res.user, id: res.user.id || res.user._id };
                     this.setUser(user);
                 }
             })
@@ -82,8 +83,12 @@ export class AuthService {
         return this.userSubject.value;
     }
 
+    getToken(): string | null {
+        return localStorage.getItem(this.tokenKey);
+    }
+
     isLoggedIn(): boolean {
-        return !!localStorage.getItem(this.tokenKey);
+        return !!this.getToken();
     }
 
     logout(): void {

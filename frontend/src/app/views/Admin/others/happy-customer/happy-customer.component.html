@@ -125,7 +125,7 @@
             <!-- Message -->
             <div>
                 <label class="block mb-1 text-sm text-black font-medium">Message</label>
-                <textarea formControlName="message" rows="3" maxlength="30"
+                <textarea formControlName="message" rows="3" maxlength="60"
                     class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 <small class="text-red-500" *ngIf="submitted && getError('message')">
                     {{ getError('message') }}

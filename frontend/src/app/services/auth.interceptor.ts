@@ -9,12 +9,12 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthService } from './auth.service';
+import { AdminAuthService } from './auth.service';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(private auth: AuthService, private router: Router) { }
+    constructor(private auth: AdminAuthService, private router: Router) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token = this.auth.getToken();

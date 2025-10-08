@@ -17,7 +17,7 @@ import { ToastModule } from 'primeng/toast';
     imports: [RouterOutlet,CommonModule,ToastModule]
 })
 export class AppComponent implements OnInit {
-  title = 'Rockeye Engineerings Admin';
+  title = 'Rockeye Engineerings';
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #activatedRoute: ActivatedRoute = inject(ActivatedRoute);

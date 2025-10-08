@@ -13,6 +13,7 @@ const VehicleEnquirySchema = new mongoose.Schema({
     vehicle_details: String,
     buy_sell_rent: { type: String, enum: ['Buy', 'Sell', 'Rent'] },
     created_by: { type: String, enum: ['Guest', 'User']},
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', default: null },
     status: { type: String, enum: ['New', 'In Progress', 'Closed'], default: 'New' },
     enquiry_type: { type: String, enum: ['Individual', 'Company'], default: 'Individual' },
 

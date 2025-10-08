@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService, LoginPayload } from '../../../../services/user.auth.service';
+import { UserAuthService, LoginPayload } from '../../../../services/user.auth.service';
 import { ToastService } from '../../../../services/toast.service';
 import { LoginSchema } from '../../../../schema/login.validation';
 import { validateYupSchema } from '../../../../schema/yup-validator';
@@ -22,7 +22,7 @@ export class LoginComponent {
   }, { validators: validateYupSchema(LoginSchema) });
 
   constructor(
-    private authService: AuthService,
+    private authService: UserAuthService,
     private router: Router,
     private toast: ToastService
   ) {}

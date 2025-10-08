@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService, User } from '../../../../services/user.auth.service';
+import { UserAuthService, User } from '../../../../services/user.auth.service';
 import { ToastService } from '../../../../services/toast.service';
 
 @Component({
@@ -30,7 +30,7 @@ export class ProfileModalComponent implements OnInit {
     dob?: string; // formatted YYYY-MM-DD for <input type="date">
   } = {};
 
-  constructor(private authService: AuthService, private toast: ToastService) { }
+  constructor(private authService: UserAuthService, private toast: ToastService) { }
 
   ngOnInit() {
     const storedUser = this.authService.getUser();

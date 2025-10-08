@@ -25,7 +25,7 @@ import {
 import { NgIf } from '@angular/common';
 
 import { IconDirective } from '@coreui/icons-angular';
-import { AuthService } from '../../../services/auth.service';
+import { AdminAuthService } from '../../../services/auth.service';
 import { ProfileComponent } from '../../../views/Admin/pages/profile/profile.component';
 
 @Component({
@@ -51,7 +51,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
     return this.colorModes.find(mode => mode.name === currentMode)?.icon ?? 'cilSun';
   });
 
-  constructor(private authService: AuthService) { super() }
+  constructor(private authService: AdminAuthService) { super() }
 
   showProfileModal = false;
 

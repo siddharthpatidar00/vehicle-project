@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService, RegisterPayload } from '../../../../services/user.auth.service';
+import { UserAuthService, RegisterPayload } from '../../../../services/user.auth.service';
 import { validateYupSchema } from '../../../../schema/yup-validator';
 import { RegisterSchema } from '../../../../schema/register.validation';
 import { ToastService } from '../../../../services/toast.service';
@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
     status: new FormControl('Active')
   }, { validators: validateYupSchema(RegisterSchema) });
 
-  constructor(private authService: AuthService, private router: Router, private toast: ToastService) { }
+  constructor(private authService: UserAuthService, private router: Router, private toast: ToastService) { }
 
   ngOnInit(): void {
     this.generateCaptcha();

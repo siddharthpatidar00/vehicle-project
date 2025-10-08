@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
 
 // Generate JWT token
-const generateToken = (id) => {
-    return jwt.sign({ id, role: 'Admin' }, process.env.JWT_SECRET, { expiresIn: '1d' });
+const generateToken = (admin) => {
+    return jwt.sign({ id: admin._id, email: admin.email, role: 'Admin' }, process.env.JWT_SECRET, { expiresIn: '1d' });
 };
 
 // Register Admin (internal protected)

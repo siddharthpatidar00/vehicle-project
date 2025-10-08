@@ -21,7 +21,7 @@ import { SearchModalComponent } from '../../../views/User/components/search-moda
 import { TransportVehicleComponent } from '../../../views/User/transport-vehicle/transport-vehicle.component';
 import { LocationService } from '../../../services/location.service';
 import { ProfileModalComponent } from '../../../views/User/components/profile-modal/profile-modal.component';
-import { AuthService } from '../../../services/user.auth.service';
+import { UserAuthService } from '../../../services/user.auth.service';
 import { InquiryModalComponent } from '../../../views/User/components/inquiry-modal/inquiry-modal.component';
 import { SellVehicleModalComponent } from '../../../views/User/components/sell-vehicle-modal/sell-vehicle-modal.component';
 import { ApplyForLoanComponent } from '../../../views/User/components/apply-for-loan/apply-for-loan.component';
@@ -63,7 +63,7 @@ export class DefaultHeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private locationService: LocationService,
-    public authService: AuthService,
+    public authService: UserAuthService,
     private router: Router
   ) { }
 

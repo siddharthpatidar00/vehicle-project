@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IconModule } from '@coreui/icons-angular';
 import { FormModule } from '@coreui/angular';
@@ -30,7 +30,7 @@ export class VehicleFilterComponent {
     selectedCategoryId: string = '';
     selectedBrand: string = '';
 
-    // ✅ Keep two values for slider (min & max)
+    // Slider values
     minValue: number = 0;
     maxValue: number = 0;
 
@@ -40,10 +40,64 @@ export class VehicleFilterComponent {
     brands: any[] = [];
     priceRange: any = {};
 
-    constructor(private filterService: FilterService) { }
+    isSidebarOpen: boolean = false;
+    isMobile: boolean = false;
+
+    // brandDropdownOpen = false;
+
+    selectedCategory: string | null = null;
+    // categoryDropdownOpen = false;
+
+    brandDropdownOpen: boolean = false;
+    categoryDropdownOpen: boolean = false;
+
+    constructor(private filterService: FilterService) {
+        this.checkScreenWidth();
+    }
 
     ngOnInit() {
         this.loadFilters();
+    }
+
+
+    // ✅ Listen to window resize
+    @HostListener('window:resize', ['$event'])
+    onResize(event: any) {
+        this.checkScreenWidth();
+    }
+
+    checkScreenWidth() {
+        this.isMobile = window.innerWidth < 768;
+        // Always open sidebar on desktop
+        if (!this.isMobile) {
+            this.isSidebarOpen = true;
+        }
+    }
+
+    toggleSidebar() {
+        this.isSidebarOpen = !this.isSidebarOpen;
+    }
+
+    toggleBrandDropdown(event: Event) {
+        event.stopPropagation(); // prevent document click from closing immediately
+        this.brandDropdownOpen = !this.brandDropdownOpen;
+    }
+
+    toggleCategoryDropdown(event: Event) {
+        event.stopPropagation();
+        this.categoryDropdownOpen = !this.categoryDropdownOpen;
+    }
+
+    selectBrand(name: string, event: Event) {
+        event.stopPropagation(); // prevent dropdown toggle
+        this.selectedBrand = name;
+        this.brandDropdownOpen = false;
+    }
+
+    selectCategory(name: string, event: Event) {
+        event.stopPropagation();
+        this.selectedCategory = name;
+        this.categoryDropdownOpen = false;
     }
 
     loadFilters() {
@@ -62,7 +116,7 @@ export class VehicleFilterComponent {
                     console.log('[Categories]', this.categories);
                     console.log('[Price Range]', this.priceRange);
 
-                    // ✅ set initial min & max slider values from API
+                    // Set initial min & max slider values from API
                     if (this.priceRange.minOriginal) {
                         this.minValue = this.priceRange.minOriginal;
                     }
@@ -78,8 +132,7 @@ export class VehicleFilterComponent {
     }
 
     applyFilter() {
-        let categoryName = this.selectedCategoryName?.trim().replace(/\s+/g, ' ');
-
+        const categoryName = this.selectedCategoryName?.trim().replace(/\s+/g, ' ');
         console.log('[Applied Filter]', {
             category_id: this.selectedCategoryId || undefined,
             category_name: categoryName || undefined,
@@ -87,13 +140,27 @@ export class VehicleFilterComponent {
             minPrice: this.minValue || undefined,
             maxPrice: this.maxValue || undefined,
         });
-
-        this.filterApplied.emit({
+        const appliedFilter = {
             category_id: this.selectedCategoryId || undefined,
             category_name: categoryName || undefined,
             brand_name: this.selectedBrand || undefined,
             minPrice: this.minValue || undefined,
             maxPrice: this.maxValue || undefined,
-        });
+        };
+
+        console.log('[Applied Filter]', appliedFilter);
+        this.filterApplied.emit(appliedFilter);
+
+        // Auto-close sidebar on mobile
+        if (this.isMobile) {
+            this.isSidebarOpen = false;
+        }
+    }
+
+    @HostListener('document:click', ['$event'])
+    onDocumentClick() {
+        this.brandDropdownOpen = false;
+        this.categoryDropdownOpen = false;
     }
 }
+

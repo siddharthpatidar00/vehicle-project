@@ -1,35 +1,98 @@
 const VehicleEnquiry = require('../models/VehicleEnquiryModel');
 
+// exports.createEnquiry = async (req, res) => {
+//     try {
+//         const enquiryData = req.body;
+
+//         if (req.user) {
+//             enquiryData.user = req.user.id;          
+//             enquiryData.created_by = req.user.role;
+//             enquiryData.email = req.user.email;       
+//         } else {
+//             enquiryData.user = null;
+//             enquiryData.created_by = 'Guest';
+//         }
+
+//         const newEnquiry = new VehicleEnquiry(enquiryData);
+//         await newEnquiry.save();
+
+//         res.status(201).json({ message: 'Enquiry created successfully', enquiry: newEnquiry });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ message: 'Server error' });
+//     }
+// };
+
+
 exports.createEnquiry = async (req, res) => {
     try {
         const enquiryData = req.body;
-        enquiryData.created_by = (req.user && req.user.id) ? 'User' : 'Guest';
-        const newEnquiry = new VehicleEnquiry(enquiryData);
+
+        // 🧩 Default for guests
+        let createdBy = 'Guest';
+        let userId = null;
+        let email = enquiryData.email || null;
+
+        // 🧩 If user is logged in
+        if (req.user) {
+            if (req.user.role === 'User') {
+                createdBy = 'User';
+                userId = req.user.id;
+                email = req.user.email;
+            } else {
+                // ❌ Prevent admin/staff from creating enquiries
+                return res.status(403).json({ message: 'Only Users or Guests can create enquiries' });
+            }
+        }
+
+        // ✅ Construct enquiry document
+        const newEnquiry = new VehicleEnquiry({
+            ...enquiryData,
+            user: userId,
+            created_by: createdBy,
+            email,
+            status: 'New',
+            created_date: new Date(),
+            updated_date: new Date()
+        });
+
+        // ✅ Save to DB
         await newEnquiry.save();
-        res.status(201).json({ message: 'Enquiry created successfully', enquiry: newEnquiry });
+
+        res.status(201).json({
+            success: true,
+            message: `Enquiry created successfully as ${createdBy}`,
+            enquiry: newEnquiry
+        });
     } catch (err) {
-        console.error(err);
+        console.error('Error creating enquiry:', err);
         res.status(500).json({ message: 'Server error' });
     }
 };
 
+
+
 exports.getAllEnquiries = async (req, res) => {
     try {
-        if (!req.user || req.user.role !== 'Admin') {
-            return res.status(403).json({ message: 'Only admin can view enquiries' });
+        if (!req.user || !['Admin', 'Staff'].includes(req.user.role)) {
+            return res.status(403).json({ message: 'Only admin/staff can view all enquiries' });
         }
 
-        const enquiries = await VehicleEnquiry.find().sort({ created_date: -1 });
+        const enquiries = await VehicleEnquiry.find()
+            .populate('user', 'first_name last_name email')
+            .sort({ created_date: -1 });
+
         res.status(200).json(enquiries);
     } catch (err) {
-        console.error(err);
+        console.error('Error fetching all enquiries:', err);
         res.status(500).json({ message: 'Server error' });
     }
 };
 
 exports.getEnquiryById = async (req, res) => {
     try {
-        const enquiry = await VehicleEnquiry.findById(req.params.id);
+        const enquiry = await VehicleEnquiry.findById(req.params.id)
+            .populate('user', 'name email');
         if (!enquiry) return res.status(404).json({ message: 'Enquiry not found' });
         res.json(enquiry);
     } catch (err) {
@@ -75,14 +138,15 @@ exports.deleteEnquiry = async (req, res) => {
 // ✅ Now properly outside deleteEnquiry
 exports.getMyEnquiries = async (req, res) => {
     try {
-        if (!req.user || req.user.role !== 'User') {
-            return res.status(403).json({ message: 'Access denied: Users only' });
-        }
+        if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
 
-        // Use email to get only this user's enquiries
-        const enquiries = await VehicleEnquiry.find({ email: req.user.email })
-            .select('name status loan_status delivery_status created_date') // only required fields
-            .sort({ created_date: -1 }); // latest first
+        // Only fetch enquiries created by registered users
+        const filter = { created_by: 'User' }; 
+
+        const enquiries = await VehicleEnquiry.find(filter)
+            .populate('user', 'first_name last_name email') // populate user info
+            .select('name status loan_status delivery_status created_date user created_by')
+            .sort({ created_date: -1 });
 
         res.status(200).json(enquiries);
     } catch (err) {
@@ -91,12 +155,22 @@ exports.getMyEnquiries = async (req, res) => {
     }
 };
 
+
+
+
 exports.getMyEnquiryById = async (req, res) => {
     try {
-        const enquiry = await VehicleEnquiry.findOne({ _id: req.params.id, email: req.user.email });
-        if (!enquiry) {
-            return res.status(404).json({ message: 'Enquiry not found or you do not have permission' });
-        }
+        if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
+
+        const filter = req.user.role === 'User'
+            ? { _id: req.params.id, user: req.user.id }
+            : req.user.role === 'Guest'
+                ? { _id: req.params.id, created_by: 'Guest' }
+                : { _id: req.params.id }; // Admin/Staff
+
+        const enquiry = await VehicleEnquiry.findOne(filter).populate('user', 'first_name last_name email');
+        if (!enquiry) return res.status(404).json({ message: 'Enquiry not found or access denied' });
+
         res.status(200).json(enquiry);
     } catch (err) {
         console.error(err);
