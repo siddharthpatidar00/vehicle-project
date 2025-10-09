@@ -61,6 +61,7 @@ export class TransportVehicleComponent {
       next: () => {
         this.toast.success('Transport request submitted Successfully.');
         this.form.reset({ status: 'Pending' });
+        this.closeModal();
       },
       error: () => {
         this.toast.error('Failed to submit Transport Request.');

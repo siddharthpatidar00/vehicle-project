@@ -189,7 +189,7 @@
                         <img [src]="customer.image" alt="{{ customer.name }}"
                             class="w-32 h-32 object-cover rounded-full mb-6 border-2 border-white p-1 shadow-lg">
                         <h2 class="text-white text-xl font-bold mb-2 text-center">{{ customer.name }}</h2>
-                        <p class="text-gray-200 text-sm text-center" [innerHTML]="customer.message | splitAfterWords:5">
+                        <p class="text-gray-800 text-base text-center italic font-serif tracking-wide leading-relaxed" [innerHTML]="customer.message | splitAfterWords:5">
                         </p>
                     </div>
                 </div>
