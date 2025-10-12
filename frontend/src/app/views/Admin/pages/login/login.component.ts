@@ -58,7 +58,7 @@ export class LoginComponent {
     private authService: AdminAuthService,
     private router: Router,
     private toast: ToastService
-  ) {}
+  ) { }
 
   onLogin() {
     if (!this.email || !this.password) {
@@ -73,14 +73,14 @@ export class LoginComponent {
           return;
         }
 
-        // Save token
+        // ✅ Save token first
         this.authService.setToken(response.token);
 
-        // Show success message
         this.toast.success('Login Successfully');
-
-        // Redirect both Admin and Staff to same dashboard
-        this.router.navigate(['/admin-dashboard']);
+        // ✅ Delay navigation slightly to ensure token is stored before any interceptor runs
+        setTimeout(() => {
+          this.router.navigate(['/admin-dashboard']);
+        }, 50); // 50ms delay is usually enough
       },
       error: (error) => {
         const message = error.error?.message || 'Invalid Credentials';
@@ -88,4 +88,5 @@ export class LoginComponent {
       }
     });
   }
+
 }

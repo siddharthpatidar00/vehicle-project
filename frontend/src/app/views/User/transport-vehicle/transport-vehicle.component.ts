@@ -9,6 +9,7 @@ import { validateYupSchema } from '../../../schema/yup-validator';
 import { TransportVehicleSchema } from '../../../schema/transport.vehicle.schema';
 import { ToastService } from '../../../services/toast.service';
 
+
 @Component({
   selector: 'app-transport-vehicle',
   standalone: true,

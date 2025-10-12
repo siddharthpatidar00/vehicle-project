@@ -1,3 +1,4 @@
+// src/app/services/admin-auth.interceptor.ts
 import { Injectable } from '@angular/core';
 import {
     HttpInterceptor,
@@ -12,28 +13,21 @@ import { AdminAuthService } from './auth.service';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-    constructor(private auth: AdminAuthService, private router: Router) { }
+export class AdminAuthInterceptor implements HttpInterceptor {
+    constructor(private auth: AdminAuthService, private router: Router) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        let authReq = req;
-
-        // Only attach admin token for admin APIs
-        if (req.url.includes('/api/admin')) {
+        // Only attach token for admin routes
+        if (req.url.includes('/api/admin-dashboard')) {
             const token = this.auth.getToken();
             if (token) {
-                authReq = req.clone({
-                    setHeaders: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
             }
         }
 
-        return next.handle(authReq).pipe(
+        return next.handle(req).pipe(
             catchError((err: HttpErrorResponse) => {
-                // Only logout admin on admin APIs
-                if (err.status === 401 && req.url.includes('/api/admin')) {
+                if (err.status === 401) {
                     this.auth.logout();
                 }
                 return throwError(() => err);
@@ -41,6 +35,3 @@ export class AuthInterceptor implements HttpInterceptor {
         );
     }
 }
-
-
-

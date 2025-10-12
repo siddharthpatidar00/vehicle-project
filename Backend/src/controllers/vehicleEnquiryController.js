@@ -1,74 +1,47 @@
 const VehicleEnquiry = require('../models/VehicleEnquiryModel');
 
-// exports.createEnquiry = async (req, res) => {
-//     try {
-//         const enquiryData = req.body;
-
-//         if (req.user) {
-//             enquiryData.user = req.user.id;          
-//             enquiryData.created_by = req.user.role;
-//             enquiryData.email = req.user.email;       
-//         } else {
-//             enquiryData.user = null;
-//             enquiryData.created_by = 'Guest';
-//         }
-
-//         const newEnquiry = new VehicleEnquiry(enquiryData);
-//         await newEnquiry.save();
-
-//         res.status(201).json({ message: 'Enquiry created successfully', enquiry: newEnquiry });
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// };
-
-
 exports.createEnquiry = async (req, res) => {
     try {
         const enquiryData = req.body;
 
-        // 🧩 Default for guests
-        let createdBy = 'Guest';
-        let userId = null;
-        let email = enquiryData.email || null;
-
-        // 🧩 If user is logged in
-        if (req.user) {
-            if (req.user.role === 'User') {
-                createdBy = 'User';
-                userId = req.user.id;
-                email = req.user.email;
-            } else {
-                // ❌ Prevent admin/staff from creating enquiries
-                return res.status(403).json({ message: 'Only Users or Guests can create enquiries' });
-            }
+        // Admin cannot create enquiries
+        if (req.user.role === "Admin") {
+            return res.status(403).json({ message: "Admins cannot create enquiries." });
         }
 
-        // ✅ Construct enquiry document
-        const newEnquiry = new VehicleEnquiry({
-            ...enquiryData,
-            user: userId,
-            created_by: createdBy,
-            email,
-            status: 'New',
-            created_date: new Date(),
-            updated_date: new Date()
-        });
+        // User submission
+        if (req.user.role === "User") {
+            enquiryData.user = req.user.id;
+            enquiryData.created_by = "User";
+            enquiryData.email = req.user.email;
+        }
+        // Guest submission
+        else if (req.user.role === "Guest") {
+            enquiryData.user = null;
+            enquiryData.created_by = "Guest";
+        }
 
-        // ✅ Save to DB
+        // Remove admin-only fields if present
+        const adminOnlyFields = [
+            'loan', 'bank_name', 'loan_status',
+            'expected_delivery_date', 'delivery_status', 'delivery_location',
+            'delivered_date', 'customer_feedback', 'delivery_proof'
+        ];
+        adminOnlyFields.forEach(field => delete enquiryData[field]);
+
+        const newEnquiry = new VehicleEnquiry(enquiryData);
         await newEnquiry.save();
 
         res.status(201).json({
-            success: true,
-            message: `Enquiry created successfully as ${createdBy}`,
+            message: "Enquiry created successfully",
             enquiry: newEnquiry
         });
     } catch (err) {
-        console.error('Error creating enquiry:', err);
-        res.status(500).json({ message: 'Server error' });
-    }
-};
+        console.error("Error in createEnquiry:", err);
+        res.status(500).json({ error: "Internal Server Error", details: err.message });
+    }}
+
+
 
 
 
@@ -141,7 +114,7 @@ exports.getMyEnquiries = async (req, res) => {
         if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
 
         // Only fetch enquiries created by registered users
-        const filter = { created_by: 'User' }; 
+        const filter = { created_by: 'User' };
 
         const enquiries = await VehicleEnquiry.find(filter)
             .populate('user', 'first_name last_name email') // populate user info
@@ -177,3 +150,4 @@ exports.getMyEnquiryById = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+

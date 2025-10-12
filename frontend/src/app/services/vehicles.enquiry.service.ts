@@ -47,34 +47,30 @@ export class VehiclesEnquiryService {
     private getAuthToken(apiType: 'user' | 'admin' | 'auto' = 'user'): string | null {
         const userToken = localStorage.getItem('user-token');
         const adminToken = localStorage.getItem('admin-token');
-
+        console.log(adminToken)
         if (apiType === 'user') return userToken || null; // ✅ Only for user actions
         if (apiType === 'admin') return adminToken || null; // ✅ For admin APIs
         return userToken || adminToken || null; // auto fallback
     }
 
+    private getUserToken(): string | null {
+        return localStorage.getItem('user-token'); // only user token
+    }
 
-    // createInquiry(data: VehiclesEnquiry): Observable<any> {
-    //     const userToken = localStorage.getItem('user-token'); // only user token
-    //     let headers = new HttpHeaders();
-
-    //     if (userToken) {
-    //         headers = headers.set('Authorization', `Bearer ${userToken}`);
-    //     }
-
-    //     return this.http.post<any>(this.baseUrl, data, { headers });
-    // }
-
+    // Create new enquiry
     createInquiry(data: VehiclesEnquiry): Observable<any> {
+        const token = this.getUserToken();
         let headers = new HttpHeaders();
+        if (token) headers = headers.set('Authorization', `Bearer ${token}`);
 
-        // ✅ Use user token only (never admin token)
-        const token = this.getAuthToken('user');
-        if (token) {
-            headers = headers.set('Authorization', `Bearer ${token}`);
-        }
+        // Strip admin-only fields if user/guest
+        const adminOnlyFields: (keyof VehiclesEnquiry)[] = [
+            'loan', 'bank_name', 'loan_status',
+            'expected_delivery_date', 'delivery_status', 'delivery_location',
+            'delivered_date', 'customer_feedback', 'delivery_proof'
+        ];
+        adminOnlyFields.forEach(f => delete data[f]);
 
-        // 🚫 No admin token ever sent
         return this.http.post<any>(this.baseUrl, data, { headers });
     }
 

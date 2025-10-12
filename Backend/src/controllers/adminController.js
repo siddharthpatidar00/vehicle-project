@@ -43,7 +43,14 @@ exports.loginAdmin = async (req, res) => {
         }
 
         const token = generateToken(admin._id);
-        res.json({ token });
+        res.json({
+            token,
+            user: {
+                id: admin._id,
+                email: admin.email,
+                role: 'Admin'
+            }
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error' });

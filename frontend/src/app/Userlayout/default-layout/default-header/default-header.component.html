@@ -1,5 +1,5 @@
 <!-- Desktop Header -->
-<ng-container class="d-none d-md-flex">
+<div class="d-none d-md-flex w-full">
   <c-container [fluid]="true" class="px-4 py-1" style="background-color: #fcb026;">
     <c-header-nav class="d-none d-md-flex w-full items-center justify-between">
 
@@ -68,10 +68,10 @@
       <ng-container *ngTemplateOutlet="userDropdown" />
     </c-header-nav>
   </c-container>
-</ng-container>
+</div>
 
 <!-- Mobile Header -->
-<div class="md:hidden flex items-center mt-[-16px] pt-3 px-2 bg-[#fcb026] justify-between w-full shadow-md">
+<div class="md:hidden flex items-center pt-2 px-2 bg-[#fcb026] justify-between w-full shadow-md">
   
   <!-- Left: Toggle Button -->
   <button (click)="mobileMenuOpen = !mobileMenuOpen" aria-label="Toggle menu" class="flex items-center">
@@ -82,7 +82,7 @@
 
   <!-- Center: Company Logo -->
   <div class="flex-1 flex justify-center items-center">
-    <img src="./assets/images/company.jpg" alt="company logo" class="h-12 w-auto object-contain mb-2">
+    <img src="./assets/images/rockeye-logo.png" alt="company logo" class="h-12 w-auto object-contain mb-2">
   </div>
 
   <!-- Right: Search input -->
