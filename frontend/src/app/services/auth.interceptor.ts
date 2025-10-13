@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
         let authReq = req;
 
         // Only attach admin token for admin APIs
-        if (req.url.includes('/api/admin')) {
+        if (req.url.includes('/api')) {
             const token = this.auth.getToken();
             if (token) {
                 authReq = req.clone({
@@ -33,8 +33,8 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(authReq).pipe(
             catchError((err: HttpErrorResponse) => {
                 // Only logout admin on admin APIs
-                if (err.status === 401 && req.url.includes('/api/admin')) {
-                    this.auth.logout();
+                if (err.status === 401 && req.url.includes('/api')) {
+                    // this.auth.logout();
                 }
                 return throwError(() => err);
             })

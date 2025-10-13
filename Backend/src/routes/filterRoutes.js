@@ -6,52 +6,56 @@ const Category = require("../models/VehicleCategoryModel");
 
 router.get("/filters", async (req, res) => {
     try {
-        const { category, brand, minPrice, maxPrice } = req.query;
+        const { category, brand, category_name, brand_name, minPrice, maxPrice } = req.query;
 
-        // --- Build query based on what user selects ---
         const query = {};
-        if (category) query.category_name = category;
-        if (brand) query.brand = brand;
-        if (minPrice || maxPrice) {
-            query.price = {};
-            if (minPrice) query.price.$gte = Number(minPrice);
-            if (maxPrice) query.price.$lte = Number(maxPrice);
+        if (category || category_name) {
+            query.category_name = { $regex: new RegExp(`^${(category || category_name).trim()}$`, 'i') };
+        }
+        if (brand || brand_name) {
+            query.brand = { $regex: new RegExp(`^${(brand || brand_name).trim()}$`, 'i') };
         }
 
-        // --- Fetch only vehicles relevant to the current page/filter ---
-        const vehicles = await Vehicle.find(query);
+        // Fetch vehicles filtered by brand/category first
+        let vehicles = await Vehicle.find(query);
+
+        // Determine price range
+        let minPriceValue = Number(minPrice);
+        let maxPriceValue = Number(maxPrice);
+
+        // If minPrice is invalid, default to 0
+        if (isNaN(minPriceValue)) minPriceValue = 0;
+
+        // If maxPrice is invalid, get max price from filtered vehicles
+        if (isNaN(maxPriceValue)) {
+            const prices = vehicles.map(v => v.price || 0);
+            maxPriceValue = prices.length ? Math.max(...prices) : 0;
+        }
+
+        // Apply price filter only if maxPrice > 0
+        if (maxPriceValue > 0) {
+            query.price = { $gte: minPriceValue, $lte: maxPriceValue };
+            vehicles = await Vehicle.find(query); // Re-fetch vehicles with price filter
+        }
+
+        console.log('Final Mongo Query:', query);
+
+        // Fetch brands and categories for filters
         const brandsData = await Brand.find({ status: "Active" });
         const categoriesData = await Category.find({ status: "Active" });
 
-        if (!vehicles || vehicles.length === 0) {
-            return res.json({
-                code: true,
-                message: "No vehicles found.",
-                result: { filters: {}, counts: {} }
-            });
-        }
+        // --- PRICE FILTER object for frontend ---
+        const priceFilter = {
+            minOriginal: 0,
+            maxOriginal: maxPriceValue,
+            contentType: "SiteCatalogFilterRange",
+            filterType: "price"
+        };
 
-        // --- PRICE FILTER (based on filtered vehicles) ---
-        const prices = vehicles
-            .filter(v => v.price !== undefined && v.price !== null)
-            .map(v => v.price);
-
-        let priceFilter = null;
-        if (prices.length > 0) {
-            priceFilter = {
-                minOriginal: Math.min(...prices),
-                maxOriginal: Math.max(...prices),
-                contentType: "SiteCatalogFilterRange",
-                filterType: "price"
-            };
-        }
-
-        // --- BRANDS FILTER (counts from filtered vehicles) ---
+        // --- BRANDS FILTER ---
         const brandCounts = {};
         vehicles.forEach(v => {
-            if (v.brand) {
-                brandCounts[v.brand] = (brandCounts[v.brand] || 0) + 1;
-            }
+            if (v.brand) brandCounts[v.brand] = (brandCounts[v.brand] || 0) + 1;
         });
 
         const brands = brandsData.map(b => ({
@@ -65,12 +69,10 @@ router.get("/filters", async (req, res) => {
             filterType: "brand"
         }));
 
-        // --- CATEGORIES FILTER (counts from filtered vehicles) ---
+        // --- CATEGORIES FILTER ---
         const categoryCounts = {};
         vehicles.forEach(v => {
-            if (v.category_name) {
-                categoryCounts[v.category_name] = (categoryCounts[v.category_name] || 0) + 1;
-            }
+            if (v.category_name) categoryCounts[v.category_name] = (categoryCounts[v.category_name] || 0) + 1;
         });
 
         const categories = categoriesData.map(c => ({
@@ -87,7 +89,7 @@ router.get("/filters", async (req, res) => {
             filterType: "category"
         }));
 
-        // Final Response
+        // --- Final Response ---
         res.json({
             code: true,
             message: "Successfully retrieved filters.",
@@ -98,16 +100,14 @@ router.get("/filters", async (req, res) => {
                     categories
                 },
                 counts: {
-                    price: priceFilter
-                        ? vehicles.filter(
-                            v => v.price >= priceFilter.minOriginal && v.price <= priceFilter.maxOriginal
-                        ).length
-                        : 0,
+                    price: vehicles.length,
                     brands: brands.length,
                     categories: categories.length
-                }
+                },
+                vehicles: vehicles 
             }
         });
+
 
     } catch (err) {
         console.error(err);

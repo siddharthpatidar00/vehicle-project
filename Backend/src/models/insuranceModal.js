@@ -7,6 +7,7 @@ const insuranceSchema = new mongoose.Schema(
         policyNumber: { type: Number },
         insuranceType: { type: String }, 
         vehicleDetail: { type: String},
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }
     },
     { timestamps: true }
 );

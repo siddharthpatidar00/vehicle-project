@@ -22,7 +22,7 @@ export interface TransportVehicle {
 @Injectable({ providedIn: 'root' })
 export class TransportVehicleService {
     private baseUrl = API_ENDPOINTS.TransportVehicle;
-    private tokenKey = 'auth-token';
+    private tokenKey = 'user-token';
     constructor(private http: HttpClient) { }
 
     getAllTransports(): Observable<TransportVehicle[]> {
@@ -47,12 +47,13 @@ export class TransportVehicleService {
     }
 
     getMyTransports(): Observable<TransportVehicle[]> {
-        const token = localStorage.getItem('auth-token');
+        const token = localStorage.getItem('user-token');
         let headers = new HttpHeaders();
         if (token) {
-            headers = headers.set('Authorization', `Bearer ${token}`); // same as getUserEnquiries
+            headers = headers.set('Authorization', `Bearer ${token}`);
         }
 
         return this.http.get<TransportVehicle[]>(`${this.baseUrl}/my-transports`, { headers });
     }
+
 }

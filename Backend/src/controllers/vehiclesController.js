@@ -139,7 +139,6 @@ exports.getVehicleById = async (req, res) => {
     }
 };
 
-// Update vehicle by ID
 exports.updateVehicle = async (req, res) => {
     try {
         const vehicleId = req.params.id;
@@ -157,16 +156,22 @@ exports.updateVehicle = async (req, res) => {
             newImages = req.files.map(file => `/uploads/${file.filename}`);
         }
 
+        // Merge images
+        updateData.img = [...existingImages, ...newImages];
+        delete updateData.existingImages;
+
+        // ✅ Fix category_id (Mongoose 7+)
+        const mongoose = require('mongoose');
+        if (updateData.category_id && mongoose.isValidObjectId(updateData.category_id)) {
+            updateData.category_id = new mongoose.Types.ObjectId(updateData.category_id);
+        } else {
+            delete updateData.category_id; // prevent invalid value
+        }
+
+        // Ensure category_name is a string
         if (updateData.category_name && Array.isArray(updateData.category_name)) {
             updateData.category_name = updateData.category_name[0];
         }
-
-
-        // Merge existing images with new images
-        updateData.img = [...existingImages, ...newImages];
-
-        // Remove field we used for existing images
-        delete updateData.existingImages;
 
         const updatedVehicle = await Vehicles.findByIdAndUpdate(
             vehicleId,
@@ -174,9 +179,7 @@ exports.updateVehicle = async (req, res) => {
             { new: true, runValidators: true }
         );
 
-        if (!updatedVehicle) {
-            return res.status(404).json({ message: "Vehicle not found" });
-        }
+        if (!updatedVehicle) return res.status(404).json({ message: "Vehicle not found" });
 
         res.status(200).json({
             message: "Vehicle updated successfully",
@@ -187,6 +190,7 @@ exports.updateVehicle = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
 
 
 

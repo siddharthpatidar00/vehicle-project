@@ -9,6 +9,7 @@ const loanInquirySchema = new mongoose.Schema(
         tenure: { type: Number }, 
         annualIncome: { type: Number},
         vehicleDetail: { type: String},
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }
     },
     { timestamps: true }
 );

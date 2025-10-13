@@ -4,6 +4,7 @@ import { ContactService, Contact } from '../../../services/contact.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ContactUsSchema } from '../../../schema/contact-us.validation';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-contact-us',
@@ -17,7 +18,7 @@ export class ContactUsComponent {
   formErrors: Record<string, string> = {};
   submitted = false;
 
-  constructor(private fb: FormBuilder, private contactService: ContactService) {
+  constructor(private fb: FormBuilder, private contactService: ContactService, private toast: ToastService) {
     this.contactForm = this.fb.group({
       firstName: [''],
       lastName: [''],
@@ -40,10 +41,12 @@ export class ContactUsComponent {
           next: () => {
             this.contactForm.reset();
             this.submitted = false;
+            this.toast.success("Message/Feedback sent successfully.")
           },
           error: () => {
             this.contactForm.reset();
             this.submitted = false;
+            this.toast.error("Failed to send message/feedback. Please try again.")
           }
         });
       })
@@ -54,6 +57,7 @@ export class ContactUsComponent {
             this.contactForm.get(validationError.path)?.setErrors({ message: validationError.message });
           }
         }
+        this.toast.warn("Please fill all required fields.")
       });
   }
   getError(field: string) {

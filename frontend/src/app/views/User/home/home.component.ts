@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     customers: HappyCustomer[] = [];
     brands: Brand[] = [];
     ad1Image = '';
+    ad1Status = 'inactive';
     images: string[] = [
         'assets/images/truck.jpg',
         'assets/images/1.avif',
@@ -55,6 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     categoryCardWidth = 336 + 24;
 
     isMobile = false;
+
 
     private imageSliderInterval: any
 
@@ -124,9 +126,21 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
     }
 
+    // loadAd1(): void {
+    //     this.advertisementService.getAdByType('ad1').subscribe({
+    //         next: ad => this.ad1Image = ad?.image?.startsWith('http') ? ad.image : `http://localhost:5000${ad?.image || ''}`,
+    //         error: err => console.error('Failed to load ad1', err)
+    //     });
+    // }
     loadAd1(): void {
         this.advertisementService.getAdByType('ad1').subscribe({
-            next: ad => this.ad1Image = ad?.image?.startsWith('http') ? ad.image : `http://localhost:5000${ad?.image || ''}`,
+            next: ad => {
+                if (ad && ad.isActive) {   // check isActive instead of status
+                    this.ad1Image = ad.image?.startsWith('http') ? ad.image : `http://localhost:5000${ad.image}`;
+                } else {
+                    this.ad1Image = ''; // hide container if inactive
+                }
+            },
             error: err => console.error('Failed to load ad1', err)
         });
     }

@@ -1,13 +1,16 @@
 const VehicleBrand = require('../models/vehicleBrandModel');
 
-// Create new brand
+// Create brand
 exports.createBrand = async (req, res) => {
     try {
-        const { brand_name, brand_description, status } = req.body;
+        let { brand_name, brand_description, status } = req.body;
 
         if (!brand_name) {
             return res.status(400).json({ message: 'Brand name is required' });
         }
+
+        // 🧹 Trim leading/trailing spaces
+        brand_name = brand_name.trim();
 
         const existing = await VehicleBrand.findOne({ brand_name });
         if (existing) {
@@ -30,6 +33,7 @@ exports.createBrand = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 // Get all brands
 exports.getAllBrands = async (req, res) => {
@@ -60,6 +64,11 @@ exports.updateBrand = async (req, res) => {
     try {
         const { id } = req.params;
         const updates = req.body;
+
+        if (updates.brand_name) {
+            // 🧹 Trim leading/trailing spaces
+            updates.brand_name = updates.brand_name.trim();
+        }
 
         if (req.file) {
             updates.brand_image = `/uploads/${req.file.filename}`;

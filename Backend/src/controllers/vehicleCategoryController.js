@@ -2,22 +2,27 @@
 // controllers/vehicleCategoryController.js
 const VehicleCategory = require('../models/VehicleCategoryModel');
 
+// Create category
 exports.createCategory = async (req, res) => {
     try {
-        console.log('Request body:', req.body);
-        console.log('Request file:', req.file);
+        let { category_name, category_description, status } = req.body;
 
-        const { category_name, category_description, status } = req.body;
         if (!category_name) {
             return res.status(400).json({ message: 'Category name is required' });
         }
+
+        // 🧹 Trim leading/trailing spaces
+        category_name = category_name.trim();
+
         const category_image = req.file?.filename ? `/uploads/${req.file.filename}` : '';
+
         const category = new VehicleCategory({
             category_name,
             category_description,
             category_image,
             status
         });
+
         await category.save();
         res.status(201).json({ message: 'Category created successfully', category });
     } catch (error) {
@@ -51,10 +56,17 @@ exports.getCategoryById = async (req, res) => {
     }
 };
 
+// Update category
 exports.updateCategory = async (req, res) => {
     try {
         const { id } = req.params;
         const updates = req.body;
+
+        if (updates.category_name) {
+            // 🧹 Trim leading/trailing spaces
+            updates.category_name = updates.category_name.trim();
+        }
+
         if (req.file) {
             updates.category_image = `/uploads/${req.file.filename}`;
         }
@@ -74,8 +86,6 @@ exports.updateCategory = async (req, res) => {
         res.status(500).json({ message: error.message || 'Server error' });
     }
 };
-
-
 
 
 // Delete category by ID

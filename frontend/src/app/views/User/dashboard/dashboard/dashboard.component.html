@@ -6,56 +6,118 @@
             <input type="text" placeholder="Search..." class="border border-gray-300 rounded-lg p-2 px-4 w-64">
         </div>
 
-        <!-- Table -->
-        <table id="dashboardTable"
-            class="min-w-full border border-gray-200 text-sm sm:text-base rounded-lg overflow-hidden">
-            <thead>
-                <tr class="bg-[#fcb026] text-white text-left">
-                    <th class="p-4 border">Vehicle Inquiries</th>
-                    <th class="p-4 border">Status</th>
-                    <th class="p-4 border">Loan Status</th>
-                    <th class="p-4 border">Delivery Status</th>
-                    <th class="p-4 border">Created Date</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                <tr *ngFor="let enquiry of userEnquiries" class="hover:bg-purple-50 transition">
-                    <td class="p-4 border font-medium">{{ enquiry.name }}</td>
-                    <td class="p-4 border text-yellow-600 font-semibold">{{ enquiry.status }}</td>
-                    <td class="p-4 border">{{ enquiry.loan_status || 'N/A' }}</td>
-                    <td class="p-4 border">{{ enquiry.delivery_status || 'N/A' }}</td>
-                    <td class="p-4 border">{{ enquiry.created_date | date: 'dd-MMM-yyyy' }}</td>
-                </tr>
-            </tbody>
+
+        <!-- Vehicle Enquiry -->
+        <div class="overflow-x-auto rounded-lg shadow-sm" *ngIf="userEnquiries && userEnquiries.length > 0">
+            <p class="font-bold italic mt-8 mb-3 text-gray-700 px-3 pt-3">Vehicle Enquiry</p>
+            <table class="min-w-full border border-gray-200 text-sm sm:text-base rounded-lg overflow-hidden">
+                <thead>
+                    <tr class="bg-[#fcb026] text-white text-left">
+                        <th class="p-4 border">Name</th>
+                        <th class="p-4 border">Status</th>
+                        <th class="p-4 border">Loan Status</th>
+                        <th class="p-4 border">Delivery Status</th>
+                        <th class="p-4 border">Created Date</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr *ngFor="let enquiry of userEnquiries"
+                        class="hover:bg-purple-50 transition-all duration-150 cursor-pointer">
+                        <td class="p-4 border font-medium">{{ enquiry.name }}</td>
+                        <td class="p-4 border text-yellow-600 font-semibold">{{ enquiry.status }}</td>
+                        <td class="p-4 border">{{ enquiry.loan_status || 'N/A' }}</td>
+                        <td class="p-4 border">{{ enquiry.delivery_status || 'N/A' }}</td>
+                        <td class="p-4 border">{{ enquiry.created_date | date:'dd-MMM-yyyy' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Transport Enquiry -->
+        <div class="overflow-x-auto rounded-lg shadow-sm mt-3" *ngIf="myTransports && myTransports.length > 0">
+            <p class="font-bold italic text-gray-700 px-3 pt-3">Transport Enquiry</p>
+            <table class="min-w-full border border-gray-200 text-sm sm:text-base rounded-lg overflow-hidden">
+                <thead>
+                    <tr class="bg-[#fcb026] text-white text-left">
+                        <th class="p-4 border">Name</th>
+                        <th class="p-4 border">Pickup Location</th>
+                        <th class="p-4 border">Drop Location</th>
+                        <th class="p-4 border">Created Date</th>
+                        <th class="p-4 border">Shifting Date</th>
+                        <th class="p-4 border">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr *ngFor="let t of myTransports"
+                        class="hover:bg-purple-50 transition-all duration-150 cursor-pointer">
+                        <td class="p-4 border font-medium">{{ t.name }}</td>
+                        <td class="p-4 border text-yellow-600 font-semibold">{{ t.pickup_location }}</td>
+                        <td class="p-4 border">{{ t.drop_location }}</td>
+                        <td class="p-4 border">{{ t.created_date | date:'dd-MMM-yyyy' }}</td>
+                        <td class="p-4 border">{{ t.shifting_date | date:'shortDate' }}</td>
+                        <td class="p-4 border">{{ t.status }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Loan Enquiry -->
+        <div class="overflow-x-auto rounded-lg shadow-sm mt-3" *ngIf="loan && loan.length > 0">
+            <p class="font-bold italic mt-8 mb-3 text-gray-700 px-3 pt-3">Loan Enquiry</p>
+            <table class="min-w-full border border-gray-200 text-sm sm:text-base rounded-lg overflow-hidden">
+                <thead>
+                    <tr class="bg-[#fcb026] text-white text-left">
+                        <th class="p-4 border">Name</th>
+                        <th class="p-4 border">Email</th>
+                        <th class="p-4 border">Mobile Number</th>
+                        <th class="p-4 border">Created Date</th>
+                        <th class="p-4 border">Loan Amount</th>
+                        <th class="p-4 border">Tenure</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr *ngFor="let l of loan" class="hover:bg-purple-50 transition-all duration-150 cursor-pointer">
+                        <td class="p-4 border font-medium">{{ l.fullName }}</td>
+                        <td class="p-4 border text-yellow-600 font-semibold">{{ l.email }}</td>
+                        <td class="p-4 border">{{ l.mobile }}</td>
+                        <td class="p-4 border">{{ l.createdAt | date:'dd-MMM-yyyy' }}</td>
+                        <td class="p-4 border">{{ l.loanAmount }}</td>
+                        <td class="p-4 border">{{ l.tenure }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Insurance Enquiry -->
+        <div class="overflow-x-auto rounded-lg shadow-sm mt-3" *ngIf="insurance && insurance.length > 0">
+            <p class="font-bold italic mt-8 mb-3 text-gray-700 px-3 pt-3">Insurance Enquiry</p>
+            <table class="min-w-full border border-gray-200 text-sm sm:text-base rounded-lg overflow-hidden">
+                <thead>
+                    <tr class="bg-[#fcb026] text-white text-left">
+                        <th class="p-4 border">Name</th>
+                        <th class="p-4 border">Insurance Type</th>
+                        <th class="p-4 border">Mobile Number</th>
+                        <th class="p-4 border">Created Date</th>
+                        <th class="p-4 border">Policy Number</th>
+                        <th class="p-4 border">Vehicle Details</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr *ngFor="let i of insurance"
+                        class="hover:bg-purple-50 transition-all duration-150 cursor-pointer">
+                        <td class="p-4 border font-medium">{{ i.fullName }}</td>
+                        <td class="p-4 border text-yellow-600 font-semibold">{{ i.insuranceType }}</td>
+                        <td class="p-4 border">{{ i.mobile }}</td>
+                        <td class="p-4 border">{{ i.createdAt | date:'dd-MMM-yyyy' }}</td>
+                        <td class="p-4 border">{{ i.policyNumber }}</td>
+                        <td class="p-4 border">{{ i.vehicleDetail }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
 
-        </table>
 
-        <!-- Table 2 -->
-        <!-- <table id="dashboardTable"
-            class="min-w-full border border-gray-200 text-sm sm:text-base rounded-lg overflow-hidden">
-
-            <thead>
-                <tr class="bg-[#fcb026] text-white text-left">
-                    <th class="p-4 border">Name</th>
-                    <th class="p-4 border">Pickup Location</th>
-                    <th class="p-4 border">Drop Location</th>
-                    <th class="p-4 border">Created Date</th>
-                    <th class="p-4 border">Shifting Date</th>
-                    <th class="p-4 border">Status</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                <tr *ngFor="let t of myTransports" class="hover:bg-purple-50 transition">
-                    <td class="p-4 border font-medium">{{ t.name }}</td>
-                    <td class="p-4 border text-yellow-600 font-semibold">{{ t.pickup_location }}</td>
-                    <td class="p-4 border">{{ t.drop_location }}</td>
-                    <td class="p-4 border">{{ t.created_date | date: 'short' }}</td>
-                    <td class="p-4 border">{{ t.shifting_date | date: 'shortDate' }}</td>
-                    <td class="p-4 border">{{ t.status }}</td>
-                </tr>
-            </tbody>
-        </table> -->
     </div>
 
 </div>

@@ -42,10 +42,12 @@ exports.loginAdmin = async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
-        const token = generateToken(admin._id);
+        // ✅ FIXED: pass the full admin object, not only admin._id
+        const token = generateToken(admin);
+
         res.json({
             token,
-            user: {
+            admin: {
                 id: admin._id,
                 email: admin.email,
                 role: 'Admin'
@@ -56,3 +58,4 @@ exports.loginAdmin = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+

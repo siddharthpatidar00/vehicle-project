@@ -114,7 +114,7 @@ exports.getMyEnquiries = async (req, res) => {
         if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
 
         // Only fetch enquiries created by registered users
-        const filter = { created_by: 'User' };
+        const filter = { created_by: 'User',user: req.user.id };
 
         const enquiries = await VehicleEnquiry.find(filter)
             .populate('user', 'first_name last_name email') // populate user info

@@ -18,7 +18,7 @@ export class AdminAuthInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // Only attach token for admin routes
-        if (req.url.includes('/api/admin-dashboard')) {
+        if (req.url.includes('/api')) {
             const token = this.auth.getToken();
             if (token) {
                 req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
@@ -28,7 +28,7 @@ export class AdminAuthInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
             catchError((err: HttpErrorResponse) => {
                 if (err.status === 401) {
-                    this.auth.logout();
+                    // this.auth.logout();
                 }
                 return throwError(() => err);
             })

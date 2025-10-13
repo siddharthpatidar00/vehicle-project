@@ -23,7 +23,6 @@ export interface User {
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
-    // Assuming API_ENDPOINTS.users = '/api/users'
     private baseUrl = API_ENDPOINTS.users;
 
     constructor(private http: HttpClient) { }

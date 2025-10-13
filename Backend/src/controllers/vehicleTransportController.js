@@ -13,7 +13,7 @@ exports.createTransport = async (req, res) => {
             status
         } = req.body;
 
-        const transport = new VehicleTransport({
+        const transportData = {
             pickup_location,
             drop_location,
             name,
@@ -21,15 +21,28 @@ exports.createTransport = async (req, res) => {
             shifting_date,
             vehicle_detail,
             status
-        });
+        };
 
+        // Assign logged-in user if available
+        if (req.user && req.user.role === 'User') {
+            transportData.user = req.user.id; // store the user's ObjectId
+        } else {
+            transportData.user = null; // Guest submissions
+        }
+
+        const transport = new VehicleTransport(transportData);
         await transport.save();
-        res.status(201).json({ message: 'Transport request created successfully', transport });
+
+        res.status(201).json({ 
+            message: 'Transport request created successfully', 
+            transport 
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 // Get all transport requests
 exports.getAllTransports = async (req, res) => {
@@ -92,19 +105,15 @@ exports.deleteTransport = async (req, res) => {
 
 exports.getMyTransports = async (req, res) => {
     try {
-        const userName = req.user?.name; // assuming 'name' comes from your authMiddleware token
-        if (!userName) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
+        if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
 
-        // Filter transports created by this user
-        const transports = await VehicleTransport.find({ name: userName })
-            .sort({ created_date: -1 })
-            .select('name pickup_location drop_location created_date shifting_date status'); // only required fields
+        // Use the imported model name
+        const transports = await VehicleTransport.find({ user: req.user.id }).sort({ created_date: -1 });
 
-        res.json(transports);
-    } catch (error) {
-        console.error(error);
+        res.status(200).json(transports);
+    } catch (err) {
+        console.error('Error fetching user transports:', err);
         res.status(500).json({ message: 'Server error' });
     }
 };
+

@@ -8,7 +8,7 @@ const { allowRoles } = require('../middleware/authorizeRole');
 router.post('/',protectOptional, transportController.createTransport);
 
 // Logged-in users can view their own transports
-router.get('/my-transports', transportController.getMyTransports);
+router.get('/my-transports', protect, transportController.getMyTransports);
 
 //  Only ADMIN can view all transport requests
 router.get('/', protect, adminOrStaffOnly, allowRoles('Admin'), transportController.getAllTransports);

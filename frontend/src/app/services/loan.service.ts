@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../config/api.config';
+import { map } from 'rxjs/operators';
 
 export interface Loan {
     fullName?: string;
@@ -17,6 +18,7 @@ export interface Loan {
 @Injectable({ providedIn: 'root' })
 export class LoanService {
     private baseUrl = API_ENDPOINTS.Loan;
+    private tokenKey = 'user-token';
 
     constructor(private http: HttpClient) { }
 
@@ -25,6 +27,25 @@ export class LoanService {
     }
 
     createLoanInquiry(data: Loan): Observable<any> {
-        return this.http.post(`${this.baseUrl}`, data);
+        const token = localStorage.getItem(this.tokenKey)
+        let headers = new HttpHeaders()
+        if (token) {
+            headers = headers.set('Authorization', `Bearer ${token}`)
+        }
+        return this.http.post<any>(this.baseUrl, data, { headers });
     }
+
+
+    getMyLoanInquiries(): Observable<Loan[]> {
+        const token = localStorage.getItem(this.tokenKey);
+        let headers = new HttpHeaders();
+        if (token) headers = headers.set('Authorization', `Bearer ${token}`);
+
+        return this.http.get<{ success: boolean, data: Loan[] }>(`${this.baseUrl}/my-inquiries`, { headers })
+            .pipe(
+                map(res => res.data || [])
+            );
+    }
+
 }
+

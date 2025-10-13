@@ -151,6 +151,8 @@ export class VehiclesComponent implements OnInit {
         this.selectedImageFiles.push(file);
         this.imagePreviews.push(URL.createObjectURL(file));
       });
+      this.vehicleForm.patchValue({ img: this.selectedImageFiles });
+      this.vehicleForm.get('img')?.updateValueAndValidity();
     }
   }
 
@@ -188,8 +190,24 @@ export class VehiclesComponent implements OnInit {
           }
         });
 
-        const categoryValue = Array.isArray(formRaw.category) ? formRaw.category[0] : formRaw.category;
-        formData.append('category_name', categoryValue || '');
+
+        const selectedCategory = this.categories.find(c => c.category_name.trim() === formRaw.category);
+        if (selectedCategory) {
+          if (selectedCategory?._id) {
+            formData.append('category_id', selectedCategory._id.toString());
+            formData.set('category_name', selectedCategory.category_name || '');
+          }
+          formData.append('category_name', selectedCategory.category_name || '');
+        } else {
+          if (formRaw.category) {
+            formData.append('category_name', formRaw.category);
+          }
+        }
+
+
+
+
+
 
         if (!this.editMode) {
           const userId = this.authService.getAdminId();
@@ -257,7 +275,7 @@ export class VehiclesComponent implements OnInit {
       name: vehicle.name,
       model: vehicle.model,
       brand: vehicle.brand,
-      category: vehicle.category_name,
+      category: vehicle.category_name?.trim() || '',
       km_driven: vehicle.km_driven,
       ownership: vehicle.ownership,
       manufacture_year: vehicle.manufacture_year,

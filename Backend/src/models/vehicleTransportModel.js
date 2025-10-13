@@ -27,7 +27,8 @@ const VehicleTransportSchema = new mongoose.Schema({
     created_date: {
         type: Date,
         default: Date.now
-    }
+    },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }
 });
 
 module.exports = mongoose.model('Vehicle_transport', VehicleTransportSchema);

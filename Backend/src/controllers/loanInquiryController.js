@@ -3,13 +3,22 @@ const LoanInquiry = require("../models/loanInquiryModel");
 // ✅ Create Loan Inquiry
 exports.createLoanInquiry = async (req, res) => {
     try {
-        const inquiry = new LoanInquiry(req.body);
+        const inquiryData = { ...req.body };
+
+        // Attach user if logged in
+        if (req.user && req.user.role === 'User') {
+            inquiryData.user = req.user.id;
+            inquiryData.email = req.user.email; // optional: override email from user
+        }
+
+        const inquiry = new LoanInquiry(inquiryData);
         const savedInquiry = await inquiry.save();
         res.status(201).json({ success: true, data: savedInquiry });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
     }
 };
+
 
 // ✅ Get All Loan Inquiries
 exports.getAllLoanInquiries = async (req, res) => {
@@ -33,3 +42,16 @@ exports.getLoanInquiryById = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+
+exports.getMyLoanInquiries = async (req, res) => {
+    try {
+        if (!req.user) return res.status(401).json({ success: false, message: 'Unauthorized' });
+
+        const inquiries = await LoanInquiry.find({ user: req.user.id }).sort({ createdAt: -1 });
+        res.status(200).json({ success: true, data: inquiries });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
