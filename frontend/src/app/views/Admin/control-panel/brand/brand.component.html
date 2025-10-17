@@ -35,7 +35,7 @@
                         <td class="px-4 py-2 border">{{ brand.brand_description }}</td>
                         <td class="px-4 py-2 border">{{brand.createdAt | date:'shortDate'}}</td>
                         <td class="px-4 py-2 border w-45">
-                            <img *ngIf="brand.brand_image" [src]="'http://localhost:5000' + brand.brand_image"
+                            <img *ngIf="brand.brand_image" [src]="'https://rockeyeengineerings.com' + brand.brand_image"
                                 alt="Brand" class=" object-cover rounded" />
 
                         </td>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="flex justify-between mb-4">
                         <span class="font-semibold">Image</span>
-                        <img *ngIf="brand.brand_image" [src]="'http://localhost:5000' + brand.brand_image"
+                        <img *ngIf="brand.brand_image" [src]="'https://rockeyeengineerings.com' + brand.brand_image"
                             [alt]="brand.brand_name" class="w-24 h-16 object-cover rounded" />
                     </div>
                     <div class="flex items-center justify-between">

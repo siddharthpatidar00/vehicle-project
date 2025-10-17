@@ -20,6 +20,7 @@ export class VehicleDetailsComponent implements OnInit {
   selectedImageIndex = 0;
   ad3: Advertisement | null = null;
   vehicles: Vehicle[] = [];
+  expanded: boolean = false;
   randomVehicles: Vehicle[] = [];
 
   constructor(
@@ -85,7 +86,7 @@ this.adService.getAdByType('ad3').subscribe({
   }
 
   getVehicleImageUrl(imgPath: string | null | undefined): string {
-    return imgPath ? `http://localhost:5000${imgPath}` : 'assets/images/no-image.jpg';
+    return imgPath ? `https://rockeyeengineerings.com${imgPath}` : 'assets/images/no-image.jpg';
   }
 
   openVehiclePersonalInquiryModal(vehicleName: string) {

@@ -132,27 +132,22 @@ export class VehicleFilterComponent {
 
     applyFilter() {
         const appliedFilter = {
-            category: this.selectedCategory?.trim() || undefined,
-            brand: this.selectedBrand?.trim() || undefined,
+            category_name: this.selectedCategory?.trim() || undefined,
+            brand_name: this.selectedBrand?.trim() || undefined,
             minPrice: this.minValue || 0,
             maxPrice: this.maxValue || this.priceRange.maxOriginal || 0,
         };
 
         console.log('[Applied Filter]', appliedFilter);
 
-        // Send the filter to backend
-        this.filterService.getFilteredVehicles(appliedFilter).subscribe((res) => {
-            if (res.code) {
-                // ✅ Store the filtered vehicles
-                this.filteredVehicles = res.result.vehicles || [];
-                console.log('Filtered Vehicles:', this.filteredVehicles);
-            }
-        });
+        // ✅ Send filter data to parent component
+        this.filterApplied.emit(appliedFilter);
 
         if (this.isMobile) {
             this.isSidebarOpen = false;
         }
     }
+
 
 
     @HostListener('document:click', ['$event'])

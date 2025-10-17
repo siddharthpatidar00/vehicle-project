@@ -34,7 +34,7 @@
                         <td class="px-4 py-2 border">{{ category.category_description }}</td>
                         <td class="px-4 py-2 border">{{ category.createdAt | date:'shortDate' }}</td>
                         <td class="px-4 py-2 border w-45">
-                            <img [src]="'http://localhost:5000' + category.category_image" alt="Category"
+                            <img [src]="'https://rockeyeengineerings.com' + category.category_image" alt="Category"
                                 class="object-cover rounded" />
                         </td>
                         <td class="px-4 py-2 border text-center">
@@ -89,7 +89,7 @@
                     </div>
                     <div class="flex justify-between mb-4">
                         <span class="font-semibold">Image</span>
-                        <img [src]="'http://localhost:5000' + category.category_image"
+                        <img [src]="'https://rockeyeengineerings.com' + category.category_image"
                             class="w-24 h-16 object-cover rounded" />
                     </div>
 

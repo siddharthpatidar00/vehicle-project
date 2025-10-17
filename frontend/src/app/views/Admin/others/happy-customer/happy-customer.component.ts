@@ -65,7 +65,7 @@ export class HappyCustomerComponent implements OnInit {
       next: (data) => {
         this.customers = data.map(c => ({
           ...c,
-          image: c.image?.startsWith('http') ? c.image : `http://localhost:5000${c.image}`
+          image: c.image?.startsWith('http') ? c.image : `https://rockeyeengineerings.com${c.image}`
         }));
       },
       error: (err) => console.error('Error fetching customers:', err)

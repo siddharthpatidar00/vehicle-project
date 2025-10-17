@@ -1,143 +1,268 @@
-<div class="container mx-auto p-4 max-w-7xl ">
-    <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Left Column - Vehicle Images and Details -->
-        <div class="lg:col-span-2 space-y-6">
-            <!-- Main Image and Thumbnails -->
-            <div class="rounded-lg shadow-sm p-6" style="
-    background:
-      linear-gradient(to bottom, #fcb026 0%, #fee1a1 50%),
-      linear-gradient(to bottom, #fee1a1 50%, #fff5d6 100%);
-  ">
-                <div class="mb-4 w-[400px] h-[350px]">
+<div class="container mx-auto p-4 max-w-7xl">
+
+    <!-- ====================== MOBILE LAYOUT ====================== -->
+    <div class="block lg:hidden space-y-6">
+
+        <!-- 1. VEHICLE IMAGE -->
+        <div
+            class="vehicle-image-section rounded-lg shadow-sm p-4 sm:p-6 bg-gradient-to-b from-[#fcb026] via-[#fee1a1] to-[#fff5d6]">
+            <div class="mb-4 w-full max-w-[450px] sm:max-w-full mx-auto h-[250px] sm:h-[350px]">
+                <img *ngIf="vehicle?.img?.length" [src]="getVehicleImageUrl(vehicle.img[selectedImageIndex])"
+                    alt="{{ vehicle?.name }}" class="w-full h-full object-cover rounded-lg" />
+            </div>
+            <div class="flex flex-wrap gap-2 justify-center sm:justify-start">
+                <div *ngFor="let img of vehicle.img; let i = index"
+                    class="w-14 h-14 sm:w-16 sm:h-16 rounded cursor-pointer border transition-transform hover:scale-105"
+                    [class.border-yellow-500]="i === selectedImageIndex" (click)="selectImage(i)">
+                    <img [src]="getVehicleImageUrl(img)" alt="thumbnail" class="w-full h-full object-cover rounded" />
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. VEHICLE INFO -->
+        <div class="rounded-lg p-4 sm:p-6 bg-gradient-to-b from-[#fcb026] to-[#fee1a1] shadow-sm">
+            <div class="flex items-baseline justify-between mb-4">
+                <p class="text-xl sm:text-2xl font-semibold">₹{{ vehicle.price }}</p>
+            </div>
+            <div class="space-y-3 text-sm sm:text-base">
+                <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
+                    <span class="text-black">Name</span>
+                    <span class="font-medium text-black">{{ vehicle.name }}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
+                    <span class="text-black">Model</span>
+                    <span class="font-medium text-black">{{ vehicle.model }}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
+                    <span class="text-black">Manufacture Year</span>
+                    <span class="font-medium text-black">{{ vehicle.manufacture_year }}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
+                    <span class="text-black">Kilometers Driven</span>
+                    <span class="font-medium text-black">{{ vehicle.km_driven }}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
+                    <span class="text-black">Ownership</span>
+                    <span class="font-medium text-black">{{ vehicle.ownership }}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
+                    <span class="text-black">Insured</span>
+                    <span class="font-medium text-black">{{ vehicle.isInsured ? 'Yes' : 'No' }}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
+                    <span class="text-black">Insurance Valid Till</span>
+                    <span class="font-medium text-black">{{ vehicle.insuranceValidTill | date }}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
+                    <span class="text-black">Status</span>
+                    <span class="font-medium text-black">{{ vehicle.status }}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
+                    <span class="text-black">Sell or Rent</span>
+                    <span class="font-medium text-black">{{ vehicle.sell_or_rent }}</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
+                    <span class="text-black">Created</span>
+                    <span class="font-medium text-black">{{ vehicle.Created_date | date: 'mediumDate' }}</span>
+                </div>
+            </div>
+
+            <!-- Inquiry Button -->
+            <button (click)="openVehiclePersonalInquiryModal(vehicle.name)"
+                class="mt-4 bg-black text-[#fcb026] font-semibold py-2 rounded w-full hover:opacity-90 transition">
+                Inquiry Now
+            </button>
+        </div>
+
+        <!-- 3. VEHICLE DESCRIPTION -->
+        <div
+            class="vehicle-description-section rounded-lg shadow-sm p-4 sm:p-6 bg-gradient-to-b from-[#fcb026] via-[#fee1a1] to-[#fff5d6]">
+            <h3 class="font-semibold text-black mb-2 text-lg sm:text-xl">
+                Description
+            </h3>
+
+            <p class="text-gray-700 text-sm sm:text-base leading-relaxed overflow-hidden"
+                [ngStyle]="{ 'max-height': expanded ? 'none' : '4.5em' }" [class.overflow-ellipsis]="!expanded">
+                {{ vehicle.description }}
+            </p>
+
+            <button class=" text-black font-medium !text-[12px]" (click)="expanded = !expanded">
+                {{ expanded ? 'Read Less' : 'Read More' }}
+            </button>
+        </div>
+
+        <!-- 4. SUGGESTED VEHICLES -->
+        <div
+            class="vehicle-suggested-section rounded-lg shadow-sm p-4 sm:p-6 bg-gradient-to-b from-[#fcb026] via-[#fee1a1] to-[#fff5d6]">
+            <h2 class="text-xl sm:text-2xl font-bold text-black mb-4">
+                Suggested <span class="font-normal text-black">Vehicles</span>
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div *ngFor="let v of randomVehicles"
+                    class="rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg hover:scale-[1.02] transition bg-gradient-to-b from-[#fee1a1] to-[#fff5d6]"
+                    [routerLink]="['/vehicle-detail', v._id]">
+                    <img [src]="getVehicleImageUrl(v.img && v.img[0])" alt="{{ v.name }}"
+                        class="w-full h-[200px] sm:h-[250px] object-cover rounded-lg mb-3" />
+                    <h3 class="text-lg font-semibold text-gray-800 truncate">
+                        {{ v.name }}
+                    </h3>
+                    <p class="text-gray-600 text-sm">Model: {{ v.model }}</p>
+                    <p class="text-gray-600 text-sm">Price: ₹{{ v.price }}</p>
+                    <button
+                        class="mt-3 bg-[#fcb026] text-black font-semibold px-4 py-2 rounded w-full hover:bg-[#ffa600] transition">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. ADVERTISEMENT -->
+        <div *ngIf="ad3 && ad3.image">
+            <img [src]="getVehicleImageUrl(ad3.image)" [alt]="ad3.imageTitle"
+                class="w-full h-auto rounded-lg shadow-sm" />
+        </div>
+    </div>
+
+    <!-- ====================== DESKTOP LAYOUT (KEEP AS IS) ====================== -->
+    <div class="hidden lg:grid grid-cols-3 gap-6">
+        <!-- Paste your existing desktop code here -->
+        <!-- LEFT COLUMN -->
+        <div class="lg:col-span-2 space-y-6 order-1 lg:order-1">
+            <!-- Vehicle Image Section -->
+            <div
+                class="vehicle-image-section rounded-lg shadow-sm p-4 sm:p-6 bg-gradient-to-b from-[#fcb026] via-[#fee1a1] to-[#fff5d6]">
+                <div class="mb-4 w-full max-w-[450px] sm:max-w-full mx-auto h-[250px] sm:h-[350px]">
                     <img *ngIf="vehicle?.img?.length" [src]="getVehicleImageUrl(vehicle.img[selectedImageIndex])"
-                        alt="{{ vehicle?.name }}" class="w-full h-full object-cover rounded-lg">
+                        alt="{{ vehicle?.name }}" class="w-full h-full object-cover rounded-lg" />
                 </div>
 
-                <!-- Thumbnail Images -->
-                <div class="flex space-x-2">
-                    <div *ngFor="let img of vehicle.img; let i = index" class="w-16 h-16 rounded cursor-pointer border"
+                <div class="flex flex-wrap gap-2 justify-center sm:justify-start">
+                    <div *ngFor="let img of vehicle.img; let i = index"
+                        class="w-14 h-14 sm:w-16 sm:h-16 rounded cursor-pointer border transition-transform hover:scale-105"
                         [class.border-yellow-500]="i === selectedImageIndex" (click)="selectImage(i)">
-                        <img [src]="getVehicleImageUrl(img)" alt="thumbnail" class="w-full h-full object-cover rounded">
+                        <img [src]="getVehicleImageUrl(img)" alt="thumbnail"
+                            class="w-full h-full object-cover rounded" />
                     </div>
                 </div>
-
-
             </div>
 
-            <!-- Vehicle Information Section -->
-            <div class="rounded-lg shadow-sm p-6" style="
-    background:
-      linear-gradient(to bottom, #fcb026 0%, #fee1a1 50%),
-      linear-gradient(to bottom, #fee1a1 50%, #fff5d6 100%);
-  ">
-                <!-- <h2 class="text-2xl font-bold text-black mb-6">Vehicle <span
-                        class="font-normal text-black">information</span></h2> -->
+            <!-- Vehicle Description -->
+            <div
+                class="vehicle-description-section rounded-lg shadow-sm p-4 sm:p-6 bg-gradient-to-b from-[#fcb026] via-[#fee1a1] to-[#fff5d6]">
 
-                <!-- Features -->
-                <div class="mb-6">
-                    <h3 class="font-semibold text-black mb-2">Description</h3>
-                    <p class="text-gray-700"> {{ vehicle.description }}</p>
-                </div>
+                <h3 class="font-semibold text-black mb-2 text-lg sm:text-xl">Description</h3>
 
+                <p class="text-gray-700 text-sm sm:text-base leading-relaxed overflow-hidden"
+                    [ngStyle]="{ 'max-height': expanded ? 'none' : '4.5em' }" [class.overflow-ellipsis]="!expanded">
+                    {{ vehicle.description }}
+                </p>
+
+                <button class=" text-black font-medium !text-[12px]" (click)="expanded = !expanded">
+                    {{ expanded ? 'Read Less' : 'Read More' }}
+                </button>
             </div>
 
-            <!-- More Info Section -->
-            <div class="rounded-lg shadow-sm p-3" style="
-    background: linear-gradient(to bottom, #fcb026 0%, #fee1a1 50%),
-      linear-gradient(to bottom, #fee1a1 50%, #fff5d6 100%);
-  ">
-                <h2 class="text-2xl font-bold text-black mb-4">
+
+            <!-- Suggested Vehicles -->
+            <div
+                class="vehicle-suggested-section rounded-lg shadow-sm p-4 sm:p-6 bg-gradient-to-b from-[#fcb026] via-[#fee1a1] to-[#fff5d6]">
+                <h2 class="text-xl sm:text-2xl font-bold text-black mb-4">
                     Suggested <span class="font-normal text-black">Vehicles</span>
                 </h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div *ngFor="let v of randomVehicles"
-                        class="rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition" style="
-    background: linear-gradient(to bottom,#fee1a1 50%, #fff5d6 100%),
-      linear-gradient(to bottom,#fcb026 0%, #fee1a1 50%  );
-  " [routerLink]="['/vehicle-detail', v._id]">
+                        class="rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg hover:scale-[1.02] transition bg-gradient-to-b from-[#fee1a1] to-[#fff5d6]"
+                        [routerLink]="['/vehicle-detail', v._id]">
                         <img [src]="getVehicleImageUrl(v.img && v.img[0])" alt="{{ v.name }}"
-                            class="w-full object-cover rounded-lg mb-3" style="height: 250px;" />
-                        <h3 class="text-lg font-semibold text-gray-800">{{ v.name }}</h3>
-                        <p class="text-gray-600">Model: {{ v.model }}</p>
-                        <p class="text-gray-600">Price: ₹{{ v.price }}</p>
-                        <button class="mt-2 bg-[#fcb026] text-black font-semibold px-3 py-1 rounded hover:bg-[#ffa600]">
+                            class="w-full h-[200px] sm:h-[250px] object-cover rounded-lg mb-3" />
+                        <h3 class="text-lg font-semibold text-gray-800 truncate">
+                            {{ v.name }}
+                        </h3>
+                        <p class="text-gray-600 text-sm">Model: {{ v.model }}</p>
+                        <p class="text-gray-600 text-sm">Price: ₹{{ v.price }}</p>
+                        <button
+                            class="mt-3 bg-[#fcb026] text-black font-semibold px-4 py-2 rounded w-full hover:bg-[#ffa600] transition">
                             View Details
                         </button>
                     </div>
                 </div>
             </div>
-
-
         </div>
 
-        <!-- Right Column - Price and Details -->
-        <div class="space-y-6">
-            <!-- Price and Basic Info -->
-            <div class="rounded-lg p-6" style="background: linear-gradient(to bottom, #fcb026 0%, #fee1a1 100%);">
+        <!-- RIGHT COLUMN -->
+        <div class="vehicle-right-column space-y-6 order-2 lg:order-2">
+            <!-- Vehicle Info Card -->
+            <div class="rounded-lg p-4 sm:p-6 bg-gradient-to-b from-[#fcb026] to-[#fee1a1] shadow-sm">
                 <div class="flex items-baseline justify-between mb-4">
-                    <p class="text-2xl font-semibold">Rs.{{ vehicle.price }}</p>
+                    <p class="text-xl sm:text-2xl font-semibold">₹{{ vehicle.price }}</p>
                 </div>
 
-                <!-- Vehicle Details Grid -->
-                <div class="space-y-3">
-                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                <div class="space-y-3 text-sm sm:text-base">
+                    <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
                         <span class="text-black">Name</span>
                         <span class="font-medium text-black">{{ vehicle.name }}</span>
                     </div>
-                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
                         <span class="text-black">Model</span>
                         <span class="font-medium text-black">{{ vehicle.model }}</span>
                     </div>
-                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
                         <span class="text-black">Manufacture Year</span>
                         <span class="font-medium text-black">{{ vehicle.manufacture_year }}</span>
                     </div>
-                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
                         <span class="text-black">Kilometers Driven</span>
                         <span class="font-medium text-black">{{ vehicle.km_driven }}</span>
                     </div>
-                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
                         <span class="text-black">Ownership</span>
                         <span class="font-medium text-black">{{ vehicle.ownership }}</span>
                     </div>
-                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
                         <span class="text-black">Insured</span>
-                        <span class="font-medium text-black">{{ vehicle.isInsured ? 'Yes' : 'No' }}</span>
+                        <span class="font-medium text-black">
+                            {{ vehicle.isInsured ? 'Yes' : 'No' }}
+                        </span>
                     </div>
-                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
                         <span class="text-black">Insurance Valid Till</span>
-                        <span class="font-medium text-black"> {{ vehicle.insuranceValidTill | date }}</span>
+                        <span class="font-medium text-black">
+                            {{ vehicle.insuranceValidTill | date }}
+                        </span>
                     </div>
-                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
                         <span class="text-black">Status</span>
                         <span class="font-medium text-black">{{ vehicle.status }}</span>
                     </div>
-                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
                         <span class="text-black">Sell or Rent</span>
                         <span class="font-medium text-black">{{ vehicle.sell_or_rent }}</span>
                     </div>
-                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                    <div class="flex justify-between border-b border-gray-100 pb-2 flex-wrap">
                         <span class="text-black">Created</span>
                         <span class="font-medium text-black">
-                            {{ vehicle.Created_date | date:'mediumDate' }}
+                            {{ vehicle.Created_date | date: 'mediumDate' }}
                         </span>
                     </div>
-
                 </div>
             </div>
+
+            <!-- Inquiry Button -->
             <button (click)="openVehiclePersonalInquiryModal(vehicle.name)"
-                class="mt-auto bg-black text-[#fcb026] font-[600] py-2 rounded w-full">
+                class="mt-auto bg-black text-[#fcb026] font-semibold py-2 rounded w-full hover:opacity-90 transition">
                 Inquiry Now
             </button>
 
+            <!-- Advertisement -->
             <div class="mt-3" *ngIf="ad3 && ad3.image">
-                <img [src]="getVehicleImageUrl(ad3.image)" [alt]="ad3.imageTitle" />
+                <img [src]="getVehicleImageUrl(ad3.image)" [alt]="ad3.imageTitle"
+                    class="w-full h-auto rounded-lg shadow-sm" />
             </div>
-
         </div>
-        <app-vehicle-personal-inquiry-modal *ngIf="showInquiryModal" [vehicleName]="selectedVehicleName"
-            (close)="closeVehiclePersonalInquiryModal()" class="z-[9999]">
-        </app-vehicle-personal-inquiry-modal>
     </div>
+
+    <!-- Inquiry Modal -->
+    <app-vehicle-personal-inquiry-modal *ngIf="showInquiryModal" [vehicleName]="selectedVehicleName"
+        (close)="closeVehiclePersonalInquiryModal()" class="z-[99999]"></app-vehicle-personal-inquiry-modal>
+</div>

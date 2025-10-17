@@ -90,7 +90,7 @@
             <h5 class="text-sm font-semibold leading-6 text-gray-900">Tabs</h5>
             <ul role="list" class="mt-6 space-y-2">
               <li>
-                <a href="#" class="text-sm leading-6 text-black hover:!text-[#BB3E00]"
+                <a routerLink="/" class="text-sm leading-6 text-black hover:!text-[#BB3E00]"
                   style="text-decoration: none;">Home</a>
               </li>
               <li>
@@ -98,19 +98,19 @@
                   style="text-decoration: none;">Buy Vehicles</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-black hover:!text-[#BB3E00]"
+                <a (click)="openSellVehicleModal()" class="text-sm leading-6 text-black hover:!text-[#BB3E00] cursor-pointer"
                   style="text-decoration: none;">Sell Vehicles</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-black hover:!text-[#BB3E00]"
+                <a (click)="openSearchModal()" class="text-sm leading-6 text-black hover:!text-[#BB3E00] cursor-pointer"
                   style="text-decoration: none;">Rent Vehicles</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-black hover:!text-[#BB3E00]"
+                <a (click)="openTransportModal()" class="text-sm leading-6 text-black hover:!text-[#BB3E00] cursor-pointer"
                   style="text-decoration: none;">Transport My Vehicle</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-black hover:!text-[#BB3E00]"
+                <a (click)="openInquiryModal()" class="text-sm leading-6 text-black hover:!text-[#BB3E00] cursor-pointer"
                   style="text-decoration: none;">Inquiry Now</a>
               </li>
             </ul>
@@ -119,11 +119,11 @@
             <h5 class="text-sm font-semibold leading-6 text-gray-900">Others</h5>
             <ul role="list" class="mt-6 space-y-2">
               <li>
-                <a href="#" class="text-sm leading-6 text-black hover:!text-[#BB3E00]"
+                <a (click)="openApplyForLoanModal()" class="text-sm leading-6 text-black hover:!text-[#BB3E00] cursor-pointer"
                   style="text-decoration: none;">Request a Loan</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-black hover:!text-[#BB3E00]"
+                <a (click)="openBuyOrRenewInsuranceModal()" class="text-sm leading-6 text-black hover:!text-[#BB3E00] cursor-pointer"
                   style="text-decoration: none;">Buy or Renew Insurance</a>
               </li>
             </ul>
@@ -139,3 +139,9 @@
 <!-- </c-footer> -->
 
       <app-search-modal *ngIf="showSearchModal" (close)="closeSearchModal()"></app-search-modal>
+      <app-transport-vehicle *ngIf="showTransportModal" (close)="closeTransportModal()"></app-transport-vehicle>
+      <app-inquiry-modal *ngIf="showInquiryModal" (close)="closeInquiryModal()"></app-inquiry-modal>
+      <app-sell-vehicle-modal *ngIf="showSellVehicleModal" (close)="closeSellVehicleModal()"></app-sell-vehicle-modal>
+      <app-apply-for-loan *ngIf="showApplyForLoanModalOpen" (close)="closeApplyForLoanModal()"></app-apply-for-loan>
+      <app-buy-or-renew-insurance *ngIf="showBuyOrRenewInsuranceModalOpen"
+  (close)="closeBuyOrRenewInsuranceModal()"></app-buy-or-renew-insurance>

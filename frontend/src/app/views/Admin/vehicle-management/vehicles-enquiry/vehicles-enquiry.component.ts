@@ -196,7 +196,7 @@ export class VehiclesEnquiryComponent implements OnInit {
 
     this.previewImage = imagePath.startsWith('data')
       ? imagePath
-      : 'http://localhost:5000/uploads/' + imagePath;
+      : 'https://rockeyeengineerings.com/uploads/' + imagePath;
   }
 
   closePreview() {
