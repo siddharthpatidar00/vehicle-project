@@ -370,7 +370,7 @@
 
                 <img *ngIf="editEnquiry?.delivery_proof" [src]="editEnquiry.delivery_proof?.startsWith('data')
     ? editEnquiry.delivery_proof
-    : 'https://rockeyeengineerings.com/uploads/' + editEnquiry.delivery_proof" alt="Delivery Proof"
+    : 'https://rockeyeengineerings.com/api/uploads/' + editEnquiry.delivery_proof" alt="Delivery Proof"
                     (click)="openPreview(editEnquiry.delivery_proof)"
                     class="object-cover rounded w-32 h-20 border cursor-pointer hover:opacity-80" />
             </div>

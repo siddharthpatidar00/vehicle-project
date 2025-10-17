@@ -86,7 +86,7 @@ this.adService.getAdByType('ad3').subscribe({
   }
 
   getVehicleImageUrl(imgPath: string | null | undefined): string {
-    return imgPath ? `https://rockeyeengineerings.com${imgPath}` : 'assets/images/no-image.jpg';
+    return imgPath ? `https://rockeyeengineerings.com/api${imgPath}` : 'assets/images/no-image.jpg';
   }
 
   openVehiclePersonalInquiryModal(vehicleName: string) {

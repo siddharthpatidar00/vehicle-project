@@ -5,7 +5,8 @@
 
       <!-- Left: Company Logo -->
       <div class="flex items-center w-auto">
-        <img src="./assets/images/rockeye-logo.png" alt="RockEye" class="h-15 w-full rounded" style="width: 95px; height: 68px;" />
+        <img src="./assets/images/rockeye-logo.png" alt="RockEye" class="h-15 w-full rounded"
+          style="width: 95px; height: 68px;" />
       </div>
 
       <c-header-nav class="d-none d-md-flex w-full flex p-3 justify-between text-center">
@@ -59,10 +60,16 @@
             clip-rule="evenodd" />
         </svg> <span>Location</span> </div> -->
 
-      <!-- Search input -->
-      <div class="relative flex items-center w-fit max-w-xl mx-4 h-12 overflow-visible" (click)="openSearchModal()">
-        <img src="./assets/images/searching-bar.png" alt="search img" class="w-20 h-auto cursor-pointer">
-      </div>
+  <!-- Search input -->
+<div class="relative flex items-center w-fit max-w-xl mx-4 h-12 overflow-visible" (click)="openSearchModal()">
+  <img 
+    src="./assets/images/search.png" 
+    alt="search img" 
+    class="cursor-pointer"
+    style="width: 26px; height: 26px; object-fit: contain;"
+  >
+</div>
+
 
       <!-- User Dropdown -->
       <ng-container *ngTemplateOutlet="userDropdown" />
@@ -71,60 +78,72 @@
 </div>
 
 <!-- Mobile Header -->
-<div class="md:hidden flex items-center pt-2 px-2 bg-[#fcb026] justify-between w-full shadow-md">
-  
-  <!-- Left: Toggle Button -->
-  <button (click)="mobileMenuOpen = !mobileMenuOpen" aria-label="Toggle menu" class="flex items-center">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-  </button>
+<div class="md:hidden flex items-center pt-2 px-3 bg-[#fcb026] justify-between w-full shadow-md">
 
-  <!-- Center: Company Logo -->
-  <div class="flex-1 flex justify-center items-center">
+  <!-- Left: Logo -->
+  <div class="flex items-center">
     <img src="./assets/images/rockeye-logo.png" alt="company logo" class="h-12 w-auto object-contain mb-2">
   </div>
 
-  <!-- Right: Search input -->
-  <div class="flex items-center h-12">
-    <div class="w-20 h-full cursor-pointer flex items-center" (click)="openSearchModal()">
-      <img src="./assets/images/searching-bar.png" alt="search img" class="w-full h-auto object-contain">
+  <!-- Right: Search + Toggle -->
+  <div class="flex items-center gap-3">
+    <!-- Search icon -->
+    <div class="w-6 h-7 flex items-center justify-center cursor-pointer" (click)="openSearchModal()">
+      <img src="./assets/images/search.png" alt="search img" class="w-full h-auto object-contain">
     </div>
+
+    <!-- Toggle Button -->
+    <button (click)="mobileMenuOpen = !mobileMenuOpen" aria-label="Toggle menu" class="flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-black" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
   </div>
 
 </div>
+
+
 
 
 
 <!-- Mobile Sidebar -->
-<div *ngIf="mobileMenuOpen" class="md:hidden absolute top-14 left-4 w-60 bg-[#fcb026] shadow-lg z-50
-         transform transition-transform duration-300 ease-out origin-top" [class.scale-y-100]="mobileMenuOpen"
-  [class.scale-y-0]="!mobileMenuOpen">
-  <div class="p-3 border-b">
-    <a routerLink="/" (click)="mobileMenuOpen = false" class="block py-2 text-black font-semibold"
-      style="text-decoration: none;">Home</a>
-    <a (click)="openSearchModal(); mobileMenuOpen = false" class="block py-2 text-black font-semibold"
-      style="text-decoration: none;">Buy Vehicles</a>
-    <a (click)="openSellVehicleModal(); mobileMenuOpen = false" class="block py-2 text-black font-semibold"
-      style="text-decoration: none;">Sell Vehicles</a>
-    <a (click)="openSearchModal(); mobileMenuOpen = false" class="block py-2 text-black font-semibold"
-      style="text-decoration: none;">Rent Vehicles</a>
-    <a (click)="openTransportModal(); mobileMenuOpen = false" class="block py-2 text-black font-semibold"
-      style="text-decoration: none;">Transport My Vehicle</a>
-    <a (click)="openInquiryModal(); mobileMenuOpen = false" class="block py-2 text-black font-semibold"
-      style="text-decoration: none;">Inquiry Now</a>
-    <div class="py-2">
-      <span class="text-black block font-semibold">Others</span>
-      <a routerLink="/faq" (click)="mobileMenuOpen = false" class="block text-sm text-black pl-4 py-1 font-semibold"
-        style="text-decoration: none;">FAQ's</a>
-      <a (click)="openApplyForLoanModal(); mobileMenuOpen = false"
-        class="block text-sm text-black pl-4 py-1 font-semibold" style="text-decoration: none;">Request a Loan</a>
-      <a (click)="openBuyOrRenewInsuranceModal(); mobileMenuOpen = false"
-        class="block text-sm text-black pl-4 py-1 font-semibold" style="text-decoration: none;">Buy or Renew
-        Insurance</a>
+<div
+  *ngIf="mobileMenuOpen"
+  @slideInOut
+  class="fixed inset-0 z-50 flex md:hidden"
+>
+  <!-- Background overlay -->
+  <div
+    class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out"
+    (click)="mobileMenuOpen = false"
+  ></div>
+
+  <!-- Sidebar Panel -->
+  <div
+    class="relative ml-auto w-60 bg-[#fcb026] shadow-xl rounded-l-2xl h-screen p-4 flex flex-col overflow-y-auto"
+  >
+    <div class="border-b pb-2">
+      <a routerLink="/" (click)="mobileMenuOpen = false" class="block py-2 text-black font-[500]" style="text-decoration: none;">Home</a>
+      <a (click)="openSearchModal(); mobileMenuOpen = false" class="block py-2 text-black font-[500]" style="text-decoration: none;">Buy Vehicles</a>
+      <a (click)="openSellVehicleModal(); mobileMenuOpen = false" class="block py-2 text-black font-[500]" style="text-decoration: none;">Sell Vehicles</a>
+      <a (click)="openSearchModal(); mobileMenuOpen = false" class="block py-2 text-black font-[500]" style="text-decoration: none;">Rent Vehicles</a>
+      <a (click)="openTransportModal(); mobileMenuOpen = false" class="block py-2 text-black font-[500]" style="text-decoration: none;">Transport My Vehicle</a>
+      <a (click)="openInquiryModal(); mobileMenuOpen = false" class="block py-2 text-black font-[500]" style="text-decoration: none;">Inquiry Now</a>
+
+      <div class="py-2">
+        <span class="text-black block font-[500]">Others</span>
+        <a routerLink="/faq" (click)="mobileMenuOpen = false" class="block text-sm text-black pl-4 py-1 font-[500]" style="text-decoration: none;">FAQ's</a>
+        <a (click)="openApplyForLoanModal(); mobileMenuOpen = false" class="block text-sm text-black pl-4 py-1 font-[500]" style="text-decoration: none;">Request a Loan</a>
+        <a (click)="openBuyOrRenewInsuranceModal(); mobileMenuOpen = false" class="block text-sm text-black pl-4 py-1 font-[500]" style="text-decoration: none;">Buy or Renew Insurance</a>
+      </div>
     </div>
   </div>
 </div>
+
+
+
+
 
 
 <!-- Modals (ALL outside headers for mobile + desktop) -->

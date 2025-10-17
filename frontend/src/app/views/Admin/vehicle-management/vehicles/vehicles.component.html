@@ -40,7 +40,7 @@
                         <td class="px-4 py-2 border">{{ vehicle.Created_date | date: 'dd-MM-YYYY'}}</td>
                         <td class="px-4 py-2 border w-45">
                             <div class="w-full h-24 flex items-center justify-center overflow-hidden border rounded">
-                                <img *ngIf="vehicle.img" [src]="'https://rockeyeengineerings.com' + vehicle.img[0]" alt="Vehicle"
+                                <img *ngIf="vehicle.img" [src]="'https://rockeyeengineerings.com/api' + vehicle.img[0]" alt="Vehicle"
                                     class="w-full h-full object-cover" />
                             </div>
                         </td>
@@ -109,7 +109,7 @@
                     </div>
                     <div class="flex justify-between mb-4">
                         <span class="font-semibold">Image</span>
-                        <img *ngIf="vehicle.img" [src]="'https://rockeyeengineerings.com' + vehicle.img[0]"
+                        <img *ngIf="vehicle.img" [src]="'https://rockeyeengineerings.com/api' + vehicle.img[0]"
                             class="w-24 h-16 object-cover rounded" alt="Vehicle" />
                     </div>
                     <div class="flex justify-between mb-2">
@@ -408,7 +408,7 @@
                         <td class="p-3 font-medium text-gray-600 border border-gray-300">Image</td>
                         <td class="p-3 border border-gray-300">
                             <div class="grid grid-cols-1 gap-2 w-full h-auto">
-                                <img *ngFor="let image of selectedVehicle.img" [src]="'https://rockeyeengineerings.com' + image"
+                                <img *ngFor="let image of selectedVehicle.img" [src]="'https://rockeyeengineerings.com/api' + image"
                                     alt="Vehicle Image" class="w-full h-40 object-cover border rounded shadow-sm" />
                             </div>
                         </td>

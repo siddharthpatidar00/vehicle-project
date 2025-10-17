@@ -112,7 +112,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             next: res => {
                 this.customers = res.map(c => ({
                     ...c,
-                    image: c.image.startsWith('http') ? c.image : `https://rockeyeengineerings.com${c.image}`
+                    image: c.image.startsWith('http') ? c.image : `https://rockeyeengineerings.com/api${c.image}`
                 }));
             },
             error: err => console.error('Failed to load customers', err)
@@ -126,17 +126,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
     }
 
-    // loadAd1(): void {
-    //     this.advertisementService.getAdByType('ad1').subscribe({
-    //         next: ad => this.ad1Image = ad?.image?.startsWith('http') ? ad.image : `https://rockeyeengineerings.com${ad?.image || ''}`,
-    //         error: err => console.error('Failed to load ad1', err)
-    //     });
-    // }
     loadAd1(): void {
         this.advertisementService.getAdByType('ad1').subscribe({
             next: ad => {
                 if (ad && ad.isActive) {   // check isActive instead of status
-                    this.ad1Image = ad.image?.startsWith('http') ? ad.image : `https://rockeyeengineerings.com${ad.image}`;
+                    this.ad1Image = ad.image?.startsWith('http') ? ad.image : `https://rockeyeengineerings.com/api${ad.image}`;
                 } else {
                     this.ad1Image = ''; // hide container if inactive
                 }
@@ -223,13 +217,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     // --- Image URLs ---
     getCategoryImageUrl(path: string): string {
-        return path ? `https://rockeyeengineerings.com${path}` : '';
+        return path ? `https://rockeyeengineerings.com/api${path}` : '';
     }
 
     getBrandImageUrl(path?: string | File): string {
         if (!path) return '';
         return path instanceof File ? URL.createObjectURL(path) :
-            path.startsWith('http') ? path : `https://rockeyeengineerings.com${path}`;
+            path.startsWith('http') ? path : `https://rockeyeengineerings.com/api${path}`;
     }
 
     // --- Image slider ---

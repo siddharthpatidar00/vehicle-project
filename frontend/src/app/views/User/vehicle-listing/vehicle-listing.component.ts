@@ -119,7 +119,7 @@ export class VehicleListingComponent implements OnInit {
     this.advertisementService.getAdByType('ad2').subscribe({
       next: (ad) => {
         if (ad && ad.image) {
-          this.ad2Image = ad.image.startsWith('http') ? ad.image : `https://rockeyeengineerings.com${ad.image}`;
+          this.ad2Image = ad.image.startsWith('http') ? ad.image : `https://rockeyeengineerings.com/api${ad.image}`;
         }
       },
       error: (err) => console.error('Failed to load ad2', err)

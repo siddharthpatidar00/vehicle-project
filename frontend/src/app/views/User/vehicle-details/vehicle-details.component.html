@@ -133,7 +133,7 @@
                 class="vehicle-image-section rounded-lg shadow-sm p-4 sm:p-6 bg-gradient-to-b from-[#fcb026] via-[#fee1a1] to-[#fff5d6]">
                 <div class="mb-4 w-full max-w-[450px] sm:max-w-full mx-auto h-[250px] sm:h-[350px]">
                     <img *ngIf="vehicle?.img?.length" [src]="getVehicleImageUrl(vehicle.img[selectedImageIndex])"
-                        alt="{{ vehicle?.name }}" class="w-full h-full object-cover rounded-lg" />
+                        alt="{{ vehicle?.name }}" class="w-full h-full object-contain rounded-lg" />
                 </div>
 
                 <div class="flex flex-wrap gap-2 justify-center sm:justify-start">
@@ -175,7 +175,7 @@
                         class="rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg hover:scale-[1.02] transition bg-gradient-to-b from-[#fee1a1] to-[#fff5d6]"
                         [routerLink]="['/vehicle-detail', v._id]">
                         <img [src]="getVehicleImageUrl(v.img && v.img[0])" alt="{{ v.name }}"
-                            class="w-full h-[200px] sm:h-[250px] object-cover rounded-lg mb-3" />
+                            class="w-full h-[200px] sm:h-[250px] object-contain rounded-lg mb-3" />
                         <h3 class="text-lg font-semibold text-gray-800 truncate">
                             {{ v.name }}
                         </h3>

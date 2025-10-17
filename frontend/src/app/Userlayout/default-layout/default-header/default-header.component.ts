@@ -26,10 +26,18 @@ import { InquiryModalComponent } from '../../../views/User/components/inquiry-mo
 import { SellVehicleModalComponent } from '../../../views/User/components/sell-vehicle-modal/sell-vehicle-modal.component';
 import { ApplyForLoanComponent } from '../../../views/User/components/apply-for-loan/apply-for-loan.component';
 import { BuyOrRenewInsuranceComponent } from '../../../views/User/components/buy-or-renew-insurance/buy-or-renew-insurance.component';
+import {
+  trigger,
+  transition,
+  style,
+  animate,
+  state
+} from '@angular/animations';
+
 
 @Component({
   selector: 'app-default-header',
-  standalone:true,
+  standalone: true,
   styleUrl: './default-header.component.scss',
   templateUrl: './default-header.component.html',
   imports: [
@@ -54,7 +62,22 @@ import { BuyOrRenewInsuranceComponent } from '../../../views/User/components/buy
     SellVehicleModalComponent,
     ApplyForLoanComponent,
     BuyOrRenewInsuranceComponent
-  ]
+  ],
+ animations: [
+    trigger('slideInOut', [
+      state('in', style({ transform: 'translateX(0)', opacity: 1 })),
+      transition(':enter', [
+        style({ transform: 'translateX(100%)', opacity: 0 }),
+        animate('400ms cubic-bezier(0.22, 1, 0.36, 1)'),
+      ]),
+      transition(':leave', [
+        animate(
+          '300ms ease-in',
+          style({ transform: 'translateX(100%)', opacity: 0 })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class DefaultHeaderComponent implements OnInit, OnDestroy {
   selectedLocation: string = 'Location';
