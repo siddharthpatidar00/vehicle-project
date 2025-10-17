@@ -221,7 +221,7 @@ export class VehiclesComponent implements OnInit {
         if (this.editMode && this.newVehicle._id) {
           const existingPaths = (this.imagePreviews || [])
             .filter(url => !url.startsWith('blob:'))
-            .map(url => url.replace('http://localhost:5000', ''));
+            .map(url => url.replace('https://rockeyeengineerings.com/api', ''));
           formData.append('existingImages', JSON.stringify(existingPaths));
         }
 
@@ -290,7 +290,7 @@ export class VehiclesComponent implements OnInit {
     // Load images after modal open
     setTimeout(() => {
       this.imagePreviews = (vehicle.img || []).map(img =>
-        img.startsWith('http') ? img : `http://localhost:5000${img}`
+        img.startsWith('http') ? img : `https://rockeyeengineerings.com/api${img}`
       );
     }, 100);
 

@@ -41,7 +41,7 @@ getCategoryImageUrl(imagePath: string): string {
     return 'assets/images/default-category.png';  // fallback image
   }
   // imagePath is like "/uploads/filename.jpg" — prepend your backend base URL:
-  return `http://localhost:5000${imagePath}`;
+  return `https://rockeyeengineerings.com/api${imagePath}`;
 }
 
 

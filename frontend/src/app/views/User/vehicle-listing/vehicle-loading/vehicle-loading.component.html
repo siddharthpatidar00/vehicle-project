@@ -20,7 +20,7 @@
                 <!-- Vehicle List -->
                 <div *ngFor="let vehicle of vehicles"
                     class="max-w-[360px] bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col mx-auto">
-                    <img *ngIf="vehicle.img" [src]="'http://localhost:5000' + vehicle.img[0]"
+                    <img *ngIf="vehicle.img" [src]="'https://rockeyeengineerings.com/api' + vehicle.img[0]"
                         [alt]="vehicle.name || vehicle.title" class="w-[360px] h-60 object-cover rounded-t-lg">
                     <div class="p-2.5 flex flex-col gap-2 mt-auto">
                         <button (click)="goToVehicleDetail(vehicle._id)"
